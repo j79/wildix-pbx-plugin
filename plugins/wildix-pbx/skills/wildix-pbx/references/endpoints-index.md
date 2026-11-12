@@ -1,0 +1,1042 @@
+# Index des routes Wildix
+
+Une ligne par route : `MÉTHODE chemin — résumé`. ⚠️ = route deprecated (retirée de la documentation, ou marquée deprecated par Wildix) — encore utilisable jusqu'à son décommissionnement. 🆕 = nouvelle route ou nouveau service.
+Pour le détail d'une route : `wildix.py doc show <api> <MÉTHODE> <chemin>`.
+
+## PBX API — alias `pbx-api` — https://{subdomain}.wildixin.com:{port}/api/v1 (218 routes)
+- `GET /Colleagues/` — Get colleagues
+- `GET /Colleagues/{id}/` — Get colleague
+- `GET /PBX/Colleagues/` — Get colleagues (with ACL)
+- `POST /PBX/Colleagues/` — Create colleague (with ACL)
+- `GET /PBX/Colleagues/{id}/` — Get colleague (with ACL)
+- `PUT /PBX/Colleagues/{id}/` — Update colleague (with ACL)
+- `DELETE /PBX/Colleagues/{id}/` — Delete colleague (with ACL)
+- `PUT /PBX/presence/` — Set batch presence for colleagues
+- `PUT /PBX/Colleagues/{id}/preferences/` — Copy preferences from user
+- `GET /PBX/Applications/SimpleToken/` — Get simple token applications list
+- `POST /PBX/Applications/SimpleToken/` — Add new application
+- `PUT /PBX/Applications/SimpleToken/{id}/` — Update application
+- `DELETE /PBX/Applications/SimpleToken/{id}/` — Delete application
+- `GET /PBX/Applications/s2s/` — Get applications list
+- `POST /PBX/Applications/s2s/` — Add a new application
+- `PUT /PBX/Applications/s2s/{id}/` — Update application.
+- `DELETE /PBX/Applications/s2s/{id}/` — Delete application
+- `GET /PBX/Applications/OAuth2/` — Get OAuth2.0 applications list
+- `POST /PBX/Applications/OAuth2/` — Add a new OAuth2.0 application.
+- `PUT /PBX/Applications/OAuth2/{id}/` — Update OAuth2.0 application
+- `DELETE /PBX/Applications/OAuth2/{id}/` — Delete OAuth2.0 application
+- `GET /PBX/Users/Sip/Registrations` — Get SIP proxy registrations for all users
+- `GET /PBX/Users/{extensions}/Sip/Registrations` — Get SIP proxy registrations by users extensions
+- `GET /PBX/AclGroups/` — Get all ACL groups managed by the user
+- `POST /PBX/AclGroups/` — Add a new ACL group
+- `DELETE /PBX/AclGroups/{groupIds}/` — Delete ACL groups
+- `PUT /PBX/AclGroups/{groupId}/` — Modify an ACL group
+- `GET /PBX/AclGroups/Rules/` — Get a list of available ACL rules
+- `GET /PBX/AclGroups/Permissions/` — Get a list of group permissions
+- `GET /PBX/ping/` — Check PBX availability
+- `GET /PBX/candidates` — Get PBX candidates
+- `GET /PBX/Ports/Status/` — Get status of PBX open ports
+- `GET /PBX/version/` — Get PBX version
+- `GET /PBX/settings/` — Get PBX settings
+- `PUT /PBX/settings/` — Update PBX Feature settings
+- `GET /PBX/recordings/` — Get list of all call recordings
+- `GET /PBX/recordings/download/{id}` — Get status of download recordings task
+- `POST /PBX/recordings/download/` — Create task to download batch of recordings
+- `GET /PBX/CallHistory/` — Get full call history
+- `GET /CallHistory/` — Get personal call history
+- `GET /CallHistory/{callId}` — Get call record
+- `PUT /CallHistory/{callId}` — Update archived status
+- `DELETE /CallHistory/{callId}` — Delete call record
+- `PUT /CallHistory/{callId}/Tags/` — Change tags
+- `PUT /CallHistory/{callId}/Voicemail/` — Update voicemails status
+- `DELETE /CallHistory/{callId}/Voicemail/` — Delete voicemails
+- `GET /User/{extension}/CallHistory/` — Get call history by user
+- `GET /VoiceMail/` — Get all voicemails from PBX
+- `PUT /VoiceMail/{id}/` — Mark voicemail as read
+- `DELETE /VoiceMail/{ids}/` — Delete voicemail
+- `GET /TrustedIP/` — Get all trusted IPs for PBX
+- `PUT /TrustedIP/` — Set trusted IP for PBX
+- `GET /PBX/settings/CallQueues/` — Get a list of call Queues
+- `GET /PBX/settings/CallQueues/{id}/` — Get call Queue
+- `POST /PBX/settings/CallQueues/{id}/members/dynamic/` — Add a dynamic member to call Queue
+- `DELETE /PBX/settings/CallQueues/{id}/members/dynamic/{member}` — Delete a dynamic member from call Queue
+- `POST /api/v2/call-groups/{id}/members/dynamic/` — Add a dynamic member to a Call Group
+- `POST /api/v2/call-groups/{id}/forward/` — Forward a call in a Call Group queue
+- `DELETE /api/v2/call-groups/{id}/members/dynamic/{member}` — Delete a dynamic member from a Call Group
+- `POST /Device/ResetToken/` — Reset a device token
+- `GET /Devices/` — Get devices
+- `POST /Devices/` — Add devices
+- `PUT /Devices/{macAddr}/` — Update device
+- `DELETE /Devices/{macAddr}/` — Delete device
+- `POST /Devices/scan/` — Scan devices
+- `GET /Devices/verify/` — Verify devices
+- `POST /Devices/{macAddr}/connect/` — Connect device
+- `DELETE /Devices/{macAddr}/connect/` — Disconnect device
+- `GET /PBX/Dialplans/` — Get a list of Dialplans
+- `POST /PBX/Dialplans/` — Add new a Dialplan
+- `GET /PBX/Dialplans/{id}/` — Get Dialplan
+- `PUT /PBX/Dialplans/{id}/` — Update Dialplan
+- `DELETE /PBX/Dialplans/{id}/` — Delete Dialplan
+- `DELETE /PBX/Dialplans/{ids}/` — Delete Dialplans
+- `GET /Dialplan/PagingGroups/` — Get paging groups
+- `POST /Dialplan/PagingGroups/` — Add paging group
+- `PUT /Dialplan/PagingGroups/{id}/` — Update paging group
+- `DELETE /Dialplan/PagingGroups/{id}/` — Delete paging group
+- `GET /Dialplan/GeneralSettings/` — Get general settings
+- `PUT /Dialplan/GeneralSettings/` — Update general settings
+- `GET /Dialplan/timeTables/` — Get timetables
+- `POST /Dialplan/timeTables/` — Add a timetable
+- `PUT /Dialplan/timeTables/{id}/` — Update timetable
+- `DELETE /Dialplan/timeTables/{id}/` — Delete timetable
+- `PUT /Dialplan/timeTables/import/` — Import timetables
+- `GET /Dialplan/Switches/` — Get switches
+- `POST /Dialplan/Switches/` — Add a switch
+- `PUT /Dialplan/Switches/{id}/` — Update switch
+- `DELETE /Dialplan/Switches/{id}/` — Delete a switch
+- `GET /Dialplan/Ivr/` — Get IVR list
+- `POST /Dialplan/Ivr/` — Create IVR
+- `PUT /Dialplan/Ivr/{id}/` — Update IVR
+- `DELETE /Dialplan/Ivr/{id}/` — Delete IVR
+- `GET /Dialplan/CallGroups/` — Get Call groups
+- `POST /Dialplan/CallGroups/` — Create Call Group
+- `PUT /Dialplan/CallGroups/{id}/` — Update Call Group
+- `DELETE /Dialplan/CallGroups/{id}/` — Delete Call Group
+- `GET /Dialplan/CallGroups/{id}/stat` — Get queue info by ID
+- `GET /Dictionaries` — Get a list of dictionaries
+- `POST /Dialplan/DB/{family}/{key}+/` — Add a Dialplan Database value
+- `GET /Dialplan/DB/{family}/{key}+` — Get a Dialplan Database value
+- `GET /Dialplan/DB/{family}/` — Get Dialplan Database family keys
+- `PUT /Dialplan/DB/{family}/{keys}+/` — Update Dialplan Database value
+- `DELETE /Dialplan/DB/{CustomFamily}/{testKey}+/` — Delete key and value from Dialplan Database
+- `DELETE /Dialplan/DB/{CustomFamily}/` — Delete all keys in family from Dialplan Database
+- `GET /PBX/settings/ntp/` — Get NTP settings
+- `PUT /PBX/settings/ntp/` — Update NTP settings
+- `GET /PBX/settings/httpProxy/` — Get HTTP Proxy settings
+- `PUT /PBX/settings/httpProxy/` — Update HTTP Proxy settings
+- `GET /PBX/settings/smtp/` — Get SMTP settings
+- `PUT /PBX/settings/smtp/` — Update SMTP options
+- `POST /PBX/settings/smtp/test/` — Run SMTP test
+- `GET /PBX/settings/smtp/test/status/{testId}/` — Get SMTP test status
+- `GET /Sounds/{path}/` — Get Sounds
+- `PUT /Sounds/{path}/` — Edit Sound
+- `DELETE /Sounds/{path}/` — Delete sound
+- `POST /Sounds/` — Create sound
+- `POST /Sounds/directory/` — Create directory
+- `PUT /Sounds/directory/` — Edit Directory
+- `DELETE /Sounds/directory/` — Delete directory
+- `GET /PBX/Upgrade/Settings/` — Get upgrade settings
+- `PUT /PBX/Upgrade/Settings/` — Set upgrade settings
+- `GET /PBX/Upgrade/Check/` — Get result of the upgrade status
+- `POST /PBX/Upgrade/Check/` — Start the check
+- `GET /PBX/Upgrade/` — Get upgrade status
+- `POST /PBX/Upgrade/` — Start upgrade
+- `PUT /PBX/System/Reboot/` — Start PBX reboot
+- `POST /Calls/` — Make a new call
+- `POST /Calls/{channel}/Dtmf` — Send DTMF
+- `GET /Calls/{channel}` — Get call status
+- `GET /Calls/{channel}/Recordings` — Get call recordings
+- `GET /Calls/{channel}/Tags` — Get call tags
+- `PUT /Calls/{channel}/Tags` — Set call tags
+- `POST /Calls/{channel}/Transfer` — Call transfer
+- `GET /Contacts/` — Get contacts
+- `GET /Contacts/{contactIds}/` — Get a contact by ID
+- `DELETE /Contacts/{id}/` — Delete a contact
+- `PUT /Contacts/{id}` — Update a contact
+- `POST /Contacts` — Add a contact
+- `DELETE /Phonebooks/{id}/Contacts/` — Delete contacts in a phonebook
+- `GET /Phonebooks/{phonebookID}/Contacts/` — Get contacts from a phonebook
+- `DELETE /Phonebooks/{phonebookID}/Contacts/{contactId}/` — Delete a contact
+- `GET /Phonebooks/{phonebookID}/Contacts/{contactId}` — Get a contact from phonebook
+- `PUT /phonebooks/{phonebookID}/Contacts/{contactId}` — Update a phonebook
+- `POST /Phonebooks/{phonebookID}/Contacts` — Add a contact from Phonebooks
+- `GET /iOS/Config/` — Get an iOS config
+- `GET /videoConference/Rooms/` — Get rooms
+- `POST /videoConference/Rooms/` — Create a room
+- `PUT /videoConference/Rooms/` — Update the room
+- `DELETE /videoConference/Rooms/` — Delete the room
+- `POST /videoConference/invite/` — Invite user to conference
+- `GET /originate/AlarmClocks/{id}/` — Get an alarm clock
+- `POST /originate/AlarmClocks/` — Make an alarm clock
+- `DELETE /originate/AlarmClocks/{id}` — Remove an alarm clock
+- `POST /Originate/` — Make an originate request
+- `POST /Originate/Call/` — Make a call
+- `POST /Originate/mobility/` — Make a mobility call
+- `POST /Originate/sms/` — Send an SMS
+- `POST /notifications/` — Add a new smart notification
+- `GET /Groups/` — Get user groups
+- `POST /fax/` — Send the fax
+- `POST /fax/file/` — Upload file to be send via fax
+- `GET /User/{extension}/Presence/` — Get user presence
+- `PUT /User/{extension}/Presence` — Update user presence
+- `GET /Phonebooks/` — Get phonebooks
+- `GET /Phonebooks/{id}/` — Get a phonebook
+- `POST /Phonebooks` — Add a phonebook
+- `PUT /Phonebooks/{id}` — Update a phonebook
+- `DELETE /Phonebooks/{PhonebookId}/` — Delete a phonebook
+- `GET /Personal/Acl/` — Get ACL options
+- `GET /Personal/Info/` — Get personal info
+- `GET /Personal/settings/` — Get settings
+- `PUT /Personal/settings/` — Update settings
+- `GET /Personal/PagingGroups/` — Get paging groups
+- `GET /Personal/Token/` — Generate token
+- `PUT /Personal/Presence/` — Update personal presence
+- `PUT /Personal/Presence/location/` — Update personal location
+- `PUT /personal/roster/` — Update a personal roster
+- `POST /personal/login/` — User authentication
+- `GET /personal/logout/` — User logout
+- `GET /api/v2/personal/features/` — Get personal features
+- `POST /api/v2/personal/features/` — Update personal features
+- `GET /personal/locations/` — Get list of locations
+- `DELETE /personal/locations/{ip}` — Remove location
+- `GET /Trunks/Groups/` — Get trunk groups
+- `POST /Trunks/Groups/` — Create trunk group
+- `PUT /Trunks/Groups/{id}` — Edit trunk group
+- `DELETE /Trunks/Groups/{id}` — Delete trunk group
+- `GET /Trunks/Sip/` — Get SIP trunks
+- `POST /Trunks/Sip/` — Create SIP trunk
+- `PUT /Trunks/Sip/{id}` — Update SIP trunk
+- `DELETE /Trunks/Sip/{id}` — Delete SIP trunk
+- `GET /Trunks/Pstn/` — Get PSTN trunks
+- `PUT /Trunks/Pstn/{id}/` — Update PSTN trunk
+- `GET /Trunks/Fxo/` — Get FXO trunks
+- `PUT /Trunks/Fxo/{id}/` — Update FXO trunk
+- `GET /Trunks/Prices/` — Get trunk price list
+- `POST /Trunks/Prices/` — Create trunk price list
+- `GET /Trunks/Prices/{ID}/export` — Export trunk price list by ID
+- `POST /Trunks/Prices/{ID}/` — Update trunk price list by ID
+- `DELETE /Trunks/Prices/{ID}/` — Delete trunk price list by ID
+- `GET /Departments/` — Get departments
+- `GET /PBX/settings/license/` — Get licenses info
+- `POST /broadcasts/reload/` — Reload broadcasts
+- `POST /call-control/make-call/` — Initiate a new call
+- `POST /call-control/answer/` — Answer an incoming call
+- `POST /call-control/hold/` — Put a call on hold
+- `POST /call-control/unhold/` — Resume a call from hold
+- `POST /call-control/blind-transfer/` — Perform a blind transfer
+- `POST /call-control/attendant-transfer/` — Perform an attendant transfer
+- `POST /call-control/dtmf/` — Send DTMF to a call
+- `POST /call-control/hangup/` — End a call
+- `GET /call-control/list-devices/` — List registered devices
+- `PUT /call-control/set-active-device/` — Set active device for calling
+- `GET /call-control/list-calls/` — List active calls
+- `POST /call-control/update-contact-info/` — Update contact information for an active call
+- `GET /api/v2/personal/features` — Get user personal features
+- `POST /api/v2/personal/features` — Update user personal features
+
+## Cloud PBX API (Permissions) — alias `cloud-pbx-api` — https://wms-api.wildix.com (13 routes)
+- 🆕 `POST /v1/permissions/delete_call_recordings_of_users/check` — Checks the `can: Delete call recordings` permission of a specific user for the participants of a call or confe
+- `POST /v1/permissions/see_call_recordings/check` — Checks the `can: See Call Recordings` permissions for a specific user.
+- `POST /v1/permissions/view_call_recordings_of_users/check` — Checks the `can: See call recordings` permissions of a specific user for the list of targets.
+- `POST /v1/permissions/view_call_recordings_of_users/groups` — Gets a list of groups that are allowed to see the analytics.
+- `POST /v1/permissions/intrusion/check` — Checks the `can: Intrusion` permissions for a specific user for the target.
+- `POST /v1/permissions/intrusion/groups` — Gets a list of groups that are allowed to use the intrusion.
+- `POST /v1/permissions/see_analytics/check` — Checks the `can: See analytics` permissions for a specific user for the target.
+- `POST /v1/permissions/see_analytics/groups` — Gets a list of groups that are allowed to see the analytics.
+- `POST /v1/permissions/see_full_number/check` — Checks the `can see: Full number` permissions for a specific user.
+- `POST /v1/permissions/see_transcription_summary/check` — Checks the `can: See transcription summary` permissions for a specific user.
+- `POST /v1/permissions/use_analytics/check` — Checks the `can use: Analytics` permissions for a specific user for the target.
+- `POST /v1/permissions/view_calls_of_users/check` — Checks the `can: View calls of users` permissions for a specific user for the list of targets.
+- `POST /v1/permissions/view_calls_of_users/groups` — Gets a list of groups that are allowed to view calls of users.
+
+## Cloud PBX Server API — alias `cloud-pbx-server-api` — https://{domain}.wildixin.com (33 routes)
+- `GET /api/v1/Colleagues/{id}/` — 
+- `GET /api/v1/PBX/Colleagues` — 
+- `POST /api/v1/PBX/Colleagues` — 
+- `PUT /api/v1/PBX/Colleagues/{id}` — 
+- `DELETE /api/v1/PBX/Colleagues/{id}` — 
+- `GET /api/v1/Departments/` — 
+- `GET /api/v1/Dialplan/CallGroups/` — Get the list of all available Call groups on the PBX.
+- `GET /api/v1/Groups` — 
+- `POST /api/v1/pbx/aclgroups` — 
+- `GET /api/v1/pbx/aclgroups/permissions` — 
+- `DELETE /api/v1/pbx/aclgroups/{id}` — 
+- `GET /api/v1/pbx/settings/callqueues/{groupId}` — Get the settings of a specific Call group on the PBX.
+- `POST /api/v1/broadcasts/reload/` — Clear cache for broadcasts
+- `GET /api/v1/network/pbxes/` — Get list of PBXes.
+- `POST /api/v1/notifications/` — Notifications
+- `POST /api/v1/originate/` — Originate
+- `POST /api/v1/originate/call/` — Originate call
+- `GET /api/v1/pbx/applications/oauth2/` — Get the list of all OAuth2 clients on the PBX.
+- `POST /api/v1/pbx/applications/oauth2/` — Create new OAuth2 client in the PBX.
+- `PUT /api/v1/pbx/applications/oauth2/{id}/` — Update OAuth2 client in the PBX.
+- `DELETE /api/v1/pbx/applications/oauth2/{id}/` — Update OAuth2 client in the PBX.
+- `GET /api/v1/personal/info/` — 
+- `POST /api/v2/call-control/answer/` — 
+- `POST /api/v2/call-control/attendant-transfer/` — 
+- `POST /api/v2/call-control/blind-transfer/` — 
+- `POST /api/v2/call-control/dtmf/` — 
+- `POST /api/v2/call-control/hangup/` — 
+- `POST /api/v2/call-control/hold/` — 
+- `GET /api/v2/call-control/list-calls/` — 
+- `GET /api/v2/call-control/list-devices/` — 
+- `POST /api/v2/call-control/make-call/` — 
+- `POST /api/v2/call-control/unhold/` — 
+- `POST /api/v2/call-control/update-contact-info/` — 
+
+## Conversations API — alias `conversations-api` — https://api.x-bees.com (67 routes)
+- `GET /v2/conversations/channels/` — Lists all channels associated with a user. Allows pagination using limit and offset parameters. Sorted by last
+- `GET /v2/conversations/channels/{channelId}` — Retrieves details of a specific channel by its unique identifier.
+- `PUT /v2/conversations/channels/{channelId}` — Updates the details of an existing channel. This operation can modify channel properties such as name, descrip
+- `PATCH /v2/conversations/channels/{channelId}` — Partially updates the details of an existing channel. This operation allows for updating specific channel prop
+- `DELETE /v2/conversations/channels/{channelId}` — Deletes an existing channel. This operation is idempotent, meaning that if the channel does not exist, the ope
+- `POST /v2/conversations/channels/{channelId}/assign` — Assigns a channel to a user and/or service, optionally managing members according to a variant.
+- `POST /v2/conversations/channels/{channelId}/hide` — Allows a user to hide an existing channel. This operation requires the channel to be accessible to the user.
+- `POST /v2/conversations/channels/{channelId}/join` — Allows a user to join an existing channel. This operation requires the channel to be accessible to the user. T
+- `POST /v2/conversations/channels/{channelId}/leave` — Allows a user to leave an existing channel. This operation requires the channel to be accessible to the user.
+- `POST /v2/conversations/channels/{channelId}/pin` — Marks the channel with a pin flag.
+- `DELETE /v2/conversations/channels/{channelId}/pin` — Removes pin flag from the the channel.
+- `POST /v2/conversations/channels/{channelId}/read` — Marks all messages in the specified channel as read by the user. This operation requires the channel to be acc
+- `POST /v2/conversations/channels/{channelId}/show` — Allows a user to show an existing hidden channel. This operation requires the channel to be accessible to the 
+- `PUT /v2/conversations/channels/{channelId}/tags/{tagId}` — Marks the channel with specified tag.
+- `PUT /v2/conversations/channels/{channelId}/unread` — Marks the channel with unread indicator.
+- `POST /v2/conversations/channels/{channelId}/untag` — Removes specified tag from the the channel.
+- `POST /v2/conversations/direct/get_channel_id` — Gets the channel ID of an existing or non-existing direct channel between the specified user and another membe
+- `POST /v2/conversations/direct/get_or_create_channel` — Gets or creates a direct channel between the specified user and another member.
+- `POST /v2/conversations/group` — Creates a new group channel with specified members and members to invite.
+- `POST /v2/conversations/kite` — Creates a new kite channel with specified widget or email.
+- `POST /v2/conversations/messaging/get_channel_id` — Gets the channel ID of an existing or non-existing channel on a customer messaging channel (see MessagingChann
+- `POST /v2/conversations/messaging/get_or_create_channel` — Gets or creates a channel on a customer messaging channel (see MessagingChannel). The person is named by recip
+- `POST /v2/conversations/query-channels` — Query channels matched specified query. Allows pagination using limit and offset parameters. Sorted by last me
+- `POST /v2/conversations/sms/get_channel_id` — Gets the channel ID of an existing or non-existing SMS channel
+- `POST /v2/conversations/sms/get_or_create_channel` — Gets or creates a SMS channel
+- `POST /v2/conversations/telephony/get_channel_id` — Gets the channel ID of an existing or non-existing telephony channel
+- `POST /v2/conversations/telephony/get_or_create_channel` — Gets or creates a telephony channel
+- `POST /v2/conversations/whatsapp/get_channel_id` — Gets the channel ID of an existing or non-existing WhatsApp
+- `POST /v2/conversations/whatsapp/get_or_create_channel` — Gets or creates a WhatsApp channel
+- `POST /v2/conversations/channels/{channelId}/files` — Create a presigned URL for file upload in the channel.
+- `GET /v2/conversations/channels/{channelId}/files/{fileId}` — Retrieves information about an uploaded file in a specified channel.
+- `GET /v2/conversations/channels/{channelId}/messages/{messageId}/files/{fileId}/download_url` — Retrieves a presigned URL for downloading a specific file from a message in a specified channel.
+- `GET /v2/conversations/channels/{channelId}/members` — Retrieves a list of members for a specific channel. Supports pagination through limit and offset parameters.
+- `POST /v2/conversations/channels/{channelId}/members` — Adds a single member to an existing channel.
+- `PUT /v2/conversations/channels/{channelId}/members` — Adds members to an existing channel.
+- `GET /v2/conversations/channels/{channelId}/members/{memberId}` — Retrieves details of a specific member in a channel. This includes the member's role and user information.
+- `DELETE /v2/conversations/channels/{channelId}/members/{memberId}` — Deletes a specific member from a channel. This operation is idempotent, meaning that if the member does not ex
+- `GET /v2/conversations/channels/{channelId}/read` — Retrieves a list of members read status for a specific channel. Read status does not work for conversations wi
+- ⚠️ `POST /v2/conversations/invite` — Invite a list of users to x-bees. This operation creates an account for specified emails or phone numbers. Use
+- `GET /v2/conversations/channels/{channelId}/messages` — Retrieves a list of messages from a specified channel. Supports pagination through limit and offset parameters
+- `POST /v2/conversations/channels/{channelId}/messages` — Sends a message to a specified channel. This operation requires the channel to be accessible to the user.
+- `GET /v2/conversations/channels/{channelId}/messages/{messageId}` — Retrieves a specific message from a specified channel.
+- `PUT /v2/conversations/channels/{channelId}/messages/{messageId}` — Updates an existing message in a specified channel. This operation is idempotent and requires the channel and 
+- `PATCH /v2/conversations/channels/{channelId}/messages/{messageId}` — Partially updates an existing message in a specified channel. This operation requires the channel and message 
+- `DELETE /v2/conversations/channels/{channelId}/messages/{messageId}` — Deletes an existing message in a specified channel. This operation is idempotent and requires the channel and 
+- `PUT /v2/conversations/channels/{channelId}/messages/{messageId}/pin` — Pins specified message in the message. This operation is idempotent, meaning that if the message is already pi
+- `DELETE /v2/conversations/channels/{channelId}/messages/{messageId}/pin` — Unpins the message that was previously pinned. This operation is idempotent, meaning that if the message is no
+- `GET /v2/conversations/channels/{channelId}/messages/{messageId}/reactions` — Retrieves a list of reactions for a specific message in a specified channel. Supports pagination through limit
+- `POST /v2/conversations/channels/{channelId}/messages/{messageId}/reactions` — Sends a reaction to a specific message in a specified channel. This operation requires the channel to be acces
+- `DELETE /v2/conversations/channels/{channelId}/messages/{messageId}/reactions/{reactionType}` — Deletes a reaction from a specific message in a specified channel. This operation is idempotent and requires t
+- `GET /v2/conversations/channels/{channelId}/pinned_messages` — Retrieves a list of pinned messages from a specified channel. Supports pagination through limit and offset par
+- `POST /v2/conversations/channels/{channelId}/send_giphy` — Sends a Giphy message to a specified channel. This operation requires the channel to be accessible to the user
+- `POST /v2/conversations/channels/{channelId}/send_typing_start` — Sends a typing start event to a specified channel. This operation requires the channel to be accessible to the
+- `POST /v2/conversations/channels/{channelId}/send_typing_stop` — Sends a typing stop event to a specified channel. This operation requires the channel to be accessible to the 
+- `POST /v2/conversations/channels/{channelId}/system-messages` — Sends a system message to a specified channel. This operation available with S2S authorization only.
+- `PUT /v2/conversations/inbox/tags/{tagId}` — Updates an existing tag. This operation is idempotent.
+- `DELETE /v2/conversations/inbox/tags/{tagId}` — Deletes an existing tag. This operation is idempotent.
+- `POST /v2/conversations/channels/{channelId}/messages/{messageId}/actions/{actionId}/trigger` — Sends a trigger for specific action for specified message. This operation requires the message to be accessibl
+- `GET /v2/conversations/triggers/{triggerId}/result` — Get result of the triggered action.
+- `POST /v2/conversations/triggers/{triggerId}/result` — Send result of the triggered action.
+- `POST /v2/conversations/describe` — 
+- `GET /v2/conversations/inbox/state` — Retrieves the user's inbox state to track pinned, tagged, and unread markers.
+- `GET /v2/conversations/inbox/tags` — Returns a list of tags associated with the user.
+- `POST /v2/conversations/inbox/tags` — Creates a new tag that can be used to group channels. Each user can have up to 15 tags. If the limit is reache
+- `GET /v2/conversations/inbox/tags/{tagId}` — Returns a list of channels associated with the specified tag.
+- `POST /v2/conversations/schedule_external_flag_adjustment_job` — Schedules a job to fix the "external" flag for channels in which the user participates.
+- `GET /v2/conversations/token` — Retrieve an authorization token for chat.wildix-chat.com
+
+## Assistant API — alias `assistant-api` — https://api.x-bees.com (5 routes)
+- `POST /v2/assistant/completion` — 
+- `GET /v2/assistant/settings` — Rate Limits
+- `POST /v2/assistant/settings/command` — 
+- `PUT /v2/assistant/settings/command/{id}` — 
+- `DELETE /v2/assistant/settings/command/{id}` — 
+
+## Kite API — alias `kite-api` — https://api.x-bees.com (25 routes)
+- `POST /v2/kite/agents` — Retrieves a list of agents available for Kite-based conversations, filtered by service, extensions, or emails.
+- `PATCH /v2/kite/calendar/channels/{channelId}/events/{eventOwner}/{eventId}` — Reschedules an existing calendar event, updating its time, duration, attendees, or other details.
+- `DELETE /v2/kite/calendar/channels/{channelId}/events/{eventOwner}/{eventId}` — Cancels an existing calendar event, optionally providing a reason for cancellation.
+- `POST /v2/kite/calendar/widgets/{targetId}` — Schedules a new calendar event for a specific Kite widget or agent, creating a conversation channel.
+- `GET /v2/kite/calendar/widgets/{targetId}/slots` — Retrieves available calendar time slots for a specific Kite widget or agent within the specified date range.
+- `GET /v2/kite/config/{targetId}` — Retrieves the configuration settings for a specific Kite widget or agent, optionally filtered by route.
+- `GET /v2/kite/messaging/{channel}/senders` — Retrieves the senders the specified company can send from on one customer messaging channel (the Facebook page
+- `GET /v2/kite/messaging/{channel}/senders/{senderId}/configuration` — Retrieves the routing configuration of a single sender on a customer messaging channel. The sender id is check
+- `PUT /v2/kite/messaging/{channel}/senders/{senderId}/configuration` — Creates or updates the routing configuration of a single sender on a customer messaging channel. The sender id
+- `GET /v2/kite/services` — Retrieves a list of available services for Kite-based conversations within the specified organization.
+- `GET /v2/kite/sms/configurations` — Retrieves a list of SMS configurations for all service numbers in the specified company.
+- `GET /v2/kite/sms/configurations/{serviceNumber}` — Retrieves the SMS configuration settings for a specific service number.
+- `PUT /v2/kite/sms/configurations/{serviceNumber}` — Creates or updates the SMS configuration settings for a specific service number.
+- `GET /v2/kite/sms/numbers` — Retrieves a list of available SMS service numbers for the specified company.
+- `GET /v2/kite/whatsapp/configurations` — Retrieves a list of WhatsApp configurations for all service numbers in the specified company.
+- `GET /v2/kite/whatsapp/configurations/{serviceNumber}` — Retrieves the WhatsApp configuration settings for a specific service number.
+- `PUT /v2/kite/whatsapp/configurations/{serviceNumber}` — Creates or updates the WhatsApp configuration settings for a specific service number.
+- `GET /v2/kite/whatsapp/numbers` — Retrieves a list of available WhatsApp service numbers for the specified company.
+- `GET /v2/kite/whatsapp/templates/{serviceNumber}` — Retrieves a list of available WhatsApp message templates for a specific service number.
+- `GET /v2/kite/widgets` — Retrieves a list of Kite widgets for the specified company.
+- `POST /v2/kite/widgets` — Creates a new widget.
+- `POST /v2/kite/widgets/preview` — Creates or updates a temporary widget to assist with configuration testing. Preview widgets mimic the behavior
+- `GET /v2/kite/widgets/{widgetId}` — Retrieves details of a specific widget by its unique identifier.
+- `PUT /v2/kite/widgets/{widgetId}` — Updates the configuration of an existing widget.
+- `DELETE /v2/kite/widgets/{widgetId}` — Deletes an existing widget. This operation is idempotent, meaning that if the widget does not exist, the opera
+
+## Users & ChatBots API — alias `users-and-chatbots-api` — https://api.x-bees.com (45 routes)
+- `POST /v2/users/BatchGetUsersPbxLinkData` — Retrieves PBX link data for multiple users in a single batch operation. This is a deprecated operation - use B
+- `GET /v2/users/GetUserPbxLinkSuggestion` — Retrieves PBX link suggestion information for a user based on their email address. This is a deprecated operat
+- ⚠️ `POST /v2/users/UploadPicture` — Uploads a user profile picture in base64 format and returns the URL where it can be accessed. This is a deprec
+- `POST /v2/users/auth/VerifyBotSecretKey` — Verifies a bot secret key and returns bot information if valid. This is a deprecated operation - use VerifyBot
+- `GET /v2/users/accounts/{accountId}` — Retrieves the account. Available via s2s (service-to-service) or the x-bees token of the account owner; API ke
+- `PUT /v2/users/accounts/{accountId}` — Updates the account. Allows changing default workspace and primary identity. Available via s2s (service-to-ser
+- `GET /v2/users/accounts/{accountId}/identities` — Lists all identities (login methods) for the current account. Available via s2s (service-to-service) or the x-
+- `POST /v2/users/accounts/{accountId}/identities` — Adds a new identity (email or phone) to the account. Requires OTP verification for the new identity. Available
+- `POST /v2/users/accounts/{accountId}/identities/verify` — Completes adding an identity by verifying the OTP sent to the new identity. Call after LinkIdentity. Available
+- `DELETE /v2/users/accounts/{accountId}/identities/{identity}` — Removes a non-primary identity from the account. Requires step-up verification for the primary identity. Avail
+- `GET /v2/users/accounts/{accountId}/workspaces` — Lists workspaces available to the account. Without limit, returns every workspace. With limit, returns one pag
+- `PUT /v2/users/accounts/{accountId}/workspaces/{workspaceId}` — Updates the workspace. Available only via s2s (service-to-service) authentication.
+- `DELETE /v2/users/accounts/{accountId}/workspaces/{workspaceId}` — Removes the connection between the account and a workspace. Available via s2s (service-to-service) or the x-be
+- `GET /v2/users/app-version` — Returns the current Google Play Store version of the Android app for the specified appType (X-Bees, X-Hoppers,
+- `POST /v2/users/batch-get-users` — Retrieves details of multiple users in a single batch operation.
+- `POST /v2/users/batch-get-users-pbx-link-data` — Retrieves PBX link data for multiple users in a single batch operation.
+- `GET /v2/users/cloud/{userId}` — Retrieves details of a specific user by their unique identifier.
+- `GET /v2/users/cloud/{userId}/pbx-link-data` — Retrieves PBX link data for a specific user.
+- `GET /v2/users/get-user-pbx-link-suggestion` — Retrieves PBX link suggestion information for a user based on their email address.
+- `POST /v2/users/query-colleagues` — Searches for colleagues using various filters and search criteria, with optional auto-invitation for new users
+- `POST /v2/users/query-user` — Searches for a single user using a query with optional predicate validation.
+- `POST /v2/users/query-users` — Searches for multiple users using queries with optional predicate validation.
+- `POST /v2/users/batch-get-users-email-notifications-settings` — Get multiple user settings by their IDs
+- `GET /v2/users/bots/{botId}` — Retrieves details of a specific bot by its unique identifier.
+- `GET /v2/users/bots/{botId}/callback` — Retrieves the callback configuration for a specific bot.
+- `PUT /v2/users/bots/{botId}/callback` — Updates the callback configuration for a specific bot.
+- `PUT /v2/users/change-email` — Schedules user's email changing.
+- `GET /v2/users/cloud/{userId}/notifications/email` — Getting user email notifications settings
+- `POST /v2/users/cloud/{userId}/notifications/email` — Update user email notifications settings
+- `PATCH /v2/users/cloud/{userId}/notifications/email` — Partially update user email notifications settings
+- `POST /v2/users/create-anonymous-session` — 
+- `GET /v2/users/intelligence-search` — Search user in the directory using AI. Result is sorted by relevance.
+- `POST /v2/users/toggle-transcription-email-notifications-subscription` — Using unsubscribeToken from email you can Toggle transcription email notifications subscription
+- `POST /v2/users/toggle-unread-email-notifications-subscription` — Using unsubscribeToken from email you can Toggle unread messages email notifications subscription
+- `GET /v2/users/bots` — Retrieves a list of all bots for the specified company.
+- `POST /v2/users/bots` — Creates a new bot with the specified configuration and callback settings.
+- `PUT /v2/users/bots/{botId}` — Updates the configuration of an existing bot.
+- `DELETE /v2/users/bots/{botId}` — Deletes an existing bot and all its associated data.
+- `GET /v2/users/bots/{botId}/keys` — Retrieves a list of API keys associated with a specific bot.
+- `POST /v2/users/bots/{botId}/keys` — Creates a new API key for a specific bot.
+- `DELETE /v2/users/bots/{botId}/keys/{apiKeySecret}` — Deletes an existing API key for a specific bot.
+- `POST /v2/users/system-bots` — Creates a new system bot with basic configuration for internal use.
+- `POST /v2/users/invite` — Invite a list of users to x-bees. This operation creates an account for specified emails or phone numbers. Use
+- `POST /v2/users/upload-picture` — Uploads a user profile picture in base64 format and returns the URL where it can be accessed.
+- `POST /v2/users/verify-bot-secret-key` — Verifies a bot secret key and returns bot information if valid.
+
+## Auth Service — alias `auth-service` — https://auth.wildix.com (7 routes)
+- `POST /api/v2/cpa/` — Get CPA token
+- `POST /api/v2/openid/pbx/` — Get token for pbx
+- `POST /api/v2/openid/service/` — Get token for service
+- `POST /api/v2/s2s/` — Get service to service token
+- `GET /api/v2/token/` — Get token for auth service, deprecated api for old infrastructure
+- `GET /api/v2/token/{service}/` — Get token for service, deprecated api for old infrastructure
+- `GET /api/v2/users/me/` — Get token for pbx, deprecated api for old infrastructure
+
+## Auth API Keys Service — alias `auth-api-keys-service` — https://auth.wildix.com (7 routes)
+- `GET /api/v3/api-keys/` — List of Company API keys
+- `POST /api/v3/api-keys/` — Create an new Company API key.
+- `GET /api/v3/api-keys/self/data` — Get an Api key data by key value. This operation must be used for auth flow only with service auth.
+- `GET /api/v3/api-keys/{id}` — Get an Company API key by its id. This operation must be used only for manage item.
+- `PUT /api/v3/api-keys/{id}` — Update an Company API key.
+- `DELETE /api/v3/api-keys/{id}` — Delete an Company API key.
+- `GET /api/v3/scopes` — Get list of allowed authorization scopes.
+
+## CDS CA API — alias `cds-ca-api` — https://cds-ca.wildix.com (3 routes)
+- `GET /v1/calls` — Get call history
+- `POST /v1/dumps` — Create a dump file and get the task id in the queue
+- `GET /v1/dumps/{id}` — Checking the task completion status and receiving a link for download dump file
+
+## CDS Console API — alias `cds-console-api` — https://cds-console-api.wildix.com (5 routes)
+- `DELETE /v1/category/{name}` — Remove all category data it's run rotation task with zero period.
+- `GET /v1/companies` — Check fetch statistic status
+- `POST /v1/refresh` — Refresh statistic usage
+- `GET /v1/usage` — Get space usage
+- `PUT /v1/usage` — Update usage data period
+
+## CDS PBX API — alias `cds-pbx-api` — https://cds-pbx.wildix.com (7 routes)
+- `GET /api/v1/{type}` — Get items by type
+- `POST /api/v1/{type}` — Get presigned URL for for upload file by type
+- `GET /api/v1/{type}/{id}` — Download item by id
+- `DELETE /api/v1/{type}/{id}` — Delete item by id
+- `POST /v1/batch-delete` — Create a task for deleting list of files
+- `POST /v1/download` — Create task for preparing list of files for downloading
+- `GET /v1/download/{id}` — Check status of task by ID
+
+## CDS Utils API — alias `cds-utils-api` — https://cds-utils.wildix.com (1 routes)
+- `POST /v1/preview` — Create preview image for file and return publick link
+
+## WAM API — alias `wam-api` — https://wam.wildix.com (3 routes)
+- `GET /api/v1/ts/collaboration` — Get auth info for cloud analytics in collaboration
+- `POST /api/v1/ts/user/delete` — Delete user
+- `GET /api/v1/ts/xbees` — Get auth info for cloud analytics in xbees
+
+## Integrations API — alias `integrations-api` — https://wim.wildix.com (19 routes)
+- `PUT /v2/integrations` — Creates multiple integrations in a single batch operation.
+- ⚠️ `POST /v2/integrations/bulk/delete` — Deletes multiple integrations in a single batch operation. This is a deprecated operation - use DeleteIntegrat
+- ⚠️ `PUT /v2/integrations/bulk/put` — Creates multiple integrations in a single batch operation. This is a deprecated operation - use CreateIntegrat
+- ⚠️ `GET /v2/integrations/by-companys-and-services` — Retrieves integrations filtered by multiple companies and services. This is a deprecated operation - use ListI
+- ⚠️ `GET /v2/integrations/by-id/{integrationId}` — Retrieves details of a specific integration by its unique identifier. This is a deprecated operation - use Get
+- ⚠️ `GET /v2/integrations/companies` — Retrieves a list of all companies with their integration information. This is a deprecated operation - use Lis
+- ⚠️ `GET /v2/integrations/companies/{companyId}` — Retrieves all integrations for a specific company. This is a deprecated operation - use ListIntegrations inste
+- ⚠️ `PUT /v2/integrations/companies/{companyId}` — Creates or updates an integration for a specific company. This is a deprecated operation - use CreateIntegrati
+- ⚠️ `PATCH /v2/integrations/companies/{companyId}/integrations/{integrationId}` — Updates an existing integration for a specific company. This is a deprecated operation - use UpdateIntegration
+- ⚠️ `DELETE /v2/integrations/companies/{companyId}/integrations/{integrationId}` — Removes an existing integration for a specific company. This is a deprecated operation - use DeleteIntegration
+- `PUT /v2/integrations/company/{companyId}` — Creates a new integration for the specified company with the provided configuration.
+- `PATCH /v2/integrations/company/{companyId}/integration/{integrationId}` — Updates the configuration of an existing integration for the specified company.
+- `DELETE /v2/integrations/company/{companyId}/integration/{integrationId}` — Deletes an existing integration for the specified company and integration ID.
+- `POST /v2/integrations/delete` — Deletes multiple integrations in a single batch operation, either by integration IDs or company IDs.
+- `GET /v2/integrations/integration/{integrationId}` — Retrieves details of a specific integration by its unique identifier.
+- `POST /v2/integrations/list` — Retrieves a paginated list of integrations with optional filtering by company, service, status, and custom fie
+- ⚠️ `GET /v2/integrations/services` — Retrieves all integrations for multiple services. This is a deprecated operation - use ListIntegrations instea
+- ⚠️ `GET /v2/integrations/services/{service}` — Retrieves all integrations for a specific service with optional filtering. This is a deprecated operation - us
+- `GET /v2/integrations/webhook` — Fetch the whole list of webhook integrations
+
+## Calendar API — alias `calendar-api` — https://wim.wildix.com (6 routes)
+- `GET /calendar/availability` — 
+- `POST /calendar/cancel` — 
+- `GET /calendar/events` — Get events active for the resource
+- `POST /calendar/reschedule` — 
+- `POST /calendar/schedule` — 
+- `GET /calendar/slots` — 
+
+## Cache API — alias `cache-api` — https://wim.wildix.com (11 routes)
+- `PUT /v1/cache/general` — Adds entities to the general cache
+- `DELETE /v1/cache/general` — Deleting entities to the general cache, requires one of the parameters: email or phone or clean
+- `PUT /v1/cache/integration-data` — Batch upsert operation for storing integration data records in the cache
+- `POST /v1/cache/integration-data/batch-write` — Batch writes and deletes integration data in a single request
+- `POST /v1/cache/integration-data/delete` — Batch deletion of integration data by id with optional filters
+- `POST /v1/cache/integration-data/get` — Batch retrieval of integration data by id with optional filters
+- `POST /v1/cache/object` — Allows to retrieve entities by id, use only in backend integrations
+- `GET /v1/cache/search` — Searches for entities, unlike a POST request allows to specify additional parameters such as 'query', 'from', 
+- `POST /v1/cache/search` — searches for entities, unlike a GET request, allows you to specify more matching parameters
+- `POST /v1/cache/sync` — Allows to run target integration synchronization
+- `POST /v1/cache/weight` — Allows for batch updating the weight property of multiple entities
+
+## Knowledge Base API — alias `knowledge-base-api` — https://kb.wim.wildix.com (33 routes)
+- `GET /api/v1/data-sources` — List all data sources for the current company
+- `POST /api/v1/data-sources` — Register a new data source with minimal configuration. All other parameters will be set in update operation.
+- `GET /api/v1/data-sources/{dataSourceId}` — Get a data source by its ID
+- `PUT /api/v1/data-sources/{dataSourceId}` — Update a data source by its ID
+- `DELETE /api/v1/data-sources/{dataSourceId}` — Delete a data source by its ID
+- `POST /api/v1/data-sources/{dataSourceId}/clean` — Clean the data source by its ID. It will clean all documents and sync logs. This operation is irreversible.
+- `POST /api/v1/data-sources/{dataSourceId}/clone` — Clone a data source by its ID. Only configuration will be cloned, not the data.
+- `PUT /api/v1/data-sources/{dataSourceId}/configure` — Configure a data source by its ID
+- `POST /api/v1/data-sources/{dataSourceId}/describe` — Describe the data source by its ID. It will return additional information about the data source based on the p
+- `POST /api/v1/data-sources/{dataSourceId}/start-sync` — Start the sync of a data source by its ID
+- `GET /api/v1/data-sources/{dataSourceId}/statistics` — List the statistics of a data source by its ID
+- `POST /api/v1/data-sources/{dataSourceId}/stop-sync` — Stop the sync of a data source by its ID
+- `GET /api/v1/data-sources/{dataSourceId}/sync-logs` — Get the sync logs of a data source by its ID
+- `GET /api/v1/data-sources/{dataSourceId}/sync-status` — Get the sync status of a data source by its ID
+- `GET /api/v1/data-sources/{dataSourceId}/documents` — List all documents for a data source by its ID
+- `POST /api/v1/data-sources/{dataSourceId}/documents` — Create a new document for a data source by its ID
+- `GET /api/v1/data-sources/{dataSourceId}/documents/{documentId}` — Get a document by its ID
+- `PUT /api/v1/data-sources/{dataSourceId}/documents/{documentId}` — Update a document by its ID
+- `DELETE /api/v1/data-sources/{dataSourceId}/documents/{documentId}` — Delete a document by its ID
+- `GET /api/v1/data-sources/{dataSourceId}/documents/{documentId}/chunks` — Get the chunks of a document by its ID
+- `GET /api/v1/data-sources/{dataSourceId}/documents/{documentId}/download-url` — Get a presigned URL for downloading the original file of the document
+- `GET /api/v1/data-sources/{dataSourceId}/documents/{documentId}/markdown` — Get the markdown content of a document by its ID
+- `GET /api/v1/data-sources/{dataSourceId}/documents/{documentId}/upload-url` — Get a presigned URL for uploading the original file of the document. You must upload the file to this URL usin
+- `GET /api/v1/data-sources/{dataSourceId}/documents/{documentId}/with-content-and-chunks` — Get a document by its ID with its content and chunks
+- `GET /api/v1/knowledge-bases` — List all knowledge bases for the current company
+- `POST /api/v1/knowledge-bases` — Create a new knowledge base
+- `GET /api/v1/knowledge-bases/{knowledgeBaseId}` — Get a knowledge base by its ID
+- `PUT /api/v1/knowledge-bases/{knowledgeBaseId}` — Update a knowledge base by its ID
+- `DELETE /api/v1/knowledge-bases/{knowledgeBaseId}` — Delete a knowledge base by its ID
+- `POST /api/v1/knowledge-bases/generate-answer` — Query a knowledge base by its ID and return the answer from the LLM
+- `POST /api/v1/knowledge-bases/{knowledgeBaseId}/search` — Search a knowledge base by its ID and return the chunks that match the query with its score
+- `POST /api/v1/knowledge-bases/history/search-queries` — You can use this endpoint to retrieve the search history.
+- `POST /api/v1/knowledge-bases/history/statistics` — You can use this endpoint to retrieve the search history statistics.
+
+## Wim Tools API — alias `wim-tools-api` — https://tools.wim.wildix.com (8 routes)
+- `GET /v1/tools` — List all tools for the current company.
+- `POST /v1/tools` — Create a new tool.
+- `POST /v1/tools/describe` — Describe multiple tools by their IDs.
+- `POST /v1/tools/discover` — Discover tools from an MCP server.
+- `POST /v1/tools/execute` — Execute a tool with the provided input.
+- `GET /v1/tools/{toolId}` — Get a tool by its ID.
+- `PUT /v1/tools/{toolId}` — Update a tool by its ID.
+- `DELETE /v1/tools/{toolId}` — Delete a tool by its ID.
+
+## VoiceBots API — alias `voicebots-api` — https://wim.wildix.com (16 routes)
+- `GET /v2/voicebots/bots` — Retrieves a list of all voice bots for the specified company.
+- `POST /v2/voicebots/bots` — Creates a new voice bot with the specified configuration for the company.
+- `PUT /v2/voicebots/bots/{botId}` — Updates the configuration of an existing voice bot with new settings.
+- `DELETE /v2/voicebots/bots/{botId}` — Deletes an existing voice bot and all its associated data.
+- `GET /v2/voicebots/names` — Retrieves a list of voice bot names and basic information for the specified company.
+- `GET /v2/voicebots/bots/{botId}` — Retrieves details of a specific voice bot by its unique identifier.
+- `POST /v2/voicebots/describe` — Utility method to describe available events for websocket and webhook events.
+- `GET /v2/voicebots/traces/{sessionId}` — Retrieves detailed trace information for a specific voice bot session.
+- `POST /v2/voicebots/sessions/{sessionId}/hangup` — Terminates the voice session and the call.
+- `POST /v2/voicebots/sessions/{sessionId}/play` — Plays the specified audio chunk through the audio stream of the voice session.
+- `POST /v2/voicebots/sessions/{sessionId}/say` — Generates and plays the specified text through the audio stream of the voice session.
+- `POST /v2/voicebots/sessions/{sessionId}/stop` — Stop playing and ongoing audio from the voice bot.
+- `POST /v2/voicebots/sessions/{sessionId}/transfer` — Transfers the call to the specified context and extension, and terminates the voice bot session.
+- `POST /v2/voicebots/text-to-speech` — Synthesizes one phrase and returns MP3.
+- `GET /v2/voicebots/voices` — Lists the voices a synthesis provider offers, read from the provider's own API. Answers a URI
+- `GET /v2/voicebots/traces` — Retrieves a list of voice bot trace sessions for the specified company.
+
+## WNS Email API — alias `wns-email-api` — https://notifications.wildix.com (4 routes)
+- `POST /api/v2/mail` — Send email
+- ⚠️ `POST /api/v2/mail/admin` — Send email to admin
+- `POST /api/v2/mail/template` — Send templated email
+- `POST /api/v2/url` — Create pressigned url for attacments
+
+## WNS Push API — alias `wns-push-api` — https://notifications.wildix.com (6 routes)
+- `POST /api/v2/push/call` — Send push call notification operation
+- `PUT /api/v2/push/endpoint` — Create endpoint for sending push notification
+- `DELETE /api/v2/push/endpoint` — Delete endpoint
+- `POST /api/v2/push/message` — Send push message notification operation
+- `POST /api/v2/push/messages` — Batch sending of push messages
+- `POST /api/v2/push/ptt` — Send PTT push notification operation
+
+## Broadcasts API (x-hoppers) — alias `broadcasts-api` — https://broadcasts.x-hoppers.com (25 routes)
+- `GET /v1/broadcasts` — 
+- `POST /v1/broadcasts` — 
+- `GET /v1/broadcasts-messages/schedules` — 
+- `POST /v1/broadcasts-messages/schedules` — 
+- `GET /v1/broadcasts-messages/schedules/{id}` — 
+- `PUT /v1/broadcasts-messages/schedules/{id}` — 
+- `DELETE /v1/broadcasts-messages/schedules/{id}` — 
+- `POST /v1/broadcasts-messages/send` — Sends a message to specific broadcasts.
+- `GET /v1/broadcasts/{broadcastId}` — 
+- `PUT /v1/broadcasts/{broadcastId}` — 
+- `DELETE /v1/broadcasts/{broadcastId}` — 
+- `POST /v1/broadcasts/{broadcastId}/files` — Creates a file that can be broadcasted within the chat associated with a broadcast.
+- `POST /v1/broadcasts/{broadcastId}/transcriptions` — Shares the transcription of an audio message within the chat associated with a broadcast.
+- `GET /v1/quick-response-templates` — 
+- `POST /v1/quick-response-templates` — 
+- `GET /v1/quick-response-templates/{templateId}` — 
+- `PUT /v1/quick-response-templates/{templateId}` — 
+- `DELETE /v1/quick-response-templates/{templateId}` — 
+- `GET /v1/quick-responses` — 
+- `POST /v1/quick-responses` — 
+- `GET /v1/quick-responses/{id}` — 
+- `PUT /v1/quick-responses/{id}` — 
+- `DELETE /v1/quick-responses/{id}` — 
+- `POST /v1/quick-responses/{id}/trigger` — Trigger a Quick Response by its ID.
+- `GET /v1/skills` — Returns the list of unique skill names (LDAP department names) of the company's PBX. Used to populate the skil
+
+## WMP Info API — alias `wmp-info-api` — https://api.wildix.com (5 routes)
+- 🆕 `GET /v2/PBXs/{domain}` — Get PBX information from portal
+- 🆕 `GET /v2/companies/{companyId}` — Get information about company from WMP
+- ⚠️ `GET /v1/companies/{companyId}` — Gets information about company.
+- ⚠️ `GET /v1/pbxs/{nameOrSerial}` — Gets information about PBX.
+- ⚠️ `POST /v1/pbx-key/check` — Checking the validity of the PbxKey for this PBX. Temporary route. To be removed after remove PBX Auth
+
+## Filesharing Service — alias `filesharing-service` — https://fs.wildix.com (5 routes)
+- `POST /api/v2/File/` — Add (register) a new file on the server
+- `GET /api/v2/file/{fsId}` — Download a file from server
+- `POST /api/v2/file/{fsId}` — Upload a file to the server
+- `GET /api/v2/file/{fsId}/Info/` — Get info for file
+- `GET /api/v2/file/{fsId}/Thumbnail/` — Download a thumbnail for file
+
+## GEO Service — alias `geo-service` — https://geo.wildix.com (3 routes)
+- `GET /api/v2/location/ip/{ip}` — Get the address by IP
+- `GET /api/v2/location/latlng/address/` — Get address by location
+- `GET /api/v2/token/` — Echo the caller access token back
+
+## MFA Service — alias `mfa-service` — https://mfa.wildix.com (3 routes)
+- `GET /api/v1/trusted-login/{userId}` — Get / check allowed IP addresses for user
+- `POST /api/v1/trusted-login/{userId}` — Add allowed IP address for user
+- `DELETE /api/v1/trusted-login/{userId}/{ip}` — Delete IP address for user
+
+## SSL Service — alias `ssl-service` — https://ssl.wildix.com (2 routes)
+- `GET /api/v2/certificate` — Get SSL Certificates for PBX
+- `GET /api/v2/certificate/service` — Get SSL certificate for the auto.wildixin.com service domain
+
+## STT Service — alias `stt-service` — https://stt.wildix.com (4 routes)
+- `POST /api/v1/common` — Get transcription for a common audio
+- `POST /api/v1/voicemail` — Get transcription for a voicemail
+- ⚠️ `POST /api/v1/Common` — Get transcription for a common audio
+- ⚠️ `POST /api/v1/Voicemail` — Get transcription for a voicemail
+
+## TTS Service — alias `tts-service` — https://tts.wildix.com (7 routes)
+- `GET /api/v2/audio` — Generate audio from text
+- `GET /api/v2/settings` — Get available voices for current engine
+- `GET /api/v2/token` — Echo the caller access token back
+- `GET /api/v3/languages` — Get the languages a voice agent may be configured with
+- `GET /api/v3/voices` — Get the curated voice list used by bots
+- ⚠️ `GET /api/v2/Settings` — Get available voices for current engine
+- ⚠️ `POST /api/v2/Audio` — Generate audio from text
+
+## URL-Preview Service — alias `url-preview-service` — https://url-preview.wildix.com (3 routes)
+- `GET /api/v2/token/` — Echo the caller access token back
+- `POST /api/v2/url/` — Generate Preview from url and return item
+- ⚠️ `POST /api/v2/Url/` — Generate Preview from url and return item
+
+## Classound API — alias `classound-api` — https://classound-p2p.wildix.com (33 routes)
+- `POST /v1/a2s/sms` — 
+- `POST /v1/a2s/whatsapp/template` — 
+- `GET /v1/a2s/whatsapp/templates` — 
+- `GET /v1/esim/bundles` — 
+- `DELETE /v1/esim/endpoint` — 
+- `POST /v1/esim/order` — Reserve eSIMs for a company. Provisioning runs in a background worker (WMS-26963): a fresh order returns 202 w
+- `POST /v1/esim/order/cleanup` — 
+- `GET /v1/esim/order/status` — Poll the status of an async eSIM order (WMS-26963). CreateEsimOrder provisions in a background worker and retu
+- `GET /v1/esim/partner` — 
+- `POST /v1/esim/partner/create` — 
+- `POST /v1/esim/release` — 
+- `GET /v1/esim/status` — 
+- `POST /v1/esim/subscriber/provision` — 
+- `GET /v1/esim/subscriber/qrcode` — 
+- `POST /v1/esim/subscriber/qrcode/refresh` — 
+- `POST /v1/esim/subscriber/terminate` — 
+- `PATCH /v1/esim/subscriber/{extension}` — 
+- `GET /v1/esim/subscribers` — 
+- `POST /v1/esim/transforms/sync` — 
+- `POST /v1/numbers/ordering/order` — 
+- `GET /v1/s2s/messenger/pages` — Returns the Facebook pages a company can send Messenger messages from.
+- `POST /v1/s2s/messenger/send` — Sends a Facebook Messenger message from one of the company's pages to a person who wrote to it. Only a reply i
+- 🆕 `GET /v1/s2s/rcs/brands` — Returns the RCS brands a company can send from.
+- 🆕 `POST /v1/s2s/rcs/send` — Sends an RCS message from one of the company's brands to a phone number. There is no reply window: the person 
+- `POST /v1/s2s/sms` — 
+- `GET /v1/s2s/sms/history` — 
+- `GET /v1/s2s/sms/numbers` — 
+- `POST /v1/s2s/whatsapp` — 
+- `GET /v1/s2s/whatsapp/history` — 
+- `POST /v1/s2s/whatsapp/interactive` — 
+- `GET /v1/s2s/whatsapp/numbers` — 
+- `GET /v1/s2s/whatsapp/templates` — 
+- `POST /v1/s2s/whatsapp/templates` — 
+
+## History API — alias `history-api` — https://wda.wildix.com (15 routes)
+- `GET /v2/history/calls/{callId}/flows/{flowIndex}` — Gets a call by callId and flowIndex.
+- `PUT /v2/history/calls/{callId}/flows/{flowIndex}` — Updates a call by callId and flowIndex. Allows modifying call metadata such as tags.
+- `GET /v2/history/calls/{callId}/flows/{flowIndex}/annotations` — Gets annotations for a call by callId and flowIndex.
+- `GET /v2/history/calls/{callId}/flows/{flowIndex}/transcription` — Gets the transcription for a call by callId and flowIndex.
+- `GET /v2/history/calls/{callId}/flows/{flowIndex}/transcription/text` — Gets the transcription text and chunks for a call by callId and flowIndex.
+- `GET /v2/history/chats/{chatId}` — Gets a chat by chatId.
+- `GET /v2/history/chats/{chatId}/annotations` — Gets annotations for a chat by chatId.
+- `GET /v2/history/chats/{chatId}/transcription` — Gets the transcription for a chat by chatId.
+- `GET /v2/history/chats/{chatId}/transcription/text` — Gets the transcription text and chunks for a chat by chatId.
+- `GET /v2/history/conferences/{conferenceId}` — Gets a conference by conferenceId.
+- `GET /v2/history/conferences/{conferenceId}/annotations` — Gets annotations for a conference by conferenceId.
+- `GET /v2/history/conferences/{conferenceId}/transcription` — Gets the transcription for a conference by conferenceId.
+- `GET /v2/history/conferences/{conferenceId}/transcription/text` — Gets the transcription text and chunks for a conference by conferenceId.
+- `POST /v2/history/conversations` — Retrieves list of conversations using filters.
+- `POST /v2/history/user/calls` — Retrieves list of user calls using filters.
+
+## Insights API — alias `insights-api` — https://wda.wildix.com (59 routes)
+- `GET /v2/insights/analysis/settings` — Gets default analysis settings used for projections.
+- `PUT /v2/insights/analysis/settings` — Updates default analysis settings used for projections.
+- 🆕 `DELETE /v2/insights/calls/{callId}/assets` — Irreversibly deletes a call from Revenue Intelligence: the recordings, the transcription and all insights of e
+- `GET /v2/insights/calls/{callId}/flows/{flowIndex}/characteristics` — Gets the characteristics for a call by callId and flowIndex.
+- `GET /v2/insights/calls/{callId}/flows/{flowIndex}/insights` — Gets the insights for a call by callId and flowIndex.
+- ⚠️ `POST /v2/insights/calls/{callId}/flows/{flowIndex}/schedule_summary_generation` — 
+- `GET /v2/insights/calls/{callId}/flows/{flowIndex}/state` — Gets the summary for a call by callId and flowIndex.
+- `GET /v2/insights/calls/{callId}/flows/{flowIndex}/summary` — Gets the summary for a call by callId and flowIndex.
+- `GET /v2/insights/chats/{chatId}/insights` — Gets the insights for a chat by chatId.
+- `GET /v2/insights/chats/{chatId}/state` — Gets the summary for a chat by chatId.
+- `GET /v2/insights/chats/{chatId}/summary` — Gets the summary for a chat by chatId.
+- `GET /v2/insights/conferences/recording/download_url` — Retrieves a presigned URL for downloading a specific recording.
+- 🆕 `DELETE /v2/insights/conferences/{conferenceId}/assets` — Irreversibly deletes a conference from Revenue Intelligence: the recordings, the transcription and all insight
+- `GET /v2/insights/conferences/{conferenceId}/insights` — Gets the insights for a conference by conferenceId.
+- ⚠️ `POST /v2/insights/conferences/{conferenceId}/schedule_summary_generation` — 
+- `GET /v2/insights/conferences/{conferenceId}/state` — Gets the summary for a conference by conferenceId.
+- `GET /v2/insights/conferences/{conferenceId}/summary` — Gets the summary for a conference by conferenceId.
+- `GET /v2/insights/conferences/{conferenceId}/timeframes` — Gets the time frames for a conference by conferenceId.
+- `POST /v2/insights/conversations` — Insights API are currently in active development. All interfaces are subject to change.
+- `POST /v2/insights/conversations/aggregations` — Lists multiple independent insights in parallel.
+- `POST /v2/insights/conversations/aggregations/nested` — Lists nested drill-down data showing relationships between dimensions.
+- `POST /v2/insights/conversations/count` — Insights API are currently in active development. All interfaces are subject to change.
+- ⚠️ `POST /v2/insights/conversations/insights` — Lists multiple independent insights in parallel.
+- ⚠️ `POST /v2/insights/conversations/insights/aggregations` — Lists nested drill-down data showing relationships between dimensions.
+- `GET /v2/insights/conversations/tags` — Lists raw tag values matching a case-sensitive prefix for conversations autocomplete.
+- `GET /v2/insights/dashboards` — Lists all dashboard and pinned configurations available to the user.
+- `POST /v2/insights/dashboards` — Creates a new dashboard with specified configuration.
+- `GET /v2/insights/dashboards-pinned` — Lists all pinned dashboards configurations available to the user.
+- `PUT /v2/insights/dashboards-pinned` — Updates pinned dashboard's configuration.
+- `GET /v2/insights/dashboards/{id}` — Gets a dashboard by its ID.
+- `PUT /v2/insights/dashboards/{id}` — Updates an existing dashboard's configuration.
+- `DELETE /v2/insights/dashboards/{id}` — Deletes a dashboard by its ID.
+- `PATCH /v2/insights/dashboards/{id}/access` — Enables a dashboard by its ID.
+- `GET /v2/insights/filters` — Lists all filters available for the user.
+- `POST /v2/insights/filters` — Creates a new filter with specified name and configuration.
+- `PUT /v2/insights/filters/{id}` — Updates an existing filter's name and configuration.
+- `DELETE /v2/insights/filters/{id}` — Deletes a filter by its ID.
+- `GET /v2/insights/history` — .
+- `POST /v2/insights/history` — .
+- `GET /v2/insights/playlists` — Lists all playlist and pinned configurations available to the user.
+- `POST /v2/insights/playlists` — Creates a new playlist with specified configuration.
+- `GET /v2/insights/playlists/{id}` — Gets a playlist by its ID.
+- `PUT /v2/insights/playlists/{id}` — Updates an existing playlist's configuration.
+- `DELETE /v2/insights/playlists/{id}` — Deletes a playlist by its ID.
+- `PATCH /v2/insights/playlists/{id}/access` — Enables a playlist by its ID.
+- `GET /v2/insights/playlists/{playlistId}/items` — Lists all playlist and pinned configurations available to the user.
+- `POST /v2/insights/playlists/{playlistId}/items/associate` — Adds an existing conversation to the specified playlist.
+- `POST /v2/insights/playlists/{playlistId}/items/delete` — Removes a conversation from the specified playlist.
+- `GET /v2/insights/projections` — Lists all projections and compatibility categories available for the tenant.
+- `POST /v2/insights/projections` — Creates a new projection with specified configuration.
+- ⚠️ `POST /v2/insights/projections-categories` — Deprecated compatibility endpoint. This operation is a no-op and does not modify storage.
+- ⚠️ `PUT /v2/insights/projections-categories/{id}` — Deprecated compatibility endpoint. This operation is a no-op and does not modify storage.
+- ⚠️ `DELETE /v2/insights/projections-categories/{id}` — Deprecated compatibility endpoint. This operation is a no-op and does not modify storage.
+- `GET /v2/insights/projections/{id}` — Gets a projection by its ID.
+- `PUT /v2/insights/projections/{id}` — Updates an existing projection's configuration.
+- `DELETE /v2/insights/projections/{id}` — Deletes a projection by its ID.
+- `PATCH /v2/insights/projections/{id}/disable` — Disables a projection by its ID.
+- `PATCH /v2/insights/projections/{id}/enable` — Enables a projection by its ID.
+- `PATCH /v2/insights/projections/{id}/pause` — Pauses a projection by its ID.
+
+## Stream API — alias `stream-api` — https://wda.wildix.com (16 routes)
+- `GET /v2/stream/calls/{callId}` — Retrieves information for ongoing call.
+- `GET /v2/stream/calls/{callId}/annotations` — Retrieves information and annotations for ongoing call.
+- `GET /v2/stream/calls/{callId}/transcription` — Retrieves information and transcription for ongoing call.
+- `GET /v2/stream/chats/{chatId}/annotations` — Retrieves information and annotations for ongoing chat.
+- `GET /v2/stream/conferences/match/{channelId}` — Retrieves ID for ongoing conference using a room token.
+- `GET /v2/stream/conferences/{conferenceId}` — Retrieves information for ongoing conference.
+- `GET /v2/stream/conferences/{conferenceId}/annotations` — Retrieves information and annotations for ongoing conference.
+- `GET /v2/stream/conferences/{conferenceId}/transcription` — Retrieves information and transcription for ongoing conference.
+- `POST /v2/stream/conversations` — Retrieves ongoing conversations. Once the conversation ends the item would be dissapeared from the list.
+- `POST /v2/stream/events/consume` — Consumes and processes stream events for calls, conferences, chats, SMS, WhatsApp, Messenger, RCS, and presenc
+- `POST /v2/stream/events/describe` — 
+- `POST /v2/stream/presence/query` — Retrieves the presence of a single user using specified query. If no presence information found for the query 
+- `POST /v2/stream/presence/query_multiple` — Retrieves users presences
+- `POST /v2/stream/presence/update_last_seen` — Updates the user's last seen presence information.
+- `POST /v2/stream/services` — Retrieves a list of active services of the company.
+- 🆕 `POST /v2/stream/services/stats` — Retrieves live snapshot plus statistics for the requested lookback window. Period counters are cached for a fe
+
+## x-caracal API — alias `x-caracal-api` — https://wda.wildix.com (14 routes) 🆕
+- 🆕 `POST /v2/xcaracal/answered/breakdown/query` — Reads every call of the window on each request: nothing is pre-computed per user, agent, disconnect reason or 
+- 🆕 `POST /v2/xcaracal/answered/service-level/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
+- 🆕 `POST /v2/xcaracal/answered/summary/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
+- 🆕 `GET /v2/xcaracal/dashboards` — The dashboards of the user (live wallboards and reports): the predefined dashboards every user gets first, the
+- 🆕 `PUT /v2/xcaracal/dashboards/{id}` — Saves a dashboard of the user under the id the client chose: creates it when the id is new, otherwise replaces
+- 🆕 `DELETE /v2/xcaracal/dashboards/{id}` — Deletes a dashboard of the user. Deleting a dashboard that does not exist succeeds; deleting a predefined dash
+- 🆕 `POST /v2/xcaracal/distribution/by-period/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
+- 🆕 `POST /v2/xcaracal/distribution/by-service/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
+- 🆕 `POST /v2/xcaracal/distribution/summary/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
+- 🆕 `POST /v2/xcaracal/services/calls/query` — Cheap: one page of calls, read through an index, however long the window. Pages are requested one at a time. T
+- 🆕 `GET /v2/xcaracal/services/calls/{callId}/flows/{flowIndex}/events` — Cheap: one call, looked up by key. One service call in full: its call-list row and its raw lifecycle events (I
+- 🆕 `POST /v2/xcaracal/unanswered/breakdown/query` — Reads every call of the window on each request: nothing is pre-computed per service or disconnect reason. Reco
+- 🆕 `POST /v2/xcaracal/unanswered/service-level/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
+- 🆕 `POST /v2/xcaracal/unanswered/summary/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
+
+## Wilma Agents API — alias `wilma-agents-api` — https://api.wilma.wildix.com (17 routes) 🆕
+- 🆕 `GET /v2/agents/agents` — Retrieves a paginated list of agents for the specified company.
+- 🆕 `POST /v2/agents/agents` — Creates a new mutable agent draft. The agent serves no traffic until the draft is published and PutAgentDeploy
+- 🆕 `GET /v2/agents/agents-names` — Retrieves a lightweight list of agent names and basic information for the specified company.
+- 🆕 `GET /v2/agents/agents/{agentId}` — Retrieves an agent, including its draft definition and version/rollout state.
+- 🆕 `PUT /v2/agents/agents/{agentId}` — Updates the draft definition of an agent. Does not affect served traffic until the draft is published.
+- 🆕 `DELETE /v2/agents/agents/{agentId}` — Deletes an agent, its draft, versions and API keys. Fails with ConflictException while the agent has active se
+- 🆕 `GET /v2/agents/agents/{agentId}/compare-versions` — Returns the field-level differences between two versions, or between a version and the current draft.
+- 🆕 `GET /v2/agents/agents/{agentId}/versions` — Lists the published versions of an agent, newest first.
+- 🆕 `POST /v2/agents/agents/{agentId}/versions` — Publishes the current draft as a new immutable version. Publishing never changes what is served; call PutAgent
+- 🆕 `GET /v2/agents/agents/{agentId}/versions/{version}` — Retrieves a published version, including its full immutable definition snapshot.
+- 🆕 `POST /v2/agents/agents/{agentId}/versions/{version}/draft` — Replaces the mutable draft with a published version's definition. The draft revision is incremented; published
+- 🆕 `GET /v2/agents/agents/{agentId}/deployment` — Retrieves how new sessions are currently split across the agent's published versions.
+- 🆕 `PUT /v2/agents/agents/{agentId}/deployment` — Sets how new sessions are split across the agent's published versions, e.g. 80% on version 1 and 20% on versio
+- 🆕 `POST /v2/agents/agents/{agentId}/deployment/reset` — Resets the deployment to the default: 100% of new sessions on the latest published version. Fails with Conflic
+- 🆕 `GET /v2/agents/agents/{agentId}/keys` — Lists the API keys of an agent. Secrets are never returned.
+- 🆕 `POST /v2/agents/agents/{agentId}/keys` — Creates a new API key for an agent. The secret is returned only in this response and cannot be retrieved later
+- 🆕 `DELETE /v2/agents/agents/{agentId}/keys/{keyId}` — Revokes an API key.
+
+## Wilma Artifacts API — alias `wilma-artifacts-api` — https://api.wilma.wildix.com (8 routes) 🆕
+- 🆕 `GET /v2/artifacts` — Lists artifacts. Listing is contextual: filter by the producing session or task (and optionally channel, agent
+- 🆕 `POST /v2/artifacts` — Registers a new artifact and returns a short-lived presigned URL to upload its content.
+- 🆕 `GET /v2/artifacts/items/{artifactId}` — Gets the metadata of a single artifact revision. Accessible to the owner, granted principals, and — when visib
+- 🆕 `DELETE /v2/artifacts/items/{artifactId}` — Permanently deletes an artifact, all retained revisions and their CDS files, and invalidates any share link. T
+- 🆕 `GET /v2/artifacts/items/{artifactId}/content-url` — Returns a short-lived URL that serves an artifact's content for rendering. The entry file sits
+- 🆕 `GET /v2/artifacts/items/{artifactId}/download` — Returns a short-lived URL to download an artifact's content: the file itself for a single-file artifact, the s
+- 🆕 `GET /v2/artifacts/items/{artifactId}/share-url` — Returns the shareable URL of an artifact whose visibility is `company` using the configured viewer base and ar
+- 🆕 `PUT /v2/artifacts/items/{artifactId}/sharing` — Sets an artifact's sharing settings: specific per-user/group grants plus a general access
+
+## Wilma Assistant API — alias `wilma-assistant-api` — https://api.wilma.wildix.com (21 routes) 🆕
+- 🆕 `GET /v2/assistant/agents/items/{agentId}` — Gets the end-user view of one agent: its name, picture and the assistant presentation a client draws
+- 🆕 `POST /v2/assistant/attachments` — Registers an input attachment and returns a short-lived presigned PUT URL for its content.
+- 🆕 `GET /v2/assistant/attachments/items/{attachmentId}` — Gets the metadata of a single input attachment.
+- 🆕 `DELETE /v2/assistant/attachments/items/{attachmentId}` — Deletes an attachment and its content.
+- 🆕 `GET /v2/assistant/attachments/items/{attachmentId}/download` — Returns a short-lived presigned URL to download an attachment's content.
+- ⚠️ 🆕 `GET /v2/assistant/connectors` — Lists the connectors the current user can use in the assistant: every instance the company
+- 🆕 `POST /v2/assistant/connectors/{key}/authorize` — Starts connecting a `user`-mode connector for the current user. Returns a connect session
+- 🆕 `DELETE /v2/assistant/connectors/{key}/authorize` — Disconnects a `user`-mode connector for the current user, revoking the stored credential
+- 🆕 `POST /v2/assistant/connectors/{key}/authorize/complete` — Completes connecting a `user`-mode connector after the authorization flow succeeds. Pass the
+- 🆕 `GET /v2/assistant/sessions` — Lists durable assistant sessions for the authenticated owner. Hidden sessions (started by integrations) are ex
+- 🆕 `POST /v2/assistant/sessions` — Starts a durable assistant session and returns the event index from which the caller should stream. Services i
+- 🆕 `GET /v2/assistant/sessions/items/{sessionId}` — Gets the durable state of an assistant session.
+- 🆕 `DELETE /v2/assistant/sessions/items/{sessionId}` — Permanently deletes a durable assistant session and its event log. Idempotent: deleting an already-deleted ses
+- 🆕 `GET /v2/assistant/sessions/items/{sessionId}/events` — Returns recorded session events as a plain JSON page, without streaming. Use this to fetch the activity of pas
+- 🆕 `GET /v2/assistant/sessions/items/{sessionId}/events/stream` — Replays and tails session events as Server-Sent Events (`text/event-stream`). Each frame carries one Assistant
+- 🆕 `POST /v2/assistant/sessions/items/{sessionId}/resume` — Resolves pending session input and resumes agent execution.
+- 🆕 `POST /v2/assistant/sessions/items/{sessionId}/steer` — Adds a message to the turn already running, without discarding its work: the runtime injects
+- 🆕 `POST /v2/assistant/sessions/items/{sessionId}/stop` — Requests cancellation of the active turn in a durable assistant session.
+- 🆕 `POST /v2/assistant/sessions/items/{sessionId}/turns` — Starts another turn in an existing durable assistant session.
+- 🆕 `GET /v2/assistant/settings` — Gets AI assistant settings for the user. Returns personalisation fields (style, about),
+- 🆕 `PATCH /v2/assistant/settings` — Updates AI assistant settings for the user. Only supplied fields are changed.
+
+## Wilma Audit API — alias `wilma-audit-api` — https://api.wilma.wildix.com (3 routes) 🆕
+- 🆕 `GET /v2/audit/events` — Queries immutable audit events newest first. Filter by resource URI (exact
+- 🆕 `GET /v2/audit/events/{eventId}` — Returns a single audit event by id.
+- 🆕 `GET /v2/audit/references` — Returns the resources that reference the given entity — where it is used. Only the current
+
+## Wilma Chat API — alias `wilma-chat-api` — https://api.wilma.wildix.com (7 routes) 🆕
+- 🆕 `GET /v2/chat/sessions` — Lists chat sessions in the company (administration and debugging).
+- 🆕 `GET /v2/chat/sessions/items/{sessionId}` — Gets the state of a chat session.
+- 🆕 `GET /v2/chat/sessions/items/{sessionId}/events` — Returns recorded chat session events as a plain JSON page, without streaming. The event vocabulary is the shar
+- 🆕 `GET /v2/chat/sessions/items/{sessionId}/events/stream` — Replays and tails chat session events as Server-Sent Events (`text/event-stream`). Each frame carries one Chat
+- 🆕 `POST /v2/chat/sessions/items/{sessionId}/stop` — Requests cancellation of the active turn in a chat session. The runtime finalizes or removes the in-progress c
+- 🆕 `POST /v2/chat/simulations` — Creates a simulated chat session for an agent on a chosen transport. Send user messages with SendSimulationMes
+- 🆕 `POST /v2/chat/simulations/{sessionId}/messages` — Sends a user message into a simulated chat session and blocks until the agent turn
+
+## Wilma Copilot API — alias `wilma-copilot-api` — https://api.wilma.wildix.com (35 routes) 🆕
+- 🆕 `GET /v2/copilot/assets` — Lists reusable assets in the company.
+- 🆕 `POST /v2/copilot/assets` — Creates a new reusable asset.
+- 🆕 `GET /v2/copilot/assets/{assetId}` — Gets an asset.
+- 🆕 `PUT /v2/copilot/assets/{assetId}` — Updates an asset. Published profile versions that captured this asset are unaffected; the change reaches live 
+- 🆕 `DELETE /v2/copilot/assets/{assetId}` — Deletes an asset and removes it from every profile draft that references it. Fails with ConflictException when
+- 🆕 `GET /v2/copilot/automations` — Lists reusable automations in the company.
+- 🆕 `POST /v2/copilot/automations` — Creates a new reusable automation.
+- 🆕 `GET /v2/copilot/automations/{automationId}` — Gets an automation.
+- 🆕 `PUT /v2/copilot/automations/{automationId}` — Updates an automation. Published profile versions that captured this automation are unaffected; the change rea
+- 🆕 `DELETE /v2/copilot/automations/{automationId}` — Deletes an automation and removes it from every profile draft that references it. Fails with ConflictException
+- 🆕 `GET /v2/copilot/evaluations` — Lists reusable evaluations in the company.
+- 🆕 `POST /v2/copilot/evaluations` — Creates a new reusable evaluation.
+- 🆕 `GET /v2/copilot/evaluations/{evaluationId}` — Gets an evaluation.
+- 🆕 `PUT /v2/copilot/evaluations/{evaluationId}` — Updates an evaluation. Published profile versions that captured this evaluation are unaffected; the change rea
+- 🆕 `DELETE /v2/copilot/evaluations/{evaluationId}` — Deletes an evaluation and removes it from every profile draft that references it. Fails with ConflictException
+- 🆕 `GET /v2/copilot/intents` — Lists reusable intents in the company.
+- 🆕 `POST /v2/copilot/intents` — Creates a new reusable intent.
+- 🆕 `GET /v2/copilot/intents/{intentId}` — Gets an intent.
+- 🆕 `PUT /v2/copilot/intents/{intentId}` — Updates an intent. Published profile versions that captured this intent are unaffected; the change reaches liv
+- 🆕 `DELETE /v2/copilot/intents/{intentId}` — Deletes an intent and removes it from every profile draft that references it. Fails with ConflictException whe
+- 🆕 `GET /v2/copilot/profiles` — Lists copilot profiles in the company.
+- 🆕 `POST /v2/copilot/profiles` — Creates a new profile draft. The profile is not applied to any conversation until its first version is publish
+- 🆕 `GET /v2/copilot/profiles/{profileId}` — Gets a profile draft, including metadata, referenced library resource ids and version state.
+- 🆕 `PUT /v2/copilot/profiles/{profileId}` — Updates profile metadata only. Attachments are changed through AttachProfileResource and DeleteProfileResource
+- 🆕 `DELETE /v2/copilot/profiles/{profileId}` — Deletes a profile and its version history. Library resources referenced by the profile are not deleted.
+- 🆕 `PATCH /v2/copilot/profiles/{profileId}/disable` — Disables a profile so it is no longer applied to live conversations. Its draft and published versions are kept
+- 🆕 `PATCH /v2/copilot/profiles/{profileId}/enable` — Enables a published profile so its latest version is applied to live conversations.
+- 🆕 `POST /v2/copilot/profiles/{profileId}/resources` — Attaches one feature or reusable library resource to the profile draft. Attaching an already attached resource
+- 🆕 `DELETE /v2/copilot/profiles/{profileId}/resources/{resourceType}/{resourceId}` — Deletes one feature or reusable library-resource attachment from the profile draft. Deleting an already absent
+- 🆕 `GET /v2/copilot/subscriptions` — Lists the wda-stream events copilot needs delivered, for every company that has a published
+- 🆕 `GET /v2/copilot/profiles/{profileId}/compare-versions` — Returns the field-level differences between two versions, or between a version and the current draft.
+- 🆕 `GET /v2/copilot/profiles/{profileId}/versions` — Lists the published versions of a profile, newest first.
+- 🆕 `POST /v2/copilot/profiles/{profileId}/versions` — Publishes the current draft as a new immutable version and updates latestVersion. The referenced intents, eval
+- 🆕 `GET /v2/copilot/profiles/{profileId}/versions/{version}` — Retrieves a published profile version, including its full immutable definition snapshot with resolved library 
+- 🆕 `POST /v2/copilot/profiles/{profileId}/versions/{version}/draft` — Replaces the mutable draft with a published version's definition. The draft revision is incremented; published
+
+## Wilma Copilot Sessions API — alias `wilma-copilot-sessions-api` — https://api.wilma.wildix.com (11 routes) 🆕
+- 🆕 `POST /v2/copilot/enrich` — Attaches late-arriving lookup evidence to a relationship — e.g. a CRM match the iframe
+- 🆕 `POST /v2/copilot/lookup` — Resolves a lookup to a relationship and its sessions without opening copilot or creating
+- 🆕 `POST /v2/copilot/open` — Opens copilot for a client surface. `lookup` (when present) is treated as hints: emails,
+- 🆕 `GET /v2/copilot/relationships/{relationshipId}/sessions` — Lists the copilot sessions associated with a relationship, most recent first — the paginated
+- 🆕 `GET /v2/copilot/sessions` — Lists copilot sessions a user participated in, most recent first. Lets a user find a session they opened earli
+- 🆕 `POST /v2/copilot/sessions/{sessionId}/actions` — Submits one user interaction with copilot output — a knowledge-search suggestion click, a
+- 🆕 `POST /v2/copilot/sessions/{sessionId}/ask` — Records an ask in a copilot session and publishes it as an `ask` event on the session
+- 🆕 `GET /v2/copilot/sessions/{sessionId}/events` — Returns recorded copilot session events as a plain JSON page, without streaming. Use it to inspect past sessio
+- 🆕 `GET /v2/copilot/sessions/{sessionId}/events/stream` — Replays and tails copilot session events as Server-Sent Events (`text/event-stream`). Each frame carries one C
+- 🆕 `GET /v2/copilot/sessions/{sessionId}/state` — Returns the whole state of a copilot session: the conversation and its participants, the full transcript, and 
+- 🆕 `POST /v2/copilot/sessions/{sessionId}/views` — Reports which copilot assets the user actually saw rendered (impressions). Copilot may emit
+
+## Wilma Sandbox API — alias `wilma-sandbox-api` — https://api.wilma.wildix.com (11 routes) 🆕
+- 🆕 `GET /v2/sandbox/sandboxes` — Lists sandboxes that ran (or are running), newest first. Filter by `snapshotId` to audit every
+- 🆕 `GET /v2/sandbox/sandboxes/{sandboxId}` — Retrieves a single sandbox with its status, lineage (snapshot/owner) and resource usage.
+- 🆕 `POST /v2/sandbox/sandboxes/{sandboxId}/terminate` — Forcibly stops a running sandbox. Idempotent: terminating an already-stopped sandbox succeeds. Intended for op
+- 🆕 `GET /v2/sandbox/snapshots` — Lists sandbox snapshots for the company, newest first.
+- 🆕 `POST /v2/sandbox/snapshots` — Creates a snapshot and starts building its image asynchronously. Returns immediately with the
+- 🆕 `GET /v2/sandbox/snapshots/{snapshotId}` — Retrieves a snapshot, including its full build config, build outcome and runtime usage stats.
+- 🆕 `PUT /v2/sandbox/snapshots/{snapshotId}` — Updates a snapshot under its existing id. Changed build settings queue a new immutable image; omitted build fi
+- 🆕 `DELETE /v2/sandbox/snapshots/{snapshotId}` — Deletes a snapshot. Fails with ConflictException while any agent references it, unless force=true.
+- 🆕 `GET /v2/sandbox/snapshots/{snapshotId}/build-logs` — Returns the build logs of a snapshot, oldest first. Poll while the snapshot is BUILDING to follow progress, or
+- 🆕 `POST /v2/sandbox/snapshots/{snapshotId}/rebuild` — Queues a new image build from the snapshot's current configuration, without changing it. Use it to pick up mov
+- 🆕 `POST /v2/sandbox/snapshots/{snapshotId}/test` — Launches a short-lived sandbox from a READY snapshot, runs a command in it and returns the result. Use it to v
+
+## Wilma Secrets API (Credential Broker) — alias `wilma-secrets-api` — https://api.wilma.wildix.com (20 routes) 🆕
+- 🆕 `GET /v2/secrets` — Lists company secrets (metadata only).
+- 🆕 `POST /v2/secrets` — Creates a company secret. The value is stored envelope-encrypted and never returned.
+- 🆕 `GET /v2/secrets/connections` — Lists the company's connections, SHARED and USER. Filter by `type`, `provider`, or `user`
+- 🆕 `POST /v2/secrets/connections` — Creates a company-wide SHARED connection. It starts PENDING; authorize it with
+- 🆕 `GET /v2/secrets/connections/{connectionId}` — Gets a connection by id — SHARED or USER (registry/ownership metadata; never the credential).
+- 🆕 `PUT /v2/secrets/connections/{connectionId}` — Updates connection metadata (name, description, scopes).
+- 🆕 `DELETE /v2/secrets/connections/{connectionId}` — Deletes a connection by id — SHARED or USER — and revokes its stored credential. Deleting a
+- 🆕 `POST /v2/secrets/connections/{connectionId}/confirm` — Records the connection a finished company authorization produced, and marks the row ACTIVE.
+- 🆕 `POST /v2/secrets/connections/{connectionId}/sessions` — Starts an interactive authorization session for a SHARED connection, returning a session token
+- 🆕 `POST /v2/secrets/connections/{connectionId}/token` — Resolves a short-lived access token for a SHARED connection at execution time; refresh is
+- 🆕 `POST /v2/secrets/connections/{connectionId}/verify` — Checks whether a connection's credential actually works, without returning it.
+- 🆕 `POST /v2/secrets/items/values` — Resolves several secrets in one call, for a consumer holding more than one reference.
+- 🆕 `GET /v2/secrets/items/{secretId}` — Gets secret metadata. Never returns the value.
+- 🆕 `PUT /v2/secrets/items/{secretId}` — Updates secret metadata (name, description). Use RotateSecret to change the value.
+- 🆕 `DELETE /v2/secrets/items/{secretId}` — Deletes a secret. Usage is not verified: any reference that still points at it fails to
+- 🆕 `POST /v2/secrets/items/{secretId}/rotate` — Rotates the secret to a new value in place and bumps its revision. References always
+- 🆕 `POST /v2/secrets/items/{secretId}/value` — Resolves and returns the current secret value for server-to-server use at execution time.
+- 🆕 `POST /v2/secrets/user-connections/{provider}/confirm` — Completes per-user authorization by recording the connection id returned by the authorization
+- 🆕 `POST /v2/secrets/user-connections/{provider}/sessions` — Starts an interactive authorization session for the calling user against a provider, returning
+- 🆕 `POST /v2/secrets/user-connections/{provider}/token` — Resolves a short-lived access token for a user's provider authorization at execution time;
+
+## Wilma Skills API — alias `wilma-skills-api` — https://api.wilma.wildix.com (12 routes) 🆕
+- 🆕 `GET /v2/skills` — Lists skills visible to the calling user.
+- 🆕 `POST /v2/skills` — Creates a new skill draft owned by the caller, complete with its bundled files: upload them with UploadSkillFi
+- 🆕 `GET /v2/skills/items/{skillId}` — Gets a skill draft: metadata, SKILL.md content, tools, bundled file references and version state.
+- 🆕 `PUT /v2/skills/items/{skillId}` — Updates the draft definition or access policy. Does not affect served traffic until the draft
+- 🆕 `DELETE /v2/skills/items/{skillId}` — Deletes a skill, its bundled files and version history. Agents that still reference the skill keep the referen
+- 🆕 `POST /v2/skills/files` — Registers a skill file and returns a short-lived presigned PUT URL for its content. The client
+- 🆕 `GET /v2/skills/files/items/{fileId}/download` — Returns a short-lived presigned URL to download a skill file's content, addressed by file id
+- 🆕 `GET /v2/skills/items/{skillId}/compare-versions` — Returns the field-level differences between two versions, or between a version and the current draft.
+- 🆕 `GET /v2/skills/items/{skillId}/versions` — Lists the published versions of a skill, newest first.
+- 🆕 `POST /v2/skills/items/{skillId}/versions` — Publishes the current draft as a new immutable version and updates latestVersion. Unpinned agent attachments r
+- 🆕 `GET /v2/skills/items/{skillId}/versions/{version}` — Retrieves a published skill version, including its full immutable definition snapshot.
+- 🆕 `POST /v2/skills/items/{skillId}/versions/{version}/draft` — Replaces the mutable draft with a published version's definition. The draft revision is incremented; published
+
+## Wilma Tools API — alias `wilma-tools-api` — https://api.wilma.wildix.com (25 routes) 🆕
+- 🆕 `GET /v2/tools` — List all tools for the current company.
+- 🆕 `POST /v2/tools` — Create a new tool draft. The tool is offered to no model until PublishToolVersion snapshots the draft into its
+- 🆕 `POST /v2/tools/capabilities/describe` — Describes an agent's wilma-tools-backed capabilities — standalone Tools and configured
+- 🆕 `GET /v2/tools/connector-definitions` — Lists immutable connector definitions available from the server catalog.
+- 🆕 `GET /v2/tools/connector-definitions/{key}/versions/{version}` — Gets one immutable connector definition.
+- 🆕 `POST /v2/tools/connector-definitions/{key}/versions/{version}/configuration` — Resolves account-dependent configuration fields from current form values. By default the
+- 🆕 `GET /v2/tools/connectors` — Lists configured connectors owned by the current company.
+- 🆕 `POST /v2/tools/connectors` — Creates a company-owned connector from a server definition.
+- 🆕 `POST /v2/tools/connectors/describe` — Describes configured connectors by id for agent load; callers pass only `companyId` and
+- 🆕 `GET /v2/tools/connectors/items/{connectorId}` — Gets a configured connector.
+- 🆕 `PUT /v2/tools/connectors/items/{connectorId}` — Replaces the editable configuration of a connector.
+- 🆕 `DELETE /v2/tools/connectors/items/{connectorId}` — Deletes a configured connector. Fails with ConflictException while the connector is referenced
+- 🆕 `POST /v2/tools/connectors/items/{connectorId}/execute` — Executes a connector with the invocation payload supplied by the model or agent.
+- 🆕 `POST /v2/tools/describe` — Describe multiple tools for agent load. Each reference either pins a published version or resolves the tool's 
+- 🆕 `POST /v2/tools/discover` — Discover tools from an MCP server.
+- 🆕 `POST /v2/tools/execute` — Execute a tool with the provided input.
+- 🆕 `GET /v2/tools/items/{toolId}` — Get a tool's draft by its ID, including its version state. Use GetToolVersion to read a published version's de
+- 🆕 `PUT /v2/tools/items/{toolId}` — Update the draft definition of a tool. Published versions are never affected, so nothing the model sees change
+- 🆕 `DELETE /v2/tools/items/{toolId}` — Delete a tool, its draft and its version history. Fails with ConflictException while the tool is referenced by
+- 🆕 `GET /v2/tools/items/{toolId}/compare-versions` — Returns the field-level differences between two versions, or between a version and the current draft.
+- 🆕 `GET /v2/tools/items/{toolId}/versions` — Lists the published versions of a tool, newest first.
+- 🆕 `POST /v2/tools/items/{toolId}/versions` — Publishes the current draft as a new immutable version and updates latestVersion. Agent and skill capabilities
+- 🆕 `GET /v2/tools/items/{toolId}/versions/{version}` — Retrieves a published tool version, including its full immutable definition snapshot.
+- 🆕 `POST /v2/tools/items/{toolId}/versions/{version}/draft` — Replaces the mutable draft with a published version's definition. The draft revision is incremented; published
+- 🆕 `GET /v2/tools/mentions/resolve` — Reads the current content of one referenced resource for an agent. Service-only. With `user`, the source is re
+
+## Wilma Traces API — alias `wilma-traces-api` — https://api.wilma.wildix.com (7 routes) 🆕
+- 🆕 `GET /v2/traces` — Queries traces newest first. Filter by service, status, time range, text
+- 🆕 `GET /v2/traces/items/{traceId}` — Returns one trace and all spans recorded so far, ordered by start time.
+- 🆕 `GET /v2/traces/items/{traceId}/model-calls/{spanId}` — Returns the exact request one model call of a session trace was sent, and what the model
+- 🆕 `GET /v2/traces/items/{traceId}/stream` — Replays the current full snapshot of one trace and then tails it as
+- 🆕 `GET /v2/traces/stream` — Streams trace summary upserts across the service. Filter by required Trace
+- 🆕 `GET /v2/traces/metrics` — Aggregates span-level metrics from traces. QueryUsage answers session-level questions
+- 🆕 `GET /v2/traces/usage` — Aggregates usage from traces. For conversational services one trace is
+
+## Wilma Voice API — alias `wilma-voice-api` — https://api.wilma.wildix.com (9 routes) 🆕
+- 🆕 `GET /v2/voice/calls/{callId}/events` — Tails a live call's events as Server-Sent Events (`text/event-stream`): the caller's recognised speech, the ag
+- 🆕 `POST /v2/voice/describe` — Describes the WebSocket connect parameters, events and commands of the voice protocol. Utility method; the gen
+- 🆕 `POST /v2/voice/sessions/{sessionId}/hangup` — Terminates the voice session and the call.
+- 🆕 `POST /v2/voice/sessions/{sessionId}/play` — Plays the specified audio chunk through the audio stream of the voice session.
+- 🆕 `POST /v2/voice/sessions/{sessionId}/say` — Generates and plays the specified text through the audio stream of the voice session.
+- 🆕 `POST /v2/voice/sessions/{sessionId}/stop` — Stops any audio currently being played by the voice session.
+- 🆕 `POST /v2/voice/sessions/{sessionId}/transfer` — Transfers the call to the specified context and extension, and terminates the voice session.
+- 🆕 `POST /v2/voice/text-to-speech` — Synthesizes one phrase and returns MP3.
+- 🆕 `GET /v2/voice/voices` — Lists the voices a synthesis provider offers, read from the provider's own API and cached per company, provide
+
+## Wilma Workflows API — alias `wilma-workflows-api` — https://api.wilma.wildix.com (16 routes) 🆕
+- 🆕 `GET /v2/workflows/automations` — Lists automations in the company.
+- 🆕 `POST /v2/workflows/automations` — Creates a new automation.
+- 🆕 `POST /v2/workflows/automations/ingest/{token}` — Ingestion endpoint for `webhook`-triggered automations. External integrations POST their JSON
+- 🆕 `GET /v2/workflows/automations/items/{automationId}` — Gets an automation.
+- 🆕 `PUT /v2/workflows/automations/items/{automationId}` — Updates an automation. The change applies from the next firing; tasks already started are unaffected.
+- 🆕 `DELETE /v2/workflows/automations/items/{automationId}` — Deletes an automation. Tasks it started remain listed until they age out.
+- 🆕 `POST /v2/workflows/automations/items/{automationId}/run` — Fires an automation immediately (manual run, e.g. to test it), regardless of its trigger and enablement, and r
+- 🆕 `GET /v2/workflows/automations/items/{automationId}/webhook-url` — Returns the unique ingestion URL of a `webhook`-triggered automation, including its secret token. Fails with C
+- 🆕 `GET /v2/workflows/subscriptions` — Lists the wda-stream events event-triggered automations need delivered, for every company that
+- 🆕 `GET /v2/workflows/tasks` — Lists tasks in the company.
+- 🆕 `POST /v2/workflows/tasks` — Starts a background task asynchronously and returns the event index from which the caller should stream. Follo
+- 🆕 `GET /v2/workflows/tasks/items/{taskId}` — Gets the state of a task, including its result once completed.
+- 🆕 `GET /v2/workflows/tasks/items/{taskId}/events` — Returns recorded task events as a plain JSON page, without streaming. The event vocabulary is the shared Wilma
+- 🆕 `GET /v2/workflows/tasks/items/{taskId}/events/stream` — Replays and tails task events as Server-Sent Events (`text/event-stream`). Each frame carries one WorkflowTask
+- 🆕 `POST /v2/workflows/tasks/items/{taskId}/stop` — Requests cancellation of a pending or running task.
+- 🆕 `POST /v2/workflows/tasks/run` — Runs a task and blocks until it finishes, for callers that only need the end result —

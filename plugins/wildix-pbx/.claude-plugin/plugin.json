@@ -1,0 +1,7 @@
+{
+  "name": "wildix-pbx",
+  "version": "0.3.1",
+  "description": "Interroger et administrer n'importe quel PBX Wildix et les services cloud Wildix (WMS, x-bees, WDA, WIM, Auth) via leurs API REST, avec une Company API Key et, au besoin, un Bearer token PBX.",
+  "author": { "name": "Jérôme Guiéze" },
+  "keywords": ["wildix", "pbx", "ucaas", "api", "x-bees", "wda", "voicebot"]
+}

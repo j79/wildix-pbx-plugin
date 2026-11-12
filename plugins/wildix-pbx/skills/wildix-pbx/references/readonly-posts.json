@@ -1,0 +1,387 @@
+[
+ {
+  "ref": "cloud-pbx-api",
+  "path": "/v1/permissions/delete_call_recordings_of_users/check",
+  "op": "CheckDeleteCallRecordingsOfUsersPermission"
+ },
+ {
+  "ref": "cloud-pbx-api",
+  "path": "/v1/permissions/see_call_recordings/check",
+  "op": "CheckSeeCallRecordingsPermission"
+ },
+ {
+  "ref": "cloud-pbx-api",
+  "path": "/v1/permissions/view_call_recordings_of_users/check",
+  "op": "CheckViewCallRecordingsOfUsersPermission"
+ },
+ {
+  "ref": "cloud-pbx-api",
+  "path": "/v1/permissions/view_call_recordings_of_users/groups",
+  "op": "GetViewCallRecordingsOfUsersGroups"
+ },
+ {
+  "ref": "cloud-pbx-api",
+  "path": "/v1/permissions/intrusion/check",
+  "op": "CheckIntrusionPermission"
+ },
+ {
+  "ref": "cloud-pbx-api",
+  "path": "/v1/permissions/intrusion/groups",
+  "op": "GetIntrusionGroups"
+ },
+ {
+  "ref": "cloud-pbx-api",
+  "path": "/v1/permissions/see_analytics/check",
+  "op": "CheckSeeAnalyticsPermission"
+ },
+ {
+  "ref": "cloud-pbx-api",
+  "path": "/v1/permissions/see_analytics/groups",
+  "op": "GetSeeAnalyticsGroups"
+ },
+ {
+  "ref": "cloud-pbx-api",
+  "path": "/v1/permissions/see_full_number/check",
+  "op": "CheckCanSeeFullNumberPermission"
+ },
+ {
+  "ref": "cloud-pbx-api",
+  "path": "/v1/permissions/see_transcription_summary/check",
+  "op": "CheckSeeTranscriptionSummaryPermission"
+ },
+ {
+  "ref": "cloud-pbx-api",
+  "path": "/v1/permissions/use_analytics/check",
+  "op": "CheckCanUseAnalyticsPermission"
+ },
+ {
+  "ref": "cloud-pbx-api",
+  "path": "/v1/permissions/view_calls_of_users/check",
+  "op": "CheckCanViewCallsOfUsersPermission"
+ },
+ {
+  "ref": "cloud-pbx-api",
+  "path": "/v1/permissions/view_calls_of_users/groups",
+  "op": "GetViewCallsOfUsersGroups"
+ },
+ {
+  "ref": "conversations-api",
+  "path": "/v2/conversations/direct/get_channel_id",
+  "op": "GetDirectChannelId"
+ },
+ {
+  "ref": "conversations-api",
+  "path": "/v2/conversations/messaging/get_channel_id",
+  "op": "GetMessagingChannelId"
+ },
+ {
+  "ref": "conversations-api",
+  "path": "/v2/conversations/query-channels",
+  "op": "QueryChannels"
+ },
+ {
+  "ref": "conversations-api",
+  "path": "/v2/conversations/sms/get_channel_id",
+  "op": "GetSmsChannelId"
+ },
+ {
+  "ref": "conversations-api",
+  "path": "/v2/conversations/telephony/get_channel_id",
+  "op": "GetTelephonyChannelId"
+ },
+ {
+  "ref": "conversations-api",
+  "path": "/v2/conversations/whatsapp/get_channel_id",
+  "op": "GetWhatsAppChannelId"
+ },
+ {
+  "ref": "conversations-api",
+  "path": "/v2/conversations/describe",
+  "op": "DescribeEvent"
+ },
+ {
+  "ref": "kite-api",
+  "path": "/v2/kite/agents",
+  "op": "ListAgents"
+ },
+ {
+  "ref": "users-and-chatbots-api",
+  "path": "/v2/users/BatchGetUsersPbxLinkData",
+  "op": "BatchGetUsersPbxLinkDataV1"
+ },
+ {
+  "ref": "users-and-chatbots-api",
+  "path": "/v2/users/batch-get-users",
+  "op": "BatchGetUsers"
+ },
+ {
+  "ref": "users-and-chatbots-api",
+  "path": "/v2/users/batch-get-users-pbx-link-data",
+  "op": "BatchGetUsersPbxLinkData"
+ },
+ {
+  "ref": "users-and-chatbots-api",
+  "path": "/v2/users/query-colleagues",
+  "op": "QueryColleagues"
+ },
+ {
+  "ref": "users-and-chatbots-api",
+  "path": "/v2/users/query-user",
+  "op": "QueryUser"
+ },
+ {
+  "ref": "users-and-chatbots-api",
+  "path": "/v2/users/query-users",
+  "op": "QueryUsers"
+ },
+ {
+  "ref": "users-and-chatbots-api",
+  "path": "/v2/users/batch-get-users-email-notifications-settings",
+  "op": "BatchGetUsersEmailNotificationsSettings"
+ },
+ {
+  "ref": "auth-service",
+  "path": "/api/v2/cpa/",
+  "op": "GetCPAToken"
+ },
+ {
+  "ref": "auth-service",
+  "path": "/api/v2/openid/pbx/",
+  "op": "GetTokenForPbx"
+ },
+ {
+  "ref": "auth-service",
+  "path": "/api/v2/openid/service/",
+  "op": "GetTokenForService"
+ },
+ {
+  "ref": "auth-service",
+  "path": "/api/v2/s2s/",
+  "op": "GetServiceToServiceToken"
+ },
+ {
+  "ref": "cds-console-api",
+  "path": "/v1/refresh",
+  "op": "FetchStatistic"
+ },
+ {
+  "ref": "cds-pbx-api",
+  "path": "/api/v1/{type}",
+  "op": "GetPresignedUploadUrl"
+ },
+ {
+  "ref": "integrations-api",
+  "path": "/v2/integrations/list",
+  "op": "ListIntegrations"
+ },
+ {
+  "ref": "cache-api",
+  "path": "/v1/cache/integration-data/get",
+  "op": "GetIntegrationData"
+ },
+ {
+  "ref": "cache-api",
+  "path": "/v1/cache/object",
+  "op": "GetEntitiesByIds"
+ },
+ {
+  "ref": "cache-api",
+  "path": "/v1/cache/search",
+  "op": "SearchEntitiesByListParams"
+ },
+ {
+  "ref": "knowledge-base-api",
+  "path": "/api/v1/data-sources/{dataSourceId}/describe",
+  "op": "DescribeDataSource"
+ },
+ {
+  "ref": "knowledge-base-api",
+  "path": "/api/v1/knowledge-bases/{knowledgeBaseId}/search",
+  "op": "SearchKnowledgeBase"
+ },
+ {
+  "ref": "knowledge-base-api",
+  "path": "/api/v1/knowledge-bases/history/search-queries",
+  "op": "ListSearchQueriesHistory"
+ },
+ {
+  "ref": "knowledge-base-api",
+  "path": "/api/v1/knowledge-bases/history/statistics",
+  "op": "ListHistoryStatistics"
+ },
+ {
+  "ref": "wim-tools-api",
+  "path": "/v1/tools/describe",
+  "op": "DescribeTools"
+ },
+ {
+  "ref": "voicebots-api",
+  "path": "/v2/voicebots/describe",
+  "op": "DescribeEvent"
+ },
+ {
+  "ref": "wmp-info-api",
+  "path": "/v1/pbx-key/check",
+  "op": "CheckPbxKey"
+ },
+ {
+  "ref": "history-api",
+  "path": "/v2/history/conversations",
+  "op": "QueryConversations"
+ },
+ {
+  "ref": "history-api",
+  "path": "/v2/history/user/calls",
+  "op": "QueryUserCalls"
+ },
+ {
+  "ref": "insights-api",
+  "path": "/v2/insights/conversations",
+  "op": "ListConversations"
+ },
+ {
+  "ref": "insights-api",
+  "path": "/v2/insights/conversations/aggregations",
+  "op": "ListConversationsAggregations"
+ },
+ {
+  "ref": "insights-api",
+  "path": "/v2/insights/conversations/aggregations/nested",
+  "op": "ListConversationsNestedAggregations"
+ },
+ {
+  "ref": "insights-api",
+  "path": "/v2/insights/conversations/count",
+  "op": "QueryConversationsCount"
+ },
+ {
+  "ref": "insights-api",
+  "path": "/v2/insights/conversations/insights",
+  "op": "ListConversationsInsights"
+ },
+ {
+  "ref": "insights-api",
+  "path": "/v2/insights/conversations/insights/aggregations",
+  "op": "ListConversationsInsightsAggregations"
+ },
+ {
+  "ref": "stream-api",
+  "path": "/v2/stream/conversations",
+  "op": "QueryConversations"
+ },
+ {
+  "ref": "stream-api",
+  "path": "/v2/stream/events/describe",
+  "op": "DescribeEvent"
+ },
+ {
+  "ref": "stream-api",
+  "path": "/v2/stream/presence/query",
+  "op": "QueryPresence"
+ },
+ {
+  "ref": "stream-api",
+  "path": "/v2/stream/presence/query_multiple",
+  "op": "QueryPresences"
+ },
+ {
+  "ref": "stream-api",
+  "path": "/v2/stream/services",
+  "op": "ListServices"
+ },
+ {
+  "ref": "stream-api",
+  "path": "/v2/stream/services/stats",
+  "op": "GetServiceStats"
+ },
+ {
+  "ref": "x-caracal-api",
+  "path": "/v2/xcaracal/answered/breakdown/query",
+  "op": "GetAnsweredBreakdown"
+ },
+ {
+  "ref": "x-caracal-api",
+  "path": "/v2/xcaracal/answered/service-level/query",
+  "op": "GetAnsweredServiceLevel"
+ },
+ {
+  "ref": "x-caracal-api",
+  "path": "/v2/xcaracal/answered/summary/query",
+  "op": "GetAnsweredSummary"
+ },
+ {
+  "ref": "x-caracal-api",
+  "path": "/v2/xcaracal/distribution/by-period/query",
+  "op": "GetDistributionByPeriod"
+ },
+ {
+  "ref": "x-caracal-api",
+  "path": "/v2/xcaracal/distribution/by-service/query",
+  "op": "GetDistributionByService"
+ },
+ {
+  "ref": "x-caracal-api",
+  "path": "/v2/xcaracal/distribution/summary/query",
+  "op": "GetDistributionSummary"
+ },
+ {
+  "ref": "x-caracal-api",
+  "path": "/v2/xcaracal/services/calls/query",
+  "op": "QueryServiceCalls"
+ },
+ {
+  "ref": "x-caracal-api",
+  "path": "/v2/xcaracal/unanswered/breakdown/query",
+  "op": "GetUnansweredBreakdown"
+ },
+ {
+  "ref": "x-caracal-api",
+  "path": "/v2/xcaracal/unanswered/service-level/query",
+  "op": "GetUnansweredServiceLevel"
+ },
+ {
+  "ref": "x-caracal-api",
+  "path": "/v2/xcaracal/unanswered/summary/query",
+  "op": "GetUnansweredSummary"
+ },
+ {
+  "ref": "wilma-secrets-api",
+  "path": "/v2/secrets/connections/{connectionId}/token",
+  "op": "GetConnectionToken"
+ },
+ {
+  "ref": "wilma-secrets-api",
+  "path": "/v2/secrets/items/values",
+  "op": "BatchGetSecretValues"
+ },
+ {
+  "ref": "wilma-secrets-api",
+  "path": "/v2/secrets/items/{secretId}/value",
+  "op": "GetSecretValue"
+ },
+ {
+  "ref": "wilma-secrets-api",
+  "path": "/v2/secrets/user-connections/{provider}/token",
+  "op": "GetUserConnectionToken"
+ },
+ {
+  "ref": "wilma-tools-api",
+  "path": "/v2/tools/capabilities/describe",
+  "op": "DescribeCapabilities"
+ },
+ {
+  "ref": "wilma-tools-api",
+  "path": "/v2/tools/connectors/describe",
+  "op": "DescribeConnectors"
+ },
+ {
+  "ref": "wilma-tools-api",
+  "path": "/v2/tools/describe",
+  "op": "DescribeTools"
+ },
+ {
+  "ref": "wilma-voice-api",
+  "path": "/v2/voice/describe",
+  "op": "DescribeVoiceProtocol"
+ }
+]

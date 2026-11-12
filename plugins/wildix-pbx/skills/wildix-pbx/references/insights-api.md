@@ -1,0 +1,18701 @@
+## Insights API
+
+_OpenAPI: WDA Insights service — version v2_
+
+**Servers**
+
+- `https://wda.wildix.com` — Production
+- `https://wda-stable.wildix.com` — Stable
+- `https://wda-stage.wildix.com` — Stage
+
+### Other
+
+#### `GET` `/v2/insights/analysis/settings`
+
+Gets default analysis settings used for projections.
+
+- operationId: `GetAnalysisSettings`
+- **Scopes**: `insights:GetAnalysisSettings`, `insights:read`
+- **Parameters**
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+- **Response 200** (`GetAnalysisSettingsResponseContent`)
+  - `settings` — AnalysisSettings **(required)**
+    - `defaultModel` — string — Default provider and model identifier for projections that do not define a custom model. Example: 'openai://gpt-5'.
+    - `disabled` — boolean — True to disable analysis completely for the organization.
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _array of_ `ConversationTarget`
+          - _oneOf_ — exactly one of:
+            - **`call`**
+              - `call` — CallConversationTarget **(required)**
+                - _(nesting depth limit — see `CallConversationTarget` in the Schemas appendix)_
+            - **`conference`**
+              - `conference` — ConferenceConversationTarget **(required)**
+                - _(nesting depth limit — see `ConferenceConversationTarget` in the Schemas appendix)_
+            - **`chat`**
+              - `chat` — ChatConversationTarget **(required)**
+                - _(nesting depth limit — see `ChatConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - `call` — boolean
+        - `conference` — boolean
+        - `chat` — boolean
+      - `participants` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToInclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToExclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `connectTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `talkTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `waitTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `queueTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `holdTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interaction` — ListConversationsFilterInteraction
+        - `talkRatio` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `wordsPerMinute` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `interruptions` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `patience` — ListConversationsFilterFloat
+          - `from` — number _(format=float)_
+          - `to` — number _(format=float)_
+        - `longestMonologue` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `longestCustomerStory` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - `inbound` — boolean
+        - `outbound` — boolean
+        - `internal` — boolean
+      - `insights` — array
+        - _array of_ `ListConversationsFilterInsight`
+          - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `match` — string
+          - `matchAny` — array
+            - _array of_ `string`
+      - `channel` — ListConversationsFilterChannel
+        - `sms` — boolean
+        - `whatsapp` — boolean
+        - `kite` — boolean
+      - `date` — union
+        - _oneOf_ — exactly one of:
+          - **`absolute`**
+            - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+              - `from` — string
+              - `to` — string
+              - `timeZone` — string
+          - **`predefined`**
+            - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+              - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+              - `timeZone` — string
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `present` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+      - `absent` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+    - `deleteAssetsAfterSuccess` — boolean — True to delete raw transcript and recording assets after a successful initial analysis run.
+- Errors: `400`, `403`
+
+#### `PUT` `/v2/insights/analysis/settings`
+
+Updates default analysis settings used for projections.
+
+- operationId: `PutAnalysisSettings`
+- **Scopes**: `insights:PutAnalysisSettings`
+- **Parameters**
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+- **Request body** (`application/json` — `PutAnalysisSettingsRequestContent`)
+  - `defaultModel` — string — Default provider and model identifier for projections that do not define a custom model. Example: 'openai://gpt-5'.
+  - `disabled` — boolean — True to disable analysis completely for the organization.
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _oneOf_ — exactly one of:
+          - **`call`**
+            - `call` — CallConversationTarget **(required)**
+              - `callId` — string **(required)**
+              - `flowIndex` — number **(required)**
+          - **`conference`**
+            - `conference` — ConferenceConversationTarget **(required)**
+              - `conferenceId` — string **(required)**
+          - **`chat`**
+            - `chat` — ChatConversationTarget **(required)**
+              - `chatId` — string **(required)**
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interruptions` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `patience` — ListConversationsFilterFloat
+        - `from` — number _(format=float)_
+        - `to` — number _(format=float)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `match` — string
+        - `matchAny` — array
+          - _array of_ `string`
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+            - `from` — string
+            - `to` — string
+            - `timeZone` — string
+        - **`predefined`**
+          - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+            - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+            - `timeZone` — string
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+  - `deleteAssetsAfterSuccess` — boolean — True to delete raw transcript and recording assets after a successful initial analysis run.
+- **Response 200** (`PutAnalysisSettingsResponseContent`)
+  - `settings` — AnalysisSettings **(required)**
+    - `defaultModel` — string — Default provider and model identifier for projections that do not define a custom model. Example: 'openai://gpt-5'.
+    - `disabled` — boolean — True to disable analysis completely for the organization.
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _array of_ `ConversationTarget`
+          - _oneOf_ — exactly one of:
+            - **`call`**
+              - `call` — CallConversationTarget **(required)**
+                - _(nesting depth limit — see `CallConversationTarget` in the Schemas appendix)_
+            - **`conference`**
+              - `conference` — ConferenceConversationTarget **(required)**
+                - _(nesting depth limit — see `ConferenceConversationTarget` in the Schemas appendix)_
+            - **`chat`**
+              - `chat` — ChatConversationTarget **(required)**
+                - _(nesting depth limit — see `ChatConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - `call` — boolean
+        - `conference` — boolean
+        - `chat` — boolean
+      - `participants` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToInclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToExclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `connectTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `talkTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `waitTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `queueTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `holdTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interaction` — ListConversationsFilterInteraction
+        - `talkRatio` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `wordsPerMinute` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `interruptions` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `patience` — ListConversationsFilterFloat
+          - `from` — number _(format=float)_
+          - `to` — number _(format=float)_
+        - `longestMonologue` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `longestCustomerStory` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - `inbound` — boolean
+        - `outbound` — boolean
+        - `internal` — boolean
+      - `insights` — array
+        - _array of_ `ListConversationsFilterInsight`
+          - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `match` — string
+          - `matchAny` — array
+            - _array of_ `string`
+      - `channel` — ListConversationsFilterChannel
+        - `sms` — boolean
+        - `whatsapp` — boolean
+        - `kite` — boolean
+      - `date` — union
+        - _oneOf_ — exactly one of:
+          - **`absolute`**
+            - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+              - `from` — string
+              - `to` — string
+              - `timeZone` — string
+          - **`predefined`**
+            - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+              - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+              - `timeZone` — string
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `present` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+      - `absent` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+    - `deleteAssetsAfterSuccess` — boolean — True to delete raw transcript and recording assets after a successful initial analysis run.
+- Errors: `400`, `403`
+
+#### `DELETE` `/v2/insights/calls/{callId}/assets` 🆕
+
+Irreversibly deletes a call from Revenue Intelligence: the recordings, the transcription and all insights of every flow of the call. The call stays in the call history without them. A user needs the `Can delete call recordings` ACL for at least one participant of the call; taking part in the call gives no right to delete it. A repeated request answers 404 once the call was completely deleted; a repeat after a deletion that failed part-way finishes it.
+
+- operationId: `DeleteCallAssets`
+- **Scopes**: `insights:DeleteCallAssets`
+- **Parameters**
+  - `callId` (path) — string **(required)**
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `reason` (query) — string — Why the conversation is deleted, e.g. a Support case. Stored in the Security Audit entry. _(minLen=1; maxLen=500)_
+- **Response 200** (`DeleteCallAssetsResponseContent`)
+  - `flowIndexes` — array **(required)** — The flows of the call that were deleted.
+    - _array of_ `number`
+  - `deletedAt` — string **(required)** — ISO 8601 time of the first deletion request for this call.
+- Errors: `400`, `403`, `404`
+
+#### `GET` `/v2/insights/calls/{callId}/flows/{flowIndex}/characteristics`
+
+Gets the characteristics for a call by callId and flowIndex.
+
+- operationId: `GetCallCharacteristics`
+- **Scopes**: `insights:GetCallCharacteristics`, `insights:read`
+- **Parameters**
+  - `callId` (path) — string **(required)**
+  - `flowIndex` (path) — number **(required)**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+- **Response 200** (`GetCallCharacteristicsResponseContent`)
+  - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+  - `characteristics` — InsightsCharacteristics
+    - `nonTalkTime` — InsightsNonTalkTime
+      - `chunks` — array
+        - _array of_ `InsightsNonTalkTimeChunk`
+          - `startTime` — number **(required)**
+          - `endTime` — number **(required)**
+    - `interruptions` — InsightsInterruptions
+      - `chunks` — array
+        - _array of_ `InsightsInterruptionsChunk`
+          - `startTime` — number **(required)**
+          - `endTime` — number **(required)**
+          - `interrupter` — string **(required)**
+    - `duration` — number
+    - `sentiment` — InsightsSentiment
+      - `score` — number _(format=float)_
+      - `scoreByParticipant` — array
+        - _array of_ `InsightsSentimentScoreByParticipantChunk`
+          - `interrupter` — string **(required)**
+          - `score` — number **(required)** _(format=float)_
+      - `scoreByPeriod` — array
+        - _array of_ `InsightsSentimentScoreByPeriodChunk`
+          - `score` — number **(required)** _(format=float)_
+          - `participants` — array
+            - _array of_ `InsightsSentimentParticipantScore`
+              - _(nesting depth limit — see `InsightsSentimentParticipantScore` in the Schemas appendix)_
+    - `talkSpeed` — InsightsCharacteristicsTalkSpeed
+      - `detailsByParticipant` — array
+        - _array of_ `InsightsTalkSpeedChunk`
+          - `interrupter` — string **(required)**
+          - `averageWordsPerMinute` — number
+    - `talkTime` — InsightsTalkTime
+      - `detailsByParticipant` — array
+        - _array of_ `InsightsTalkTimeChunk`
+          - `interrupter` — string **(required)**
+          - `totalTime` — number
+- Errors: `400`, `403`, `404`
+
+#### `GET` `/v2/insights/calls/{callId}/flows/{flowIndex}/insights`
+
+Gets the insights for a call by callId and flowIndex.
+
+- operationId: `GetCallInsights`
+- **Scopes**: `insights:GetCallInsights`, `insights:read`
+- **Parameters**
+  - `callId` (path) — string **(required)**
+  - `flowIndex` (path) — number **(required)**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+- **Response 200** (`GetCallInsightsResponseContent`)
+  - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+  - `insights` — array
+    - _array of_ `ProjectionInsights`
+      - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `version` — number **(required)** — A version of projection that was used to generate the insights.
+      - `name` — string **(required)** _(minLen=1; maxLen=128)_
+      - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+      - `reason` — string _(enum: `TRANSCRIPTION_TOO_SMALL`, `CONDITIONS_NOT_MATCH`, `INTERNAL_ERROR`)_
+      - `fields` — array **(required)**
+        - _array of_ `ProjectionInsightsField`
+          - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `name` — string **(required)** _(minLen=1; maxLen=256)_
+          - `value` — any **(required)**
+- Errors: `400`, `403`, `404`
+
+#### `POST` `/v2/insights/calls/{callId}/flows/{flowIndex}/schedule_summary_generation`
+
+> ⚠️ Route marquée `deprecated` dans la spécification publiée.
+
+- operationId: `ScheduleCallSummaryGeneration`
+- **Parameters**
+  - `callId` (path) — string **(required)**
+  - `flowIndex` (path) — number **(required)**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+- Errors: `400`, `403`, `404`
+
+#### `GET` `/v2/insights/calls/{callId}/flows/{flowIndex}/state`
+
+Gets the summary for a call by callId and flowIndex.
+
+- operationId: `GetCallState`
+- **Scopes**: `insights:GetCallState`, `insights:read`
+- **Parameters**
+  - `callId` (path) — string **(required)**
+  - `flowIndex` (path) — number **(required)**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Response 200** (`GetCallStateResponseContent`)
+  - `state` — ConversationState **(required)**
+    - `playlists` — array
+      - _array of_ `string`
+    - `playback` — ConversationPlaybackState
+      - `position` — number
+      - `duration` — number
+    - `firstWatchedAt` — string
+    - `lastWatchedAt` — string
+    - `canDelete` — boolean — True when the requester may delete the conversation from Revenue Intelligence (DeleteCallAssets / DeleteConferenceAssets).
+- Errors: `400`, `403`, `404`
+
+#### `GET` `/v2/insights/calls/{callId}/flows/{flowIndex}/summary`
+
+Gets the summary for a call by callId and flowIndex.
+
+- operationId: `GetCallSummary`
+- **Scopes**: `insights:GetCallSummary`, `insights:read`
+- **Parameters**
+  - `callId` (path) — string **(required)**
+  - `flowIndex` (path) — number **(required)**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+- **Response 200** (`GetCallSummaryResponseContent`)
+  - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+  - `summary` — TranscriptionSummary
+    - `title` — string
+    - `brief` — string
+    - `json` — TranscriptionSummaryJson
+      - `callBriefVeryShortTitle` — string
+      - `callBrief` — string
+      - `customerInsights` — array
+        - _array of_ `string`
+      - `keyPoints` — array
+        - _array of_ `string`
+      - `competitiveInformation` — array
+        - _array of_ `string`
+      - `implementationTimeline` — array
+        - _array of_ `string`
+      - `budget` — array
+        - _array of_ `string`
+      - `customerResponse` — array
+        - _array of_ `string`
+      - `salesProposals` — array
+        - _array of_ `string`
+      - `actionItems` — array
+        - _array of_ `string`
+      - `nextSteps` — array
+        - _array of_ `string`
+      - `csat` — TranscriptionSummaryCsat
+        - `score` — string
+        - `reason` — string
+      - `topics` — array
+        - _array of_ `string`
+      - `review` — array
+        - _array of_ `string`
+      - `progress` — array
+        - _array of_ `string`
+      - `issues` — array
+        - _array of_ `string`
+      - `decisions` — array
+        - _array of_ `string`
+      - `tags` — array
+        - _array of_ `string`
+- Errors: `400`, `403`, `404`
+
+#### `GET` `/v2/insights/chats/{chatId}/insights`
+
+Gets the insights for a chat by chatId.
+
+- operationId: `GetChatInsights`
+- **Scopes**: `insights:GetChatInsights`, `insights:read`
+- **Parameters**
+  - `chatId` (path) — string **(required)**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+- **Response 200** (`GetChatInsightsResponseContent`)
+  - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+  - `insights` — array
+    - _array of_ `ProjectionInsights`
+      - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `version` — number **(required)** — A version of projection that was used to generate the insights.
+      - `name` — string **(required)** _(minLen=1; maxLen=128)_
+      - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+      - `reason` — string _(enum: `TRANSCRIPTION_TOO_SMALL`, `CONDITIONS_NOT_MATCH`, `INTERNAL_ERROR`)_
+      - `fields` — array **(required)**
+        - _array of_ `ProjectionInsightsField`
+          - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `name` — string **(required)** _(minLen=1; maxLen=256)_
+          - `value` — any **(required)**
+- Errors: `400`, `403`
+
+#### `GET` `/v2/insights/chats/{chatId}/state`
+
+Gets the summary for a chat by chatId.
+
+- operationId: `GetChatState`
+- **Scopes**: `insights:GetChatState`, `insights:read`
+- **Parameters**
+  - `chatId` (path) — string **(required)**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Response 200** (`GetChatStateResponseContent`)
+  - `state` — ConversationState **(required)**
+    - `playlists` — array
+      - _array of_ `string`
+    - `playback` — ConversationPlaybackState
+      - `position` — number
+      - `duration` — number
+    - `firstWatchedAt` — string
+    - `lastWatchedAt` — string
+    - `canDelete` — boolean — True when the requester may delete the conversation from Revenue Intelligence (DeleteCallAssets / DeleteConferenceAssets).
+- Errors: `400`, `403`
+
+#### `GET` `/v2/insights/chats/{chatId}/summary`
+
+Gets the summary for a chat by chatId.
+
+- operationId: `GetChatSummary`
+- **Scopes**: `insights:GetChatSummary`, `insights:read`
+- **Parameters**
+  - `chatId` (path) — string **(required)**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+- **Response 200** (`GetChatSummaryResponseContent`)
+  - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+  - `summary` — TranscriptionSummary
+    - `title` — string
+    - `brief` — string
+    - `json` — TranscriptionSummaryJson
+      - `callBriefVeryShortTitle` — string
+      - `callBrief` — string
+      - `customerInsights` — array
+        - _array of_ `string`
+      - `keyPoints` — array
+        - _array of_ `string`
+      - `competitiveInformation` — array
+        - _array of_ `string`
+      - `implementationTimeline` — array
+        - _array of_ `string`
+      - `budget` — array
+        - _array of_ `string`
+      - `customerResponse` — array
+        - _array of_ `string`
+      - `salesProposals` — array
+        - _array of_ `string`
+      - `actionItems` — array
+        - _array of_ `string`
+      - `nextSteps` — array
+        - _array of_ `string`
+      - `csat` — TranscriptionSummaryCsat
+        - `score` — string
+        - `reason` — string
+      - `topics` — array
+        - _array of_ `string`
+      - `review` — array
+        - _array of_ `string`
+      - `progress` — array
+        - _array of_ `string`
+      - `issues` — array
+        - _array of_ `string`
+      - `decisions` — array
+        - _array of_ `string`
+      - `tags` — array
+        - _array of_ `string`
+- Errors: `400`, `403`
+
+#### `GET` `/v2/insights/conferences/recording/download_url`
+
+Retrieves a presigned URL for downloading a specific recording.
+
+- operationId: `GetConferenceRecordingPresignedDownloadUrl`
+- **Scopes**: `insights:GetConferenceRecordingPresignedDownloadUrl`, `insights:read`
+- **Parameters**
+  - `fileId` (query) — string **(required)** — The unique identifier of the recording to download.
+  - `category` (query) — string **(required)** — The category of the file, either channel files or conference recordings. _(enum: `channels`, `recordings`, `wizyconfRecordings`)_
+  - `download` (query) — number — URL behavior, 0 - open(play) for audio/video, others are downloaded; 1 — always download. _(enum: `0`, `1`)_
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+- **Response 200** (`GetConferenceRecordingPresignedDownloadUrlResponseContent`)
+  - `presignedDownloadUrl` — string **(required)** — The presigned URL for downloading the recording.
+- Errors: `400`, `403`, `404`
+
+#### `DELETE` `/v2/insights/conferences/{conferenceId}/assets` 🆕
+
+Irreversibly deletes a conference from Revenue Intelligence: the recordings, the transcription and all insights. The conference stays in the history without them. A user needs the `Can delete call recordings` ACL for at least one participant of the conference; taking part in the conference gives no right to delete it. A repeated request answers 404 once the conference was completely deleted; a repeat after a deletion that failed part-way finishes it.
+
+- operationId: `DeleteConferenceAssets`
+- **Scopes**: `insights:DeleteConferenceAssets`
+- **Parameters**
+  - `conferenceId` (path) — string **(required)**
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `reason` (query) — string — Why the conversation is deleted, e.g. a Support case. Stored in the Security Audit entry. _(minLen=1; maxLen=500)_
+- **Response 200** (`DeleteConferenceAssetsResponseContent`)
+  - `deletedAt` — string **(required)** — ISO 8601 time of the first deletion request for this conference.
+- Errors: `400`, `403`, `404`
+
+#### `GET` `/v2/insights/conferences/{conferenceId}/insights`
+
+Gets the insights for a conference by conferenceId.
+
+- operationId: `GetConferenceInsights`
+- **Scopes**: `insights:GetConferenceInsights`, `insights:read`
+- **Parameters**
+  - `conferenceId` (path) — string **(required)**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+- **Response 200** (`GetConferenceInsightsResponseContent`)
+  - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+  - `insights` — array
+    - _array of_ `ProjectionInsights`
+      - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `version` — number **(required)** — A version of projection that was used to generate the insights.
+      - `name` — string **(required)** _(minLen=1; maxLen=128)_
+      - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+      - `reason` — string _(enum: `TRANSCRIPTION_TOO_SMALL`, `CONDITIONS_NOT_MATCH`, `INTERNAL_ERROR`)_
+      - `fields` — array **(required)**
+        - _array of_ `ProjectionInsightsField`
+          - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `name` — string **(required)** _(minLen=1; maxLen=256)_
+          - `value` — any **(required)**
+- Errors: `400`, `403`, `404`
+
+#### `POST` `/v2/insights/conferences/{conferenceId}/schedule_summary_generation`
+
+> ⚠️ Route marquée `deprecated` dans la spécification publiée.
+
+- operationId: `ScheduleConferenceSummaryGeneration`
+- **Parameters**
+  - `conferenceId` (path) — string **(required)**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+- Errors: `400`, `403`, `404`
+
+#### `GET` `/v2/insights/conferences/{conferenceId}/state`
+
+Gets the summary for a conference by conferenceId.
+
+- operationId: `GetConferenceState`
+- **Scopes**: `insights:GetConferenceState`, `insights:read`
+- **Parameters**
+  - `conferenceId` (path) — string **(required)**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Response 200** (`GetConferenceStateResponseContent`)
+  - `state` — ConversationState **(required)**
+    - `playlists` — array
+      - _array of_ `string`
+    - `playback` — ConversationPlaybackState
+      - `position` — number
+      - `duration` — number
+    - `firstWatchedAt` — string
+    - `lastWatchedAt` — string
+    - `canDelete` — boolean — True when the requester may delete the conversation from Revenue Intelligence (DeleteCallAssets / DeleteConferenceAssets).
+- Errors: `400`, `403`, `404`
+
+#### `GET` `/v2/insights/conferences/{conferenceId}/summary`
+
+Gets the summary for a conference by conferenceId.
+
+- operationId: `GetConferenceSummary`
+- **Scopes**: `insights:GetConferenceSummary`, `insights:read`
+- **Parameters**
+  - `conferenceId` (path) — string **(required)**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+- **Response 200** (`GetConferenceSummaryResponseContent`)
+  - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+  - `summary` — TranscriptionSummary
+    - `title` — string
+    - `brief` — string
+    - `json` — TranscriptionSummaryJson
+      - `callBriefVeryShortTitle` — string
+      - `callBrief` — string
+      - `customerInsights` — array
+        - _array of_ `string`
+      - `keyPoints` — array
+        - _array of_ `string`
+      - `competitiveInformation` — array
+        - _array of_ `string`
+      - `implementationTimeline` — array
+        - _array of_ `string`
+      - `budget` — array
+        - _array of_ `string`
+      - `customerResponse` — array
+        - _array of_ `string`
+      - `salesProposals` — array
+        - _array of_ `string`
+      - `actionItems` — array
+        - _array of_ `string`
+      - `nextSteps` — array
+        - _array of_ `string`
+      - `csat` — TranscriptionSummaryCsat
+        - `score` — string
+        - `reason` — string
+      - `topics` — array
+        - _array of_ `string`
+      - `review` — array
+        - _array of_ `string`
+      - `progress` — array
+        - _array of_ `string`
+      - `issues` — array
+        - _array of_ `string`
+      - `decisions` — array
+        - _array of_ `string`
+      - `tags` — array
+        - _array of_ `string`
+- Errors: `400`, `403`, `404`
+
+#### `GET` `/v2/insights/conferences/{conferenceId}/timeframes`
+
+Gets the time frames for a conference by conferenceId.
+
+- operationId: `GetConferenceTimeFrames`
+- **Scopes**: `insights:GetConferenceTimeFrames`, `insights:read`
+- **Parameters**
+  - `conferenceId` (path) — string **(required)**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+- **Response 200** (`GetConferenceTimeFramesResponseContent`)
+  - `timeFrames` — array
+    - _array of_ `ConferenceTimeFramesListItem`
+      - `jid` — string **(required)**
+      - `frames` — array **(required)**
+        - _array of_ `ConferenceTimeFramesChunk`
+          - `start` — number **(required)**
+          - `end` — number **(required)**
+- Errors: `400`, `403`, `404`
+
+#### `POST` `/v2/insights/conversations`
+
+Insights API are currently in active development. All interfaces are subject to change.
+
+- operationId: `ListConversations`
+- **Scopes**: `insights:ListConversations`, `insights:read`
+- **Parameters**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+- **Request body** (`application/json` — `ListConversationsRequestContent`)
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _oneOf_ — exactly one of:
+          - **`call`**
+            - `call` — CallConversationTarget **(required)**
+              - `callId` — string **(required)**
+              - `flowIndex` — number **(required)**
+          - **`conference`**
+            - `conference` — ConferenceConversationTarget **(required)**
+              - `conferenceId` — string **(required)**
+          - **`chat`**
+            - `chat` — ChatConversationTarget **(required)**
+              - `chatId` — string **(required)**
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interruptions` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `patience` — ListConversationsFilterFloat
+        - `from` — number _(format=float)_
+        - `to` — number _(format=float)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `match` — string
+        - `matchAny` — array
+          - _array of_ `string`
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+            - `from` — string
+            - `to` — string
+            - `timeZone` — string
+        - **`predefined`**
+          - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+            - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+            - `timeZone` — string
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+  - `exclusiveStartKey` — string — A temporary parameter which would be removed in next updates.
+- **Response 200** (`ListConversationsResponseContent`)
+  - `items` — array **(required)**
+    - _array of_ `ListConversationsItem`
+      - `event` — union **(required)**
+        - _oneOf_ — exactly one of:
+          - **`call`**
+            - `call` — CallRecord **(required)**
+              - `flowIndex` — number **(required)**
+              - `startTime` — number **(required)**
+              - `endTime` — number **(required)**
+              - `connectTime` — number — Duration when the called party's phone rang (Ring Time in UI)
+              - `talkTime` — number — Duration of conversation from the moment the call is answered until it ends, excluding hold time
+              - `waitTime` — number — Duration spent on IVR, dialplan applications, playback, etc. before the call is answered
+              - `queueTime` — number — Duration of call waiting in queue
+              - `holdTime` — number — Duration the call was on hold after being answered
+              - `duration` — number **(required)** — Total duration = connectTime + waitTime + queueTime + talkTime + holdTime
+              - `caller` — CallParticipant
+                - _(nesting depth limit — see `CallParticipant` in the Schemas appendix)_
+              - `callee` — CallParticipant
+                - _(nesting depth limit — see `CallParticipant` in the Schemas appendix)_
+              - `service` — string
+              - `serviceNumber` — string
+              - `destination` — string
+              - `direction` — string _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`, `UNDEFINED`)_
+              - `trunkName` — string
+              - `trunkDirection` — string
+              - `queueName` — string
+              - `queueId` — string
+              - `queuePosition` — number — Position of the call in the queue (1-based). Updated from consume events and emitted on live progress and record flows.
+              - `tags` — array
+                - _array of_ `string`
+              - `flags` — array
+                - _array of_ `string`
+              - `callerMos` — string
+              - `calleeMos` — string
+              - `xhoppersConfId` — string
+              - `recordings` — array — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+                - _array of_ `string`
+              - `recordingsData` — array — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+                - _(nesting depth limit — see `CallFlowRecording` in the Schemas appendix)_
+              - `mergeWith` — string
+              - `splitReason` — string
+              - `splitTransferType` — string
+              - `remotePhone` — string
+              - `remotePhoneCountryCode` — number
+              - `remotePhoneCountryCodeStr` — string
+              - `remotePhoneLocation` — string
+              - `callStatus` — string _(enum: `COMPLETED`, `MISSED`)_
+              - `transcriptionStatus` — string _(enum: `AVAILABLE`, `POST_TRANSCRIPTION`, `UNAVAILABLE`)_
+              - `transcriptionLanguage` — string
+              - `transcriptionSeconds` — number
+              - `annotationsStatus` — string _(enum: `AVAILABLE`, `UNAVAILABLE`)_
+              - `annotationsByKey` — AnnotationsMap — The newest annotation per `AnnotationKey`: the current value of everything the conversation tracks, without reading the history. Keyed annotations only — a one-off annotation appears solely in `annotations`.
+                - _(nesting depth limit — see `AnnotationsMap` in the Schemas appendix)_
+              - `attachment` — string — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+              - `attachmentType` — string _(enum: `VOICEMAIL`, `FAX`)_
+              - `attachmentDestinations` — array — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+                - _(nesting depth limit — see `CallFlowAttachmentDestination` in the Schemas appendix)_
+              - `attachments` — array
+                - _(nesting depth limit — see `CallFlowAttachment` in the Schemas appendix)_
+              - `notifications` — CallFlowNotifications
+                - _(nesting depth limit — see `CallFlowNotifications` in the Schemas appendix)_
+              - `id` — string **(required)**
+              - `pbx` — string **(required)**
+              - `time` — number **(required)**
+              - `company` — string **(required)** _(minLen=3; maxLen=30)_
+              - `licenses` — array **(required)**
+                - _(nesting depth limit — see `License` in the Schemas appendix)_
+              - `type` — object **(required)**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+          - **`conference`**
+            - `conference` — ConferenceRecord **(required)**
+              - `id` — string **(required)**
+              - `time` — number **(required)**
+              - `company` — string **(required)** _(minLen=3; maxLen=30)_
+              - `pbx` — string
+              - `startTime` — number **(required)**
+              - `endTime` — number **(required)**
+              - `duration` — number **(required)**
+              - `waitTime` — number
+              - `subject` — string
+              - `direction` — string **(required)** _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`)_
+              - `service` — string
+              - `status` — string _(enum: `COMPLETED`, `MISSED`)_
+              - `participants` — array **(required)**
+                - _(nesting depth limit — see `ConferenceAnalyticsRecordParticipant` in the Schemas appendix)_
+              - `recordings` — array
+                - _(nesting depth limit — see `ConferenceRecording` in the Schemas appendix)_
+              - `transcriptionStatus` — string **(required)** _(enum: `AVAILABLE`, `POST_TRANSCRIPTION`, `UNAVAILABLE`)_
+              - `transcriptionLanguage` — string
+              - `transcriptionSeconds` — number
+              - `annotationsStatus` — string _(enum: `AVAILABLE`, `UNAVAILABLE`)_
+              - `annotationsByKey` — AnnotationsMap — The newest annotation per `AnnotationKey`: the current value of everything the conversation tracks, without reading the history. Keyed annotations only — a one-off annotation appears solely in `annotations`.
+                - _(nesting depth limit — see `AnnotationsMap` in the Schemas appendix)_
+              - `type` — object **(required)**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+          - **`chat`**
+            - `chat` — ChatRecord **(required)**
+              - `id` — string — A unique chat channel identifier, distinguish each chat channel across different types.
+              - `chatId` — string — A unique identifier that distinguishes each chat session within a channel.
+              - `time` — number **(required)**
+              - `company` — string **(required)** _(minLen=3; maxLen=30)_
+              - `pbx` — string
+              - `startTime` — number **(required)**
+              - `endTime` — number **(required)**
+              - `waitTime` — number
+              - `duration` — number **(required)**
+              - `direction` — string **(required)** _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`)_
+              - `subject` — string
+              - `service` — string
+              - `serviceTitle` — string
+              - `tags` — array
+                - _(nesting depth limit — see `ChatTag` in the Schemas appendix)_
+              - `channel` — Channel **(required)**
+                - _(nesting depth limit — see `Channel` in the Schemas appendix)_
+              - `status` — string _(enum: `WAITFIRSTREPLY`, `WAITREPLYFROMGUEST`, `WAITREPLYFROMAGENT`, `COMPLETED`, `MISSED`)_
+              - `participants` — array **(required)**
+                - _(nesting depth limit — see `ChatParticipant` in the Schemas appendix)_
+              - `annotationsStatus` — string _(enum: `AVAILABLE`, `UNAVAILABLE`)_
+              - `annotationsByKey` — AnnotationsMap — The newest annotation per `AnnotationKey`: the current value of everything the conversation tracks, without reading the history. Keyed annotations only — a one-off annotation appears solely in `annotations`.
+                - _(nesting depth limit — see `AnnotationsMap` in the Schemas appendix)_
+              - `type` — object **(required)**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+      - `interaction` — ListConversationsItemInteraction
+        - `talkRatio` — number — Percentage of the call duration during which the agent was speaking.
+        - `wordsPerMinute` — number — Average words per minute spoken by the agent during their speaking time.
+        - `interruptions` — number — Number of times the agent interrupted another participant during the conversation.
+        - `patience` — number — Average time in seconds the agent waited after another participant finished speaking before responding. _(format=float)_
+        - `longestMonologue` — number — Duration in seconds of the agent's longest uninterrupted monologue.
+        - `longestCustomerStory` — number — Duration in seconds of another participant’s longest uninterrupted story or response.
+      - `summary` — ListConversationsItemSummary
+        - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+        - `title` — string
+        - `brief` — string
+        - `insights` — array
+          - _array of_ `ListConversationsItemInsight`
+            - `field` — string **(required)**
+            - `value` — string **(required)**
+        - `language` — string
+      - `highlight` — ListConversationsItemHighlight
+        - `transcription` — array
+          - _array of_ `ListConversationsItemHighlightTranscriptionItem`
+            - `id` — string **(required)**
+            - `user` — string **(required)**
+            - `start` — number **(required)**
+            - `text` — string **(required)**
+        - `summary` — ListConversationsItemHighlightSummary
+          - `title` — string
+          - `brief` — string
+        - `subject` — string
+  - `lastEvaluatedKey` — string — A temporary parameter which would be removed in next updates.
+- Errors: `400`, `403`
+
+#### `POST` `/v2/insights/conversations/aggregations`
+
+Lists multiple independent insights in parallel.
+
+- operationId: `ListConversationsAggregations`
+- **Scopes**: `insights:ListConversationsAggregations`, `insights:read`
+- **Parameters**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+- **Request body** (`application/json` — `ListConversationsAggregationsRequestContent`)
+  - `insights` — array — A list of insights to select. Default - all projections, direction, duration, connectTime, talkTime, waitTime, queueTime, and holdTime.
+    - _array of_ `AggregationDefinition`
+      - _oneOf_ — exactly one of:
+        - **`projection`**
+          - `projection` — AggregationProjectionDefinition **(required)**
+            - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+            - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - **`direction`**
+          - `direction` — AggregationNoConfigurationDefinition **(required)**
+        - **`duration`**
+          - `duration` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`connectTime`**
+          - `connectTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`talkTime`**
+          - `talkTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`waitTime`**
+          - `waitTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`queueTime`**
+          - `queueTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`holdTime`**
+          - `holdTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`service`**
+          - `service` — AggregationNoConfigurationDefinition **(required)**
+        - **`extension`**
+          - `extension` — AggregationNoConfigurationDefinition **(required)**
+        - **`chatbot`**
+          - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+        - **`voicebot`**
+          - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+        - **`group`**
+          - `group` — AggregationNoConfigurationDefinition **(required)**
+        - **`department`**
+          - `department` — AggregationNoConfigurationDefinition **(required)**
+        - **`tag`**
+          - `tag` — AggregationNoConfigurationDefinition **(required)**
+        - **`pbx`**
+          - `pbx` — AggregationNoConfigurationDefinition **(required)**
+        - **`trunk`**
+          - `trunk` — AggregationNoConfigurationDefinition **(required)**
+        - **`queue`**
+          - `queue` — AggregationNoConfigurationDefinition **(required)**
+        - **`country`**
+          - `country` — AggregationNoConfigurationDefinition **(required)**
+        - **`location`**
+          - `location` — AggregationNoConfigurationDefinition **(required)**
+        - **`language`**
+          - `language` — AggregationNoConfigurationDefinition **(required)**
+        - **`entity`**
+          - `entity` — AggregationNoConfigurationDefinition **(required)**
+        - **`channel`**
+          - `channel` — AggregationNoConfigurationDefinition **(required)**
+        - **`recorded`**
+          - `recorded` — AggregationNoConfigurationDefinition **(required)**
+        - **`date`**
+          - `date` — AggregationDateDefinition **(required)**
+            - `timeZone` — string
+        - **`dayOfWeek`**
+          - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+            - `timeZone` — string
+        - **`hourOfDay`**
+          - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+            - `timeZone` — string
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _oneOf_ — exactly one of:
+          - **`call`**
+            - `call` — CallConversationTarget **(required)**
+              - `callId` — string **(required)**
+              - `flowIndex` — number **(required)**
+          - **`conference`**
+            - `conference` — ConferenceConversationTarget **(required)**
+              - `conferenceId` — string **(required)**
+          - **`chat`**
+            - `chat` — ChatConversationTarget **(required)**
+              - `chatId` — string **(required)**
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interruptions` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `patience` — ListConversationsFilterFloat
+        - `from` — number _(format=float)_
+        - `to` — number _(format=float)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `match` — string
+        - `matchAny` — array
+          - _array of_ `string`
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+            - `from` — string
+            - `to` — string
+            - `timeZone` — string
+        - **`predefined`**
+          - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+            - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+            - `timeZone` — string
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+- **Response 200** (`ListConversationsAggregationsResponseContent`)
+  - `count` — number **(required)** — Total number of conversations matching the filter (before breakdown into buckets).
+  - `result` — array — Top-level distribution buckets as per the first grouping. Each bucket can contain nested child buckets for subsequent groupings.
+    - _array of_ `FlatAggregationResult`
+      - `aggregation` — union **(required)**
+        - _oneOf_ — exactly one of:
+          - **`projection`**
+            - `projection` — AggregationProjectionDefinition **(required)**
+              - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - **`direction`**
+            - `direction` — AggregationNoConfigurationDefinition **(required)**
+          - **`duration`**
+            - `duration` — AggregationDurationDefinition **(required)**
+              - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+          - **`connectTime`**
+            - `connectTime` — AggregationDurationDefinition **(required)**
+              - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+          - **`talkTime`**
+            - `talkTime` — AggregationDurationDefinition **(required)**
+              - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+          - **`waitTime`**
+            - `waitTime` — AggregationDurationDefinition **(required)**
+              - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+          - **`queueTime`**
+            - `queueTime` — AggregationDurationDefinition **(required)**
+              - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+          - **`holdTime`**
+            - `holdTime` — AggregationDurationDefinition **(required)**
+              - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+          - **`service`**
+            - `service` — AggregationNoConfigurationDefinition **(required)**
+          - **`extension`**
+            - `extension` — AggregationNoConfigurationDefinition **(required)**
+          - **`chatbot`**
+            - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+          - **`voicebot`**
+            - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+          - **`group`**
+            - `group` — AggregationNoConfigurationDefinition **(required)**
+          - **`department`**
+            - `department` — AggregationNoConfigurationDefinition **(required)**
+          - **`tag`**
+            - `tag` — AggregationNoConfigurationDefinition **(required)**
+          - **`pbx`**
+            - `pbx` — AggregationNoConfigurationDefinition **(required)**
+          - **`trunk`**
+            - `trunk` — AggregationNoConfigurationDefinition **(required)**
+          - **`queue`**
+            - `queue` — AggregationNoConfigurationDefinition **(required)**
+          - **`country`**
+            - `country` — AggregationNoConfigurationDefinition **(required)**
+          - **`location`**
+            - `location` — AggregationNoConfigurationDefinition **(required)**
+          - **`language`**
+            - `language` — AggregationNoConfigurationDefinition **(required)**
+          - **`entity`**
+            - `entity` — AggregationNoConfigurationDefinition **(required)**
+          - **`channel`**
+            - `channel` — AggregationNoConfigurationDefinition **(required)**
+          - **`recorded`**
+            - `recorded` — AggregationNoConfigurationDefinition **(required)**
+          - **`date`**
+            - `date` — AggregationDateDefinition **(required)**
+              - `timeZone` — string
+          - **`dayOfWeek`**
+            - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+              - `timeZone` — string
+          - **`hourOfDay`**
+            - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+              - `timeZone` — string
+      - `buckets` — array **(required)** — The list of buckets generated for this insight.
+        - _array of_ `FlatAggregationBucket`
+          - `key` — string **(required)** — The value for this bucket. For example, 'INBOUND' if grouping by direction, or '0-5min' if grouping by duration.
+          - `count` — number **(required)** — Number of conversations falling into this bucket.
+          - `interval` — string _(enum: `month`, `week`, `day`, `hour`, `minute`)_
+          - `filter` — ListConversationsFilter
+            - `id` — array
+              - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+            - `entity` — ListConversationsFilterEntity
+              - _(nesting depth limit — see `ListConversationsFilterEntity` in the Schemas appendix)_
+            - `participants` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `participantsToInclude` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `participantsToExclude` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `chatbots` — array
+              - _array of_ `string`
+            - `voicebots` — array
+              - _array of_ `string`
+            - `service` — array
+              - _array of_ `string`
+            - `group` — array
+              - _array of_ `string`
+            - `department` — array
+              - _array of_ `string`
+            - `tag` — array
+              - _array of_ `string`
+            - `pbx` — array
+              - _array of_ `string`
+            - `trunk` — array
+              - _array of_ `string`
+            - `queue` — array
+              - _array of_ `string`
+            - `country` — array
+              - _array of_ `string`
+            - `location` — array
+              - _array of_ `string`
+            - `phases` — array
+              - _array of_ `string`
+            - `language` — array
+              - _array of_ `string`
+            - `duration` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `connectTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `talkTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `waitTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `queueTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `holdTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `interaction` — ListConversationsFilterInteraction
+              - _(nesting depth limit — see `ListConversationsFilterInteraction` in the Schemas appendix)_
+            - `recorded` — boolean
+            - `transcribed` — boolean
+            - `direction` — ListConversationsFilterDirection
+              - _(nesting depth limit — see `ListConversationsFilterDirection` in the Schemas appendix)_
+            - `insights` — array
+              - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+            - `channel` — ListConversationsFilterChannel
+              - _(nesting depth limit — see `ListConversationsFilterChannel` in the Schemas appendix)_
+            - `date` — union
+              - _(nesting depth limit — see `ListConversationsFilterDate` in the Schemas appendix)_
+            - `dayOfWeek` — ListConversationsFilterDateIndex
+              - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+            - `hourOfDay` — ListConversationsFilterDateIndex
+              - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+            - `present` — array
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+            - `absent` — array
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+- Errors: `400`, `403`
+
+#### `POST` `/v2/insights/conversations/aggregations/nested`
+
+Lists nested drill-down data showing relationships between dimensions.
+
+- operationId: `ListConversationsNestedAggregations`
+- **Scopes**: `insights:ListConversationsNestedAggregations`, `insights:read`
+- **Parameters**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+- **Request body** (`application/json` — `ListConversationsNestedAggregationsRequestContent`) **(required)**
+  - `aggregations` — array **(required)** _(minItems=1; maxItems=4)_
+    - _array of_ `AggregationDefinition`
+      - _oneOf_ — exactly one of:
+        - **`projection`**
+          - `projection` — AggregationProjectionDefinition **(required)**
+            - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+            - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - **`direction`**
+          - `direction` — AggregationNoConfigurationDefinition **(required)**
+        - **`duration`**
+          - `duration` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`connectTime`**
+          - `connectTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`talkTime`**
+          - `talkTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`waitTime`**
+          - `waitTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`queueTime`**
+          - `queueTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`holdTime`**
+          - `holdTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`service`**
+          - `service` — AggregationNoConfigurationDefinition **(required)**
+        - **`extension`**
+          - `extension` — AggregationNoConfigurationDefinition **(required)**
+        - **`chatbot`**
+          - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+        - **`voicebot`**
+          - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+        - **`group`**
+          - `group` — AggregationNoConfigurationDefinition **(required)**
+        - **`department`**
+          - `department` — AggregationNoConfigurationDefinition **(required)**
+        - **`tag`**
+          - `tag` — AggregationNoConfigurationDefinition **(required)**
+        - **`pbx`**
+          - `pbx` — AggregationNoConfigurationDefinition **(required)**
+        - **`trunk`**
+          - `trunk` — AggregationNoConfigurationDefinition **(required)**
+        - **`queue`**
+          - `queue` — AggregationNoConfigurationDefinition **(required)**
+        - **`country`**
+          - `country` — AggregationNoConfigurationDefinition **(required)**
+        - **`location`**
+          - `location` — AggregationNoConfigurationDefinition **(required)**
+        - **`language`**
+          - `language` — AggregationNoConfigurationDefinition **(required)**
+        - **`entity`**
+          - `entity` — AggregationNoConfigurationDefinition **(required)**
+        - **`channel`**
+          - `channel` — AggregationNoConfigurationDefinition **(required)**
+        - **`recorded`**
+          - `recorded` — AggregationNoConfigurationDefinition **(required)**
+        - **`date`**
+          - `date` — AggregationDateDefinition **(required)**
+            - `timeZone` — string
+        - **`dayOfWeek`**
+          - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+            - `timeZone` — string
+        - **`hourOfDay`**
+          - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+            - `timeZone` — string
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _oneOf_ — exactly one of:
+          - **`call`**
+            - `call` — CallConversationTarget **(required)**
+              - `callId` — string **(required)**
+              - `flowIndex` — number **(required)**
+          - **`conference`**
+            - `conference` — ConferenceConversationTarget **(required)**
+              - `conferenceId` — string **(required)**
+          - **`chat`**
+            - `chat` — ChatConversationTarget **(required)**
+              - `chatId` — string **(required)**
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interruptions` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `patience` — ListConversationsFilterFloat
+        - `from` — number _(format=float)_
+        - `to` — number _(format=float)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `match` — string
+        - `matchAny` — array
+          - _array of_ `string`
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+            - `from` — string
+            - `to` — string
+            - `timeZone` — string
+        - **`predefined`**
+          - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+            - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+            - `timeZone` — string
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+- **Response 200** (`ListConversationsNestedAggregationsResponseContent`)
+  - `count` — number **(required)** — Total number of conversations matching the filter (before breakdown into buckets).
+  - `result` — AggregationResult
+    - `aggregation` — union **(required)**
+      - _oneOf_ — exactly one of:
+        - **`projection`**
+          - `projection` — AggregationProjectionDefinition **(required)**
+            - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+            - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - **`direction`**
+          - `direction` — AggregationNoConfigurationDefinition **(required)**
+        - **`duration`**
+          - `duration` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`connectTime`**
+          - `connectTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`talkTime`**
+          - `talkTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`waitTime`**
+          - `waitTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`queueTime`**
+          - `queueTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`holdTime`**
+          - `holdTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`service`**
+          - `service` — AggregationNoConfigurationDefinition **(required)**
+        - **`extension`**
+          - `extension` — AggregationNoConfigurationDefinition **(required)**
+        - **`chatbot`**
+          - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+        - **`voicebot`**
+          - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+        - **`group`**
+          - `group` — AggregationNoConfigurationDefinition **(required)**
+        - **`department`**
+          - `department` — AggregationNoConfigurationDefinition **(required)**
+        - **`tag`**
+          - `tag` — AggregationNoConfigurationDefinition **(required)**
+        - **`pbx`**
+          - `pbx` — AggregationNoConfigurationDefinition **(required)**
+        - **`trunk`**
+          - `trunk` — AggregationNoConfigurationDefinition **(required)**
+        - **`queue`**
+          - `queue` — AggregationNoConfigurationDefinition **(required)**
+        - **`country`**
+          - `country` — AggregationNoConfigurationDefinition **(required)**
+        - **`location`**
+          - `location` — AggregationNoConfigurationDefinition **(required)**
+        - **`language`**
+          - `language` — AggregationNoConfigurationDefinition **(required)**
+        - **`entity`**
+          - `entity` — AggregationNoConfigurationDefinition **(required)**
+        - **`channel`**
+          - `channel` — AggregationNoConfigurationDefinition **(required)**
+        - **`recorded`**
+          - `recorded` — AggregationNoConfigurationDefinition **(required)**
+        - **`date`**
+          - `date` — AggregationDateDefinition **(required)**
+            - `timeZone` — string
+        - **`dayOfWeek`**
+          - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+            - `timeZone` — string
+        - **`hourOfDay`**
+          - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+            - `timeZone` — string
+    - `buckets` — array **(required)** — The list of buckets generated for this aggregation level.
+      - _array of_ `AggregationBucket`
+        - `key` — string **(required)** — The value for this bucket. For example, 'INBOUND' if grouping by direction, or '0-5min' if grouping by duration.
+        - `count` — number **(required)** — Number of conversations falling into this bucket.
+        - `interval` — string _(enum: `month`, `week`, `day`, `hour`, `minute`)_
+        - `filter` — ListConversationsFilter
+          - `id` — array
+            - _array of_ `ConversationTarget`
+              - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+          - `entity` — ListConversationsFilterEntity
+            - `call` — boolean
+            - `conference` — boolean
+            - `chat` — boolean
+          - `participants` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `participantsToInclude` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `participantsToExclude` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `chatbots` — array
+            - _array of_ `string`
+          - `voicebots` — array
+            - _array of_ `string`
+          - `service` — array
+            - _array of_ `string`
+          - `group` — array
+            - _array of_ `string`
+          - `department` — array
+            - _array of_ `string`
+          - `tag` — array
+            - _array of_ `string`
+          - `pbx` — array
+            - _array of_ `string`
+          - `trunk` — array
+            - _array of_ `string`
+          - `queue` — array
+            - _array of_ `string`
+          - `country` — array
+            - _array of_ `string`
+          - `location` — array
+            - _array of_ `string`
+          - `phases` — array
+            - _array of_ `string`
+          - `language` — array
+            - _array of_ `string`
+          - `duration` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `connectTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `talkTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `waitTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `queueTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `holdTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `interaction` — ListConversationsFilterInteraction
+            - `talkRatio` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `wordsPerMinute` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `interruptions` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `patience` — ListConversationsFilterFloat
+              - _(nesting depth limit — see `ListConversationsFilterFloat` in the Schemas appendix)_
+            - `longestMonologue` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `longestCustomerStory` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+          - `recorded` — boolean
+          - `transcribed` — boolean
+          - `direction` — ListConversationsFilterDirection
+            - `inbound` — boolean
+            - `outbound` — boolean
+            - `internal` — boolean
+          - `insights` — array
+            - _array of_ `ListConversationsFilterInsight`
+              - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+          - `channel` — ListConversationsFilterChannel
+            - `sms` — boolean
+            - `whatsapp` — boolean
+            - `kite` — boolean
+          - `date` — union
+            - _oneOf_ — exactly one of:
+              - **`absolute`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`predefined`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+          - `dayOfWeek` — ListConversationsFilterDateIndex
+            - `index` — number
+            - `timeZone` — string
+          - `hourOfDay` — ListConversationsFilterDateIndex
+            - `index` — number
+            - `timeZone` — string
+          - `present` — array
+            - _array of_ `ListConversationsFilterField`
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+          - `absent` — array
+            - _array of_ `ListConversationsFilterField`
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+        - `aggregation` — AggregationResult
+          - _(nesting depth limit — see `AggregationResult` in the Schemas appendix)_
+- Errors: `400`, `403`
+
+#### `POST` `/v2/insights/conversations/count`
+
+Insights API are currently in active development. All interfaces are subject to change.
+
+- operationId: `QueryConversationsCount`
+- **Scopes**: `insights:QueryConversationsCount`, `insights:read`
+- **Parameters**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+- **Request body** (`application/json` — `QueryConversationsCountRequestContent`)
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _oneOf_ — exactly one of:
+          - **`call`**
+            - `call` — CallConversationTarget **(required)**
+              - `callId` — string **(required)**
+              - `flowIndex` — number **(required)**
+          - **`conference`**
+            - `conference` — ConferenceConversationTarget **(required)**
+              - `conferenceId` — string **(required)**
+          - **`chat`**
+            - `chat` — ChatConversationTarget **(required)**
+              - `chatId` — string **(required)**
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interruptions` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `patience` — ListConversationsFilterFloat
+        - `from` — number _(format=float)_
+        - `to` — number _(format=float)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `match` — string
+        - `matchAny` — array
+          - _array of_ `string`
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+            - `from` — string
+            - `to` — string
+            - `timeZone` — string
+        - **`predefined`**
+          - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+            - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+            - `timeZone` — string
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+- **Response 200** (`QueryConversationsCountResponseContent`)
+  - `count` — number **(required)** — Total number of conversations matching the filter.
+- Errors: `400`, `403`
+
+#### `POST` `/v2/insights/conversations/insights`
+
+> ⚠️ Route marquée `deprecated` dans la spécification publiée.
+
+Lists multiple independent insights in parallel.
+
+- operationId: `ListConversationsInsights`
+- **Scopes**: `insights:ListConversationsInsights`, `insights:read`
+- **Parameters**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+- **Request body** (`application/json` — `ListConversationsInsightsRequestContent`)
+  - `insights` — array — A list of insights to select. Default - all projections, direction, duration, connectTime, talkTime, waitTime, queueTime, and holdTime.
+    - _array of_ `AggregationDefinition`
+      - _oneOf_ — exactly one of:
+        - **`projection`**
+          - `projection` — AggregationProjectionDefinition **(required)**
+            - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+            - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - **`direction`**
+          - `direction` — AggregationNoConfigurationDefinition **(required)**
+        - **`duration`**
+          - `duration` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`connectTime`**
+          - `connectTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`talkTime`**
+          - `talkTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`waitTime`**
+          - `waitTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`queueTime`**
+          - `queueTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`holdTime`**
+          - `holdTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`service`**
+          - `service` — AggregationNoConfigurationDefinition **(required)**
+        - **`extension`**
+          - `extension` — AggregationNoConfigurationDefinition **(required)**
+        - **`chatbot`**
+          - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+        - **`voicebot`**
+          - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+        - **`group`**
+          - `group` — AggregationNoConfigurationDefinition **(required)**
+        - **`department`**
+          - `department` — AggregationNoConfigurationDefinition **(required)**
+        - **`tag`**
+          - `tag` — AggregationNoConfigurationDefinition **(required)**
+        - **`pbx`**
+          - `pbx` — AggregationNoConfigurationDefinition **(required)**
+        - **`trunk`**
+          - `trunk` — AggregationNoConfigurationDefinition **(required)**
+        - **`queue`**
+          - `queue` — AggregationNoConfigurationDefinition **(required)**
+        - **`country`**
+          - `country` — AggregationNoConfigurationDefinition **(required)**
+        - **`location`**
+          - `location` — AggregationNoConfigurationDefinition **(required)**
+        - **`language`**
+          - `language` — AggregationNoConfigurationDefinition **(required)**
+        - **`entity`**
+          - `entity` — AggregationNoConfigurationDefinition **(required)**
+        - **`channel`**
+          - `channel` — AggregationNoConfigurationDefinition **(required)**
+        - **`recorded`**
+          - `recorded` — AggregationNoConfigurationDefinition **(required)**
+        - **`date`**
+          - `date` — AggregationDateDefinition **(required)**
+            - `timeZone` — string
+        - **`dayOfWeek`**
+          - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+            - `timeZone` — string
+        - **`hourOfDay`**
+          - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+            - `timeZone` — string
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _oneOf_ — exactly one of:
+          - **`call`**
+            - `call` — CallConversationTarget **(required)**
+              - `callId` — string **(required)**
+              - `flowIndex` — number **(required)**
+          - **`conference`**
+            - `conference` — ConferenceConversationTarget **(required)**
+              - `conferenceId` — string **(required)**
+          - **`chat`**
+            - `chat` — ChatConversationTarget **(required)**
+              - `chatId` — string **(required)**
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interruptions` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `patience` — ListConversationsFilterFloat
+        - `from` — number _(format=float)_
+        - `to` — number _(format=float)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `match` — string
+        - `matchAny` — array
+          - _array of_ `string`
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+            - `from` — string
+            - `to` — string
+            - `timeZone` — string
+        - **`predefined`**
+          - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+            - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+            - `timeZone` — string
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+- **Response 200** (`ListConversationsInsightsResponseContent`)
+  - `count` — number **(required)** — Total number of conversations matching the filter (before breakdown into buckets).
+  - `result` — array — Top-level distribution buckets as per the first grouping. Each bucket can contain nested child buckets for subsequent groupings. _(deprecated)_
+    - _array of_ `InsightResult`
+      - `insight` — union **(required)**
+        - _oneOf_ — exactly one of:
+          - **`projection`**
+            - `projection` — AggregationProjectionDefinition **(required)**
+              - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - **`direction`**
+            - `direction` — AggregationNoConfigurationDefinition **(required)**
+          - **`duration`**
+            - `duration` — AggregationDurationDefinition **(required)**
+              - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+          - **`connectTime`**
+            - `connectTime` — AggregationDurationDefinition **(required)**
+              - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+          - **`talkTime`**
+            - `talkTime` — AggregationDurationDefinition **(required)**
+              - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+          - **`waitTime`**
+            - `waitTime` — AggregationDurationDefinition **(required)**
+              - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+          - **`queueTime`**
+            - `queueTime` — AggregationDurationDefinition **(required)**
+              - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+          - **`holdTime`**
+            - `holdTime` — AggregationDurationDefinition **(required)**
+              - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+          - **`service`**
+            - `service` — AggregationNoConfigurationDefinition **(required)**
+          - **`extension`**
+            - `extension` — AggregationNoConfigurationDefinition **(required)**
+          - **`chatbot`**
+            - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+          - **`voicebot`**
+            - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+          - **`group`**
+            - `group` — AggregationNoConfigurationDefinition **(required)**
+          - **`department`**
+            - `department` — AggregationNoConfigurationDefinition **(required)**
+          - **`tag`**
+            - `tag` — AggregationNoConfigurationDefinition **(required)**
+          - **`pbx`**
+            - `pbx` — AggregationNoConfigurationDefinition **(required)**
+          - **`trunk`**
+            - `trunk` — AggregationNoConfigurationDefinition **(required)**
+          - **`queue`**
+            - `queue` — AggregationNoConfigurationDefinition **(required)**
+          - **`country`**
+            - `country` — AggregationNoConfigurationDefinition **(required)**
+          - **`location`**
+            - `location` — AggregationNoConfigurationDefinition **(required)**
+          - **`language`**
+            - `language` — AggregationNoConfigurationDefinition **(required)**
+          - **`entity`**
+            - `entity` — AggregationNoConfigurationDefinition **(required)**
+          - **`channel`**
+            - `channel` — AggregationNoConfigurationDefinition **(required)**
+          - **`recorded`**
+            - `recorded` — AggregationNoConfigurationDefinition **(required)**
+          - **`date`**
+            - `date` — AggregationDateDefinition **(required)**
+              - `timeZone` — string
+          - **`dayOfWeek`**
+            - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+              - `timeZone` — string
+          - **`hourOfDay`**
+            - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+              - `timeZone` — string
+      - `buckets` — array **(required)** — The list of buckets generated for this insight. _(deprecated)_
+        - _array of_ `InsightsBucket`
+          - `key` — string **(required)** — The value for this bucket. For example, 'INBOUND' if grouping by direction, or '0-5min' if grouping by duration.
+          - `count` — number **(required)** — Number of conversations falling into this bucket.
+          - `filter` — ListConversationsFilter
+            - `id` — array
+              - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+            - `entity` — ListConversationsFilterEntity
+              - _(nesting depth limit — see `ListConversationsFilterEntity` in the Schemas appendix)_
+            - `participants` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `participantsToInclude` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `participantsToExclude` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `chatbots` — array
+              - _array of_ `string`
+            - `voicebots` — array
+              - _array of_ `string`
+            - `service` — array
+              - _array of_ `string`
+            - `group` — array
+              - _array of_ `string`
+            - `department` — array
+              - _array of_ `string`
+            - `tag` — array
+              - _array of_ `string`
+            - `pbx` — array
+              - _array of_ `string`
+            - `trunk` — array
+              - _array of_ `string`
+            - `queue` — array
+              - _array of_ `string`
+            - `country` — array
+              - _array of_ `string`
+            - `location` — array
+              - _array of_ `string`
+            - `phases` — array
+              - _array of_ `string`
+            - `language` — array
+              - _array of_ `string`
+            - `duration` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `connectTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `talkTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `waitTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `queueTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `holdTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `interaction` — ListConversationsFilterInteraction
+              - _(nesting depth limit — see `ListConversationsFilterInteraction` in the Schemas appendix)_
+            - `recorded` — boolean
+            - `transcribed` — boolean
+            - `direction` — ListConversationsFilterDirection
+              - _(nesting depth limit — see `ListConversationsFilterDirection` in the Schemas appendix)_
+            - `insights` — array
+              - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+            - `channel` — ListConversationsFilterChannel
+              - _(nesting depth limit — see `ListConversationsFilterChannel` in the Schemas appendix)_
+            - `date` — union
+              - _(nesting depth limit — see `ListConversationsFilterDate` in the Schemas appendix)_
+            - `dayOfWeek` — ListConversationsFilterDateIndex
+              - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+            - `hourOfDay` — ListConversationsFilterDateIndex
+              - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+            - `present` — array
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+            - `absent` — array
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+- Errors: `400`, `403`
+
+#### `POST` `/v2/insights/conversations/insights/aggregations`
+
+> ⚠️ Route marquée `deprecated` dans la spécification publiée.
+
+Lists nested drill-down data showing relationships between dimensions.
+
+- operationId: `ListConversationsInsightsAggregations`
+- **Scopes**: `insights:ListConversationsInsightsAggregations`, `insights:read`
+- **Parameters**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+- **Request body** (`application/json` — `ListConversationsInsightsAggregationsRequestContent`) **(required)**
+  - `aggregations` — array **(required)** _(minItems=1; maxItems=4)_
+    - _array of_ `AggregationDefinition`
+      - _oneOf_ — exactly one of:
+        - **`projection`**
+          - `projection` — AggregationProjectionDefinition **(required)**
+            - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+            - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - **`direction`**
+          - `direction` — AggregationNoConfigurationDefinition **(required)**
+        - **`duration`**
+          - `duration` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`connectTime`**
+          - `connectTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`talkTime`**
+          - `talkTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`waitTime`**
+          - `waitTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`queueTime`**
+          - `queueTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`holdTime`**
+          - `holdTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`service`**
+          - `service` — AggregationNoConfigurationDefinition **(required)**
+        - **`extension`**
+          - `extension` — AggregationNoConfigurationDefinition **(required)**
+        - **`chatbot`**
+          - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+        - **`voicebot`**
+          - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+        - **`group`**
+          - `group` — AggregationNoConfigurationDefinition **(required)**
+        - **`department`**
+          - `department` — AggregationNoConfigurationDefinition **(required)**
+        - **`tag`**
+          - `tag` — AggregationNoConfigurationDefinition **(required)**
+        - **`pbx`**
+          - `pbx` — AggregationNoConfigurationDefinition **(required)**
+        - **`trunk`**
+          - `trunk` — AggregationNoConfigurationDefinition **(required)**
+        - **`queue`**
+          - `queue` — AggregationNoConfigurationDefinition **(required)**
+        - **`country`**
+          - `country` — AggregationNoConfigurationDefinition **(required)**
+        - **`location`**
+          - `location` — AggregationNoConfigurationDefinition **(required)**
+        - **`language`**
+          - `language` — AggregationNoConfigurationDefinition **(required)**
+        - **`entity`**
+          - `entity` — AggregationNoConfigurationDefinition **(required)**
+        - **`channel`**
+          - `channel` — AggregationNoConfigurationDefinition **(required)**
+        - **`recorded`**
+          - `recorded` — AggregationNoConfigurationDefinition **(required)**
+        - **`date`**
+          - `date` — AggregationDateDefinition **(required)**
+            - `timeZone` — string
+        - **`dayOfWeek`**
+          - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+            - `timeZone` — string
+        - **`hourOfDay`**
+          - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+            - `timeZone` — string
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _oneOf_ — exactly one of:
+          - **`call`**
+            - `call` — CallConversationTarget **(required)**
+              - `callId` — string **(required)**
+              - `flowIndex` — number **(required)**
+          - **`conference`**
+            - `conference` — ConferenceConversationTarget **(required)**
+              - `conferenceId` — string **(required)**
+          - **`chat`**
+            - `chat` — ChatConversationTarget **(required)**
+              - `chatId` — string **(required)**
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interruptions` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `patience` — ListConversationsFilterFloat
+        - `from` — number _(format=float)_
+        - `to` — number _(format=float)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `match` — string
+        - `matchAny` — array
+          - _array of_ `string`
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+            - `from` — string
+            - `to` — string
+            - `timeZone` — string
+        - **`predefined`**
+          - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+            - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+            - `timeZone` — string
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+- **Response 200** (`ListConversationsInsightsAggregationsResponseContent`)
+  - `count` — number **(required)** — Total number of conversations matching the filter (before breakdown into buckets).
+  - `result` — AggregationResult
+    - `aggregation` — union **(required)**
+      - _oneOf_ — exactly one of:
+        - **`projection`**
+          - `projection` — AggregationProjectionDefinition **(required)**
+            - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+            - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - **`direction`**
+          - `direction` — AggregationNoConfigurationDefinition **(required)**
+        - **`duration`**
+          - `duration` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`connectTime`**
+          - `connectTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`talkTime`**
+          - `talkTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`waitTime`**
+          - `waitTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`queueTime`**
+          - `queueTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`holdTime`**
+          - `holdTime` — AggregationDurationDefinition **(required)**
+            - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+              - _array of_ `DurationGroupBucket`
+                - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+        - **`service`**
+          - `service` — AggregationNoConfigurationDefinition **(required)**
+        - **`extension`**
+          - `extension` — AggregationNoConfigurationDefinition **(required)**
+        - **`chatbot`**
+          - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+        - **`voicebot`**
+          - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+        - **`group`**
+          - `group` — AggregationNoConfigurationDefinition **(required)**
+        - **`department`**
+          - `department` — AggregationNoConfigurationDefinition **(required)**
+        - **`tag`**
+          - `tag` — AggregationNoConfigurationDefinition **(required)**
+        - **`pbx`**
+          - `pbx` — AggregationNoConfigurationDefinition **(required)**
+        - **`trunk`**
+          - `trunk` — AggregationNoConfigurationDefinition **(required)**
+        - **`queue`**
+          - `queue` — AggregationNoConfigurationDefinition **(required)**
+        - **`country`**
+          - `country` — AggregationNoConfigurationDefinition **(required)**
+        - **`location`**
+          - `location` — AggregationNoConfigurationDefinition **(required)**
+        - **`language`**
+          - `language` — AggregationNoConfigurationDefinition **(required)**
+        - **`entity`**
+          - `entity` — AggregationNoConfigurationDefinition **(required)**
+        - **`channel`**
+          - `channel` — AggregationNoConfigurationDefinition **(required)**
+        - **`recorded`**
+          - `recorded` — AggregationNoConfigurationDefinition **(required)**
+        - **`date`**
+          - `date` — AggregationDateDefinition **(required)**
+            - `timeZone` — string
+        - **`dayOfWeek`**
+          - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+            - `timeZone` — string
+        - **`hourOfDay`**
+          - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+            - `timeZone` — string
+    - `buckets` — array **(required)** — The list of buckets generated for this aggregation level.
+      - _array of_ `AggregationBucket`
+        - `key` — string **(required)** — The value for this bucket. For example, 'INBOUND' if grouping by direction, or '0-5min' if grouping by duration.
+        - `count` — number **(required)** — Number of conversations falling into this bucket.
+        - `interval` — string _(enum: `month`, `week`, `day`, `hour`, `minute`)_
+        - `filter` — ListConversationsFilter
+          - `id` — array
+            - _array of_ `ConversationTarget`
+              - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+          - `entity` — ListConversationsFilterEntity
+            - `call` — boolean
+            - `conference` — boolean
+            - `chat` — boolean
+          - `participants` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `participantsToInclude` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `participantsToExclude` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `chatbots` — array
+            - _array of_ `string`
+          - `voicebots` — array
+            - _array of_ `string`
+          - `service` — array
+            - _array of_ `string`
+          - `group` — array
+            - _array of_ `string`
+          - `department` — array
+            - _array of_ `string`
+          - `tag` — array
+            - _array of_ `string`
+          - `pbx` — array
+            - _array of_ `string`
+          - `trunk` — array
+            - _array of_ `string`
+          - `queue` — array
+            - _array of_ `string`
+          - `country` — array
+            - _array of_ `string`
+          - `location` — array
+            - _array of_ `string`
+          - `phases` — array
+            - _array of_ `string`
+          - `language` — array
+            - _array of_ `string`
+          - `duration` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `connectTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `talkTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `waitTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `queueTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `holdTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `interaction` — ListConversationsFilterInteraction
+            - `talkRatio` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `wordsPerMinute` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `interruptions` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `patience` — ListConversationsFilterFloat
+              - _(nesting depth limit — see `ListConversationsFilterFloat` in the Schemas appendix)_
+            - `longestMonologue` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `longestCustomerStory` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+          - `recorded` — boolean
+          - `transcribed` — boolean
+          - `direction` — ListConversationsFilterDirection
+            - `inbound` — boolean
+            - `outbound` — boolean
+            - `internal` — boolean
+          - `insights` — array
+            - _array of_ `ListConversationsFilterInsight`
+              - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+          - `channel` — ListConversationsFilterChannel
+            - `sms` — boolean
+            - `whatsapp` — boolean
+            - `kite` — boolean
+          - `date` — union
+            - _oneOf_ — exactly one of:
+              - **`absolute`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`predefined`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+          - `dayOfWeek` — ListConversationsFilterDateIndex
+            - `index` — number
+            - `timeZone` — string
+          - `hourOfDay` — ListConversationsFilterDateIndex
+            - `index` — number
+            - `timeZone` — string
+          - `present` — array
+            - _array of_ `ListConversationsFilterField`
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+          - `absent` — array
+            - _array of_ `ListConversationsFilterField`
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+        - `aggregation` — AggregationResult
+          - _(nesting depth limit — see `AggregationResult` in the Schemas appendix)_
+- Errors: `400`, `403`
+
+#### `GET` `/v2/insights/conversations/tags`
+
+Lists raw tag values matching a case-sensitive prefix for conversations autocomplete.
+
+- operationId: `ListConversationsTags`
+- **Scopes**: `insights:ListConversationsTags`, `insights:read`
+- **Parameters**
+  - `company` (query) — string _(minLen=3; maxLen=30)_
+  - `tagPrefix` (query) — string **(required)** — Case-sensitive tag prefix used to filter autocomplete results. _(minLen=1; maxLen=128)_
+  - `limit` (query) — number — Maximum number of matching tags to return. Defaults to 10. _(default=10; min=1; max=20)_
+- **Response 200** (`ListConversationsTagsResponseContent`)
+  - `tags` — array **(required)**
+    - _array of_ `string`
+- Errors: `400`, `403`
+
+#### `GET` `/v2/insights/dashboards`
+
+Lists all dashboard and pinned configurations available to the user.
+
+- operationId: `ListDashboards`
+- **Scopes**: `insights:ListDashboards`, `insights:read`
+- **Parameters**
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Response 200** (`ListDashboardsResponseContent`)
+  - `dashboards` — array **(required)**
+    - _array of_ `Dashboard`
+      - `name` — string **(required)** _(minLen=1; maxLen=128)_
+      - `description` — string _(minLen=1; maxLen=4096)_
+      - `id` — string **(required)** _(minLen=1; maxLen=32)_
+      - `createdAt` — string **(required)**
+      - `createdBy` — string **(required)**
+      - `createdByName` — string **(required)**
+      - `updatedAt` — string
+      - `metadata` — DashboardMetadata
+        - `predefined` — boolean
+        - `removable` — boolean
+        - `sortable` — boolean
+      - `access` — DashboardAccess
+        - `visibility` — string _(enum: `explicit`, `organization`)_
+        - `grants` — array
+          - _array of_ `DashboardGrant`
+            - `permission` — string **(required)** _(enum: `view`, `edit`)_
+            - `principal` — union **(required)**
+              - _(nesting depth limit — see `DashboardPrincipal` in the Schemas appendix)_
+      - `definition` — DashboardDefinition **(required)**
+        - `sheets` — array
+          - _array of_ `DashboardSheet`
+            - `id` — string **(required)** _(minLen=8; maxLen=8)_
+            - `name` — string **(required)** _(minLen=1; maxLen=128)_
+            - `visuals` — array **(required)**
+              - _(nesting depth limit — see `DashboardVisual` in the Schemas appendix)_
+            - `filter` — ListConversationsFilter
+              - _(nesting depth limit — see `ListConversationsFilter` in the Schemas appendix)_
+        - `filter` — ListConversationsFilter
+          - `id` — array
+            - _array of_ `ConversationTarget`
+              - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+          - `entity` — ListConversationsFilterEntity
+            - `call` — boolean
+            - `conference` — boolean
+            - `chat` — boolean
+          - `participants` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `participantsToInclude` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `participantsToExclude` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `chatbots` — array
+            - _array of_ `string`
+          - `voicebots` — array
+            - _array of_ `string`
+          - `service` — array
+            - _array of_ `string`
+          - `group` — array
+            - _array of_ `string`
+          - `department` — array
+            - _array of_ `string`
+          - `tag` — array
+            - _array of_ `string`
+          - `pbx` — array
+            - _array of_ `string`
+          - `trunk` — array
+            - _array of_ `string`
+          - `queue` — array
+            - _array of_ `string`
+          - `country` — array
+            - _array of_ `string`
+          - `location` — array
+            - _array of_ `string`
+          - `phases` — array
+            - _array of_ `string`
+          - `language` — array
+            - _array of_ `string`
+          - `duration` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `connectTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `talkTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `waitTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `queueTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `holdTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `interaction` — ListConversationsFilterInteraction
+            - `talkRatio` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `wordsPerMinute` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `interruptions` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `patience` — ListConversationsFilterFloat
+              - _(nesting depth limit — see `ListConversationsFilterFloat` in the Schemas appendix)_
+            - `longestMonologue` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `longestCustomerStory` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+          - `recorded` — boolean
+          - `transcribed` — boolean
+          - `direction` — ListConversationsFilterDirection
+            - `inbound` — boolean
+            - `outbound` — boolean
+            - `internal` — boolean
+          - `insights` — array
+            - _array of_ `ListConversationsFilterInsight`
+              - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+          - `channel` — ListConversationsFilterChannel
+            - `sms` — boolean
+            - `whatsapp` — boolean
+            - `kite` — boolean
+          - `date` — union
+            - _oneOf_ — exactly one of:
+              - **`absolute`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`predefined`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+          - `dayOfWeek` — ListConversationsFilterDateIndex
+            - `index` — number
+            - `timeZone` — string
+          - `hourOfDay` — ListConversationsFilterDateIndex
+            - `index` — number
+            - `timeZone` — string
+          - `present` — array
+            - _array of_ `ListConversationsFilterField`
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+          - `absent` — array
+            - _array of_ `ListConversationsFilterField`
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+- Errors: `400`, `403`
+
+#### `POST` `/v2/insights/dashboards`
+
+Creates a new dashboard with specified configuration.
+
+- operationId: `CreateDashboard`
+- **Scopes**: `insights:CreateDashboard`
+- **Parameters**
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Request body** (`application/json` — `CreateDashboardRequestContent`) **(required)**
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `access` — DashboardAccess
+    - `visibility` — string _(enum: `explicit`, `organization`)_
+    - `grants` — array
+      - _array of_ `DashboardGrant`
+        - `permission` — string **(required)** _(enum: `view`, `edit`)_
+        - `principal` — union **(required)**
+          - _oneOf_ — exactly one of:
+            - **`userId`**
+              - `userId` — string **(required)** _(minLen=12; maxLen=12)_
+            - **`groupId`**
+              - `groupId` — string **(required)**
+  - `definition` — DashboardDefinition **(required)**
+    - `sheets` — array
+      - _array of_ `DashboardSheet`
+        - `id` — string **(required)** _(minLen=8; maxLen=8)_
+        - `name` — string **(required)** _(minLen=1; maxLen=128)_
+        - `visuals` — array **(required)**
+          - _array of_ `DashboardVisual`
+            - `id` — string **(required)** _(minLen=12; maxLen=12)_
+            - `position` — DashboardVisualGrid **(required)**
+              - _(nesting depth limit — see `DashboardVisualGrid` in the Schemas appendix)_
+            - `component` — any **(required)**
+            - `filter` — ListConversationsFilter
+              - _(nesting depth limit — see `ListConversationsFilter` in the Schemas appendix)_
+        - `filter` — ListConversationsFilter
+          - `id` — array
+            - _array of_ `ConversationTarget`
+              - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+          - `entity` — ListConversationsFilterEntity
+            - `call` — boolean
+            - `conference` — boolean
+            - `chat` — boolean
+          - `participants` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `participantsToInclude` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `participantsToExclude` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `chatbots` — array
+            - _array of_ `string`
+          - `voicebots` — array
+            - _array of_ `string`
+          - `service` — array
+            - _array of_ `string`
+          - `group` — array
+            - _array of_ `string`
+          - `department` — array
+            - _array of_ `string`
+          - `tag` — array
+            - _array of_ `string`
+          - `pbx` — array
+            - _array of_ `string`
+          - `trunk` — array
+            - _array of_ `string`
+          - `queue` — array
+            - _array of_ `string`
+          - `country` — array
+            - _array of_ `string`
+          - `location` — array
+            - _array of_ `string`
+          - `phases` — array
+            - _array of_ `string`
+          - `language` — array
+            - _array of_ `string`
+          - `duration` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `connectTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `talkTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `waitTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `queueTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `holdTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `interaction` — ListConversationsFilterInteraction
+            - `talkRatio` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `wordsPerMinute` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `interruptions` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `patience` — ListConversationsFilterFloat
+              - _(nesting depth limit — see `ListConversationsFilterFloat` in the Schemas appendix)_
+            - `longestMonologue` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `longestCustomerStory` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+          - `recorded` — boolean
+          - `transcribed` — boolean
+          - `direction` — ListConversationsFilterDirection
+            - `inbound` — boolean
+            - `outbound` — boolean
+            - `internal` — boolean
+          - `insights` — array
+            - _array of_ `ListConversationsFilterInsight`
+              - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+          - `channel` — ListConversationsFilterChannel
+            - `sms` — boolean
+            - `whatsapp` — boolean
+            - `kite` — boolean
+          - `date` — union
+            - _oneOf_ — exactly one of:
+              - **`absolute`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`predefined`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+          - `dayOfWeek` — ListConversationsFilterDateIndex
+            - `index` — number
+            - `timeZone` — string
+          - `hourOfDay` — ListConversationsFilterDateIndex
+            - `index` — number
+            - `timeZone` — string
+          - `present` — array
+            - _array of_ `ListConversationsFilterField`
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+          - `absent` — array
+            - _array of_ `ListConversationsFilterField`
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _array of_ `ConversationTarget`
+          - _oneOf_ — exactly one of:
+            - **`call`**
+              - `call` — CallConversationTarget **(required)**
+                - _(nesting depth limit — see `CallConversationTarget` in the Schemas appendix)_
+            - **`conference`**
+              - `conference` — ConferenceConversationTarget **(required)**
+                - _(nesting depth limit — see `ConferenceConversationTarget` in the Schemas appendix)_
+            - **`chat`**
+              - `chat` — ChatConversationTarget **(required)**
+                - _(nesting depth limit — see `ChatConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - `call` — boolean
+        - `conference` — boolean
+        - `chat` — boolean
+      - `participants` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToInclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToExclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `connectTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `talkTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `waitTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `queueTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `holdTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interaction` — ListConversationsFilterInteraction
+        - `talkRatio` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `wordsPerMinute` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `interruptions` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `patience` — ListConversationsFilterFloat
+          - `from` — number _(format=float)_
+          - `to` — number _(format=float)_
+        - `longestMonologue` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `longestCustomerStory` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - `inbound` — boolean
+        - `outbound` — boolean
+        - `internal` — boolean
+      - `insights` — array
+        - _array of_ `ListConversationsFilterInsight`
+          - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `match` — string
+          - `matchAny` — array
+            - _array of_ `string`
+      - `channel` — ListConversationsFilterChannel
+        - `sms` — boolean
+        - `whatsapp` — boolean
+        - `kite` — boolean
+      - `date` — union
+        - _oneOf_ — exactly one of:
+          - **`absolute`**
+            - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+              - `from` — string
+              - `to` — string
+              - `timeZone` — string
+          - **`predefined`**
+            - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+              - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+              - `timeZone` — string
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `present` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+      - `absent` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+- **Response 200** (`CreateDashboardResponseContent`)
+  - `dashboard` — Dashboard **(required)**
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `id` — string **(required)** _(minLen=1; maxLen=32)_
+    - `createdAt` — string **(required)**
+    - `createdBy` — string **(required)**
+    - `createdByName` — string **(required)**
+    - `updatedAt` — string
+    - `metadata` — DashboardMetadata
+      - `predefined` — boolean
+      - `removable` — boolean
+      - `sortable` — boolean
+    - `access` — DashboardAccess
+      - `visibility` — string _(enum: `explicit`, `organization`)_
+      - `grants` — array
+        - _array of_ `DashboardGrant`
+          - `permission` — string **(required)** _(enum: `view`, `edit`)_
+          - `principal` — union **(required)**
+            - _oneOf_ — exactly one of:
+              - **`userId`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`groupId`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `definition` — DashboardDefinition **(required)**
+      - `sheets` — array
+        - _array of_ `DashboardSheet`
+          - `id` — string **(required)** _(minLen=8; maxLen=8)_
+          - `name` — string **(required)** _(minLen=1; maxLen=128)_
+          - `visuals` — array **(required)**
+            - _array of_ `DashboardVisual`
+              - _(nesting depth limit — see `DashboardVisual` in the Schemas appendix)_
+          - `filter` — ListConversationsFilter
+            - `id` — array
+              - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+            - `entity` — ListConversationsFilterEntity
+              - _(nesting depth limit — see `ListConversationsFilterEntity` in the Schemas appendix)_
+            - `participants` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `participantsToInclude` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `participantsToExclude` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `chatbots` — array
+              - _array of_ `string`
+            - `voicebots` — array
+              - _array of_ `string`
+            - `service` — array
+              - _array of_ `string`
+            - `group` — array
+              - _array of_ `string`
+            - `department` — array
+              - _array of_ `string`
+            - `tag` — array
+              - _array of_ `string`
+            - `pbx` — array
+              - _array of_ `string`
+            - `trunk` — array
+              - _array of_ `string`
+            - `queue` — array
+              - _array of_ `string`
+            - `country` — array
+              - _array of_ `string`
+            - `location` — array
+              - _array of_ `string`
+            - `phases` — array
+              - _array of_ `string`
+            - `language` — array
+              - _array of_ `string`
+            - `duration` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `connectTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `talkTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `waitTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `queueTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `holdTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `interaction` — ListConversationsFilterInteraction
+              - _(nesting depth limit — see `ListConversationsFilterInteraction` in the Schemas appendix)_
+            - `recorded` — boolean
+            - `transcribed` — boolean
+            - `direction` — ListConversationsFilterDirection
+              - _(nesting depth limit — see `ListConversationsFilterDirection` in the Schemas appendix)_
+            - `insights` — array
+              - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+            - `channel` — ListConversationsFilterChannel
+              - _(nesting depth limit — see `ListConversationsFilterChannel` in the Schemas appendix)_
+            - `date` — union
+              - _(nesting depth limit — see `ListConversationsFilterDate` in the Schemas appendix)_
+            - `dayOfWeek` — ListConversationsFilterDateIndex
+              - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+            - `hourOfDay` — ListConversationsFilterDateIndex
+              - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+            - `present` — array
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+            - `absent` — array
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+      - `filter` — ListConversationsFilter
+        - `id` — array
+          - _array of_ `ConversationTarget`
+            - _oneOf_ — exactly one of:
+              - **`call`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`conference`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`chat`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `entity` — ListConversationsFilterEntity
+          - `call` — boolean
+          - `conference` — boolean
+          - `chat` — boolean
+        - `participants` — array
+          - _array of_ `ListConversationsFilterParticipant`
+            - _oneOf_ — exactly one of:
+              - **`email`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`phone`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`extension`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `participantsToInclude` — array
+          - _array of_ `ListConversationsFilterParticipant`
+            - _oneOf_ — exactly one of:
+              - **`email`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`phone`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`extension`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `participantsToExclude` — array
+          - _array of_ `ListConversationsFilterParticipant`
+            - _oneOf_ — exactly one of:
+              - **`email`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`phone`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`extension`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `chatbots` — array
+          - _array of_ `string`
+        - `voicebots` — array
+          - _array of_ `string`
+        - `service` — array
+          - _array of_ `string`
+        - `group` — array
+          - _array of_ `string`
+        - `department` — array
+          - _array of_ `string`
+        - `tag` — array
+          - _array of_ `string`
+        - `pbx` — array
+          - _array of_ `string`
+        - `trunk` — array
+          - _array of_ `string`
+        - `queue` — array
+          - _array of_ `string`
+        - `country` — array
+          - _array of_ `string`
+        - `location` — array
+          - _array of_ `string`
+        - `phases` — array
+          - _array of_ `string`
+        - `language` — array
+          - _array of_ `string`
+        - `duration` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `connectTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `talkTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `waitTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `queueTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `holdTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `interaction` — ListConversationsFilterInteraction
+          - `talkRatio` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `wordsPerMinute` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `interruptions` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `patience` — ListConversationsFilterFloat
+            - `from` — number _(format=float)_
+            - `to` — number _(format=float)_
+          - `longestMonologue` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `longestCustomerStory` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+        - `recorded` — boolean
+        - `transcribed` — boolean
+        - `direction` — ListConversationsFilterDirection
+          - `inbound` — boolean
+          - `outbound` — boolean
+          - `internal` — boolean
+        - `insights` — array
+          - _array of_ `ListConversationsFilterInsight`
+            - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+            - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+            - `match` — string
+            - `matchAny` — array
+              - _array of_ `string`
+        - `channel` — ListConversationsFilterChannel
+          - `sms` — boolean
+          - `whatsapp` — boolean
+          - `kite` — boolean
+        - `date` — union
+          - _oneOf_ — exactly one of:
+            - **`absolute`**
+              - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+            - **`predefined`**
+              - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+        - `dayOfWeek` — ListConversationsFilterDateIndex
+          - `index` — number
+          - `timeZone` — string
+        - `hourOfDay` — ListConversationsFilterDateIndex
+          - `index` — number
+          - `timeZone` — string
+        - `present` — array
+          - _array of_ `ListConversationsFilterField`
+            - _oneOf_ — exactly one of:
+              - **`direction`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`service`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`group`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`department`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`chatbot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`voicebot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`tag`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`pbx`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`trunk`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`queue`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`country`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`location`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`language`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`projection`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `absent` — array
+          - _array of_ `ListConversationsFilterField`
+            - _oneOf_ — exactly one of:
+              - **`direction`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`service`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`group`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`department`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`chatbot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`voicebot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`tag`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`pbx`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`trunk`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`queue`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`country`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`location`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`language`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`projection`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+- Errors: `400`, `403`
+
+#### `GET` `/v2/insights/dashboards-pinned`
+
+Lists all pinned dashboards configurations available to the user.
+
+- operationId: `ListPinnedDashboards`
+- **Scopes**: `insights:ListPinnedDashboards`, `insights:read`
+- **Parameters**
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Response 200** (`ListPinnedDashboardsResponseContent`)
+  - `pinnedDashboardsIds` — array **(required)**
+    - _array of_ `string`
+  - `pinnedDashboards` — array **(required)**
+    - _array of_ `Dashboard`
+      - `name` — string **(required)** _(minLen=1; maxLen=128)_
+      - `description` — string _(minLen=1; maxLen=4096)_
+      - `id` — string **(required)** _(minLen=1; maxLen=32)_
+      - `createdAt` — string **(required)**
+      - `createdBy` — string **(required)**
+      - `createdByName` — string **(required)**
+      - `updatedAt` — string
+      - `metadata` — DashboardMetadata
+        - `predefined` — boolean
+        - `removable` — boolean
+        - `sortable` — boolean
+      - `access` — DashboardAccess
+        - `visibility` — string _(enum: `explicit`, `organization`)_
+        - `grants` — array
+          - _array of_ `DashboardGrant`
+            - `permission` — string **(required)** _(enum: `view`, `edit`)_
+            - `principal` — union **(required)**
+              - _(nesting depth limit — see `DashboardPrincipal` in the Schemas appendix)_
+      - `definition` — DashboardDefinition **(required)**
+        - `sheets` — array
+          - _array of_ `DashboardSheet`
+            - `id` — string **(required)** _(minLen=8; maxLen=8)_
+            - `name` — string **(required)** _(minLen=1; maxLen=128)_
+            - `visuals` — array **(required)**
+              - _(nesting depth limit — see `DashboardVisual` in the Schemas appendix)_
+            - `filter` — ListConversationsFilter
+              - _(nesting depth limit — see `ListConversationsFilter` in the Schemas appendix)_
+        - `filter` — ListConversationsFilter
+          - `id` — array
+            - _array of_ `ConversationTarget`
+              - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+          - `entity` — ListConversationsFilterEntity
+            - `call` — boolean
+            - `conference` — boolean
+            - `chat` — boolean
+          - `participants` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `participantsToInclude` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `participantsToExclude` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `chatbots` — array
+            - _array of_ `string`
+          - `voicebots` — array
+            - _array of_ `string`
+          - `service` — array
+            - _array of_ `string`
+          - `group` — array
+            - _array of_ `string`
+          - `department` — array
+            - _array of_ `string`
+          - `tag` — array
+            - _array of_ `string`
+          - `pbx` — array
+            - _array of_ `string`
+          - `trunk` — array
+            - _array of_ `string`
+          - `queue` — array
+            - _array of_ `string`
+          - `country` — array
+            - _array of_ `string`
+          - `location` — array
+            - _array of_ `string`
+          - `phases` — array
+            - _array of_ `string`
+          - `language` — array
+            - _array of_ `string`
+          - `duration` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `connectTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `talkTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `waitTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `queueTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `holdTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `interaction` — ListConversationsFilterInteraction
+            - `talkRatio` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `wordsPerMinute` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `interruptions` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `patience` — ListConversationsFilterFloat
+              - _(nesting depth limit — see `ListConversationsFilterFloat` in the Schemas appendix)_
+            - `longestMonologue` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `longestCustomerStory` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+          - `recorded` — boolean
+          - `transcribed` — boolean
+          - `direction` — ListConversationsFilterDirection
+            - `inbound` — boolean
+            - `outbound` — boolean
+            - `internal` — boolean
+          - `insights` — array
+            - _array of_ `ListConversationsFilterInsight`
+              - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+          - `channel` — ListConversationsFilterChannel
+            - `sms` — boolean
+            - `whatsapp` — boolean
+            - `kite` — boolean
+          - `date` — union
+            - _oneOf_ — exactly one of:
+              - **`absolute`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`predefined`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+          - `dayOfWeek` — ListConversationsFilterDateIndex
+            - `index` — number
+            - `timeZone` — string
+          - `hourOfDay` — ListConversationsFilterDateIndex
+            - `index` — number
+            - `timeZone` — string
+          - `present` — array
+            - _array of_ `ListConversationsFilterField`
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+          - `absent` — array
+            - _array of_ `ListConversationsFilterField`
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+- Errors: `400`, `403`
+
+#### `PUT` `/v2/insights/dashboards-pinned`
+
+Updates pinned dashboard's configuration.
+
+- operationId: `UpdatePinnedDashboards`
+- **Scopes**: `insights:UpdatePinnedDashboards`
+- **Parameters**
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Request body** (`application/json` — `UpdatePinnedDashboardsRequestContent`) **(required)**
+  - `pinned` — array **(required)**
+    - _array of_ `string`
+- Errors: `400`, `403`
+
+#### `GET` `/v2/insights/dashboards/{id}`
+
+Gets a dashboard by its ID.
+
+- operationId: `GetDashboard`
+- **Scopes**: `insights:GetDashboard`, `insights:read`
+- **Parameters**
+  - `id` (path) — string **(required)** _(minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Response 200** (`GetDashboardResponseContent`)
+  - `dashboard` — Dashboard **(required)**
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `id` — string **(required)** _(minLen=1; maxLen=32)_
+    - `createdAt` — string **(required)**
+    - `createdBy` — string **(required)**
+    - `createdByName` — string **(required)**
+    - `updatedAt` — string
+    - `metadata` — DashboardMetadata
+      - `predefined` — boolean
+      - `removable` — boolean
+      - `sortable` — boolean
+    - `access` — DashboardAccess
+      - `visibility` — string _(enum: `explicit`, `organization`)_
+      - `grants` — array
+        - _array of_ `DashboardGrant`
+          - `permission` — string **(required)** _(enum: `view`, `edit`)_
+          - `principal` — union **(required)**
+            - _oneOf_ — exactly one of:
+              - **`userId`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`groupId`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `definition` — DashboardDefinition **(required)**
+      - `sheets` — array
+        - _array of_ `DashboardSheet`
+          - `id` — string **(required)** _(minLen=8; maxLen=8)_
+          - `name` — string **(required)** _(minLen=1; maxLen=128)_
+          - `visuals` — array **(required)**
+            - _array of_ `DashboardVisual`
+              - _(nesting depth limit — see `DashboardVisual` in the Schemas appendix)_
+          - `filter` — ListConversationsFilter
+            - `id` — array
+              - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+            - `entity` — ListConversationsFilterEntity
+              - _(nesting depth limit — see `ListConversationsFilterEntity` in the Schemas appendix)_
+            - `participants` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `participantsToInclude` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `participantsToExclude` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `chatbots` — array
+              - _array of_ `string`
+            - `voicebots` — array
+              - _array of_ `string`
+            - `service` — array
+              - _array of_ `string`
+            - `group` — array
+              - _array of_ `string`
+            - `department` — array
+              - _array of_ `string`
+            - `tag` — array
+              - _array of_ `string`
+            - `pbx` — array
+              - _array of_ `string`
+            - `trunk` — array
+              - _array of_ `string`
+            - `queue` — array
+              - _array of_ `string`
+            - `country` — array
+              - _array of_ `string`
+            - `location` — array
+              - _array of_ `string`
+            - `phases` — array
+              - _array of_ `string`
+            - `language` — array
+              - _array of_ `string`
+            - `duration` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `connectTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `talkTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `waitTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `queueTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `holdTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `interaction` — ListConversationsFilterInteraction
+              - _(nesting depth limit — see `ListConversationsFilterInteraction` in the Schemas appendix)_
+            - `recorded` — boolean
+            - `transcribed` — boolean
+            - `direction` — ListConversationsFilterDirection
+              - _(nesting depth limit — see `ListConversationsFilterDirection` in the Schemas appendix)_
+            - `insights` — array
+              - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+            - `channel` — ListConversationsFilterChannel
+              - _(nesting depth limit — see `ListConversationsFilterChannel` in the Schemas appendix)_
+            - `date` — union
+              - _(nesting depth limit — see `ListConversationsFilterDate` in the Schemas appendix)_
+            - `dayOfWeek` — ListConversationsFilterDateIndex
+              - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+            - `hourOfDay` — ListConversationsFilterDateIndex
+              - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+            - `present` — array
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+            - `absent` — array
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+      - `filter` — ListConversationsFilter
+        - `id` — array
+          - _array of_ `ConversationTarget`
+            - _oneOf_ — exactly one of:
+              - **`call`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`conference`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`chat`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `entity` — ListConversationsFilterEntity
+          - `call` — boolean
+          - `conference` — boolean
+          - `chat` — boolean
+        - `participants` — array
+          - _array of_ `ListConversationsFilterParticipant`
+            - _oneOf_ — exactly one of:
+              - **`email`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`phone`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`extension`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `participantsToInclude` — array
+          - _array of_ `ListConversationsFilterParticipant`
+            - _oneOf_ — exactly one of:
+              - **`email`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`phone`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`extension`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `participantsToExclude` — array
+          - _array of_ `ListConversationsFilterParticipant`
+            - _oneOf_ — exactly one of:
+              - **`email`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`phone`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`extension`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `chatbots` — array
+          - _array of_ `string`
+        - `voicebots` — array
+          - _array of_ `string`
+        - `service` — array
+          - _array of_ `string`
+        - `group` — array
+          - _array of_ `string`
+        - `department` — array
+          - _array of_ `string`
+        - `tag` — array
+          - _array of_ `string`
+        - `pbx` — array
+          - _array of_ `string`
+        - `trunk` — array
+          - _array of_ `string`
+        - `queue` — array
+          - _array of_ `string`
+        - `country` — array
+          - _array of_ `string`
+        - `location` — array
+          - _array of_ `string`
+        - `phases` — array
+          - _array of_ `string`
+        - `language` — array
+          - _array of_ `string`
+        - `duration` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `connectTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `talkTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `waitTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `queueTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `holdTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `interaction` — ListConversationsFilterInteraction
+          - `talkRatio` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `wordsPerMinute` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `interruptions` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `patience` — ListConversationsFilterFloat
+            - `from` — number _(format=float)_
+            - `to` — number _(format=float)_
+          - `longestMonologue` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `longestCustomerStory` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+        - `recorded` — boolean
+        - `transcribed` — boolean
+        - `direction` — ListConversationsFilterDirection
+          - `inbound` — boolean
+          - `outbound` — boolean
+          - `internal` — boolean
+        - `insights` — array
+          - _array of_ `ListConversationsFilterInsight`
+            - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+            - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+            - `match` — string
+            - `matchAny` — array
+              - _array of_ `string`
+        - `channel` — ListConversationsFilterChannel
+          - `sms` — boolean
+          - `whatsapp` — boolean
+          - `kite` — boolean
+        - `date` — union
+          - _oneOf_ — exactly one of:
+            - **`absolute`**
+              - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+            - **`predefined`**
+              - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+        - `dayOfWeek` — ListConversationsFilterDateIndex
+          - `index` — number
+          - `timeZone` — string
+        - `hourOfDay` — ListConversationsFilterDateIndex
+          - `index` — number
+          - `timeZone` — string
+        - `present` — array
+          - _array of_ `ListConversationsFilterField`
+            - _oneOf_ — exactly one of:
+              - **`direction`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`service`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`group`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`department`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`chatbot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`voicebot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`tag`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`pbx`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`trunk`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`queue`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`country`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`location`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`language`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`projection`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `absent` — array
+          - _array of_ `ListConversationsFilterField`
+            - _oneOf_ — exactly one of:
+              - **`direction`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`service`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`group`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`department`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`chatbot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`voicebot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`tag`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`pbx`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`trunk`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`queue`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`country`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`location`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`language`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`projection`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+- Errors: `400`, `403`, `404`
+
+#### `PUT` `/v2/insights/dashboards/{id}`
+
+Updates an existing dashboard's configuration.
+
+- operationId: `UpdateDashboard`
+- **Scopes**: `insights:UpdateDashboard`
+- **Parameters**
+  - `id` (path) — string **(required)** _(minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Request body** (`application/json` — `UpdateDashboardRequestContent`) **(required)**
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `definition` — DashboardDefinition **(required)**
+    - `sheets` — array
+      - _array of_ `DashboardSheet`
+        - `id` — string **(required)** _(minLen=8; maxLen=8)_
+        - `name` — string **(required)** _(minLen=1; maxLen=128)_
+        - `visuals` — array **(required)**
+          - _array of_ `DashboardVisual`
+            - `id` — string **(required)** _(minLen=12; maxLen=12)_
+            - `position` — DashboardVisualGrid **(required)**
+              - _(nesting depth limit — see `DashboardVisualGrid` in the Schemas appendix)_
+            - `component` — any **(required)**
+            - `filter` — ListConversationsFilter
+              - _(nesting depth limit — see `ListConversationsFilter` in the Schemas appendix)_
+        - `filter` — ListConversationsFilter
+          - `id` — array
+            - _array of_ `ConversationTarget`
+              - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+          - `entity` — ListConversationsFilterEntity
+            - `call` — boolean
+            - `conference` — boolean
+            - `chat` — boolean
+          - `participants` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `participantsToInclude` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `participantsToExclude` — array
+            - _array of_ `ListConversationsFilterParticipant`
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+          - `chatbots` — array
+            - _array of_ `string`
+          - `voicebots` — array
+            - _array of_ `string`
+          - `service` — array
+            - _array of_ `string`
+          - `group` — array
+            - _array of_ `string`
+          - `department` — array
+            - _array of_ `string`
+          - `tag` — array
+            - _array of_ `string`
+          - `pbx` — array
+            - _array of_ `string`
+          - `trunk` — array
+            - _array of_ `string`
+          - `queue` — array
+            - _array of_ `string`
+          - `country` — array
+            - _array of_ `string`
+          - `location` — array
+            - _array of_ `string`
+          - `phases` — array
+            - _array of_ `string`
+          - `language` — array
+            - _array of_ `string`
+          - `duration` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `connectTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `talkTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `waitTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `queueTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `holdTime` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `interaction` — ListConversationsFilterInteraction
+            - `talkRatio` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `wordsPerMinute` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `interruptions` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `patience` — ListConversationsFilterFloat
+              - _(nesting depth limit — see `ListConversationsFilterFloat` in the Schemas appendix)_
+            - `longestMonologue` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `longestCustomerStory` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+          - `recorded` — boolean
+          - `transcribed` — boolean
+          - `direction` — ListConversationsFilterDirection
+            - `inbound` — boolean
+            - `outbound` — boolean
+            - `internal` — boolean
+          - `insights` — array
+            - _array of_ `ListConversationsFilterInsight`
+              - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+          - `channel` — ListConversationsFilterChannel
+            - `sms` — boolean
+            - `whatsapp` — boolean
+            - `kite` — boolean
+          - `date` — union
+            - _oneOf_ — exactly one of:
+              - **`absolute`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`predefined`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+          - `dayOfWeek` — ListConversationsFilterDateIndex
+            - `index` — number
+            - `timeZone` — string
+          - `hourOfDay` — ListConversationsFilterDateIndex
+            - `index` — number
+            - `timeZone` — string
+          - `present` — array
+            - _array of_ `ListConversationsFilterField`
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+          - `absent` — array
+            - _array of_ `ListConversationsFilterField`
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _array of_ `ConversationTarget`
+          - _oneOf_ — exactly one of:
+            - **`call`**
+              - `call` — CallConversationTarget **(required)**
+                - _(nesting depth limit — see `CallConversationTarget` in the Schemas appendix)_
+            - **`conference`**
+              - `conference` — ConferenceConversationTarget **(required)**
+                - _(nesting depth limit — see `ConferenceConversationTarget` in the Schemas appendix)_
+            - **`chat`**
+              - `chat` — ChatConversationTarget **(required)**
+                - _(nesting depth limit — see `ChatConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - `call` — boolean
+        - `conference` — boolean
+        - `chat` — boolean
+      - `participants` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToInclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToExclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `connectTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `talkTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `waitTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `queueTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `holdTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interaction` — ListConversationsFilterInteraction
+        - `talkRatio` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `wordsPerMinute` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `interruptions` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `patience` — ListConversationsFilterFloat
+          - `from` — number _(format=float)_
+          - `to` — number _(format=float)_
+        - `longestMonologue` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `longestCustomerStory` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - `inbound` — boolean
+        - `outbound` — boolean
+        - `internal` — boolean
+      - `insights` — array
+        - _array of_ `ListConversationsFilterInsight`
+          - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `match` — string
+          - `matchAny` — array
+            - _array of_ `string`
+      - `channel` — ListConversationsFilterChannel
+        - `sms` — boolean
+        - `whatsapp` — boolean
+        - `kite` — boolean
+      - `date` — union
+        - _oneOf_ — exactly one of:
+          - **`absolute`**
+            - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+              - `from` — string
+              - `to` — string
+              - `timeZone` — string
+          - **`predefined`**
+            - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+              - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+              - `timeZone` — string
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `present` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+      - `absent` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+- **Response 200** (`UpdateDashboardResponseContent`)
+  - `dashboard` — Dashboard **(required)**
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `id` — string **(required)** _(minLen=1; maxLen=32)_
+    - `createdAt` — string **(required)**
+    - `createdBy` — string **(required)**
+    - `createdByName` — string **(required)**
+    - `updatedAt` — string
+    - `metadata` — DashboardMetadata
+      - `predefined` — boolean
+      - `removable` — boolean
+      - `sortable` — boolean
+    - `access` — DashboardAccess
+      - `visibility` — string _(enum: `explicit`, `organization`)_
+      - `grants` — array
+        - _array of_ `DashboardGrant`
+          - `permission` — string **(required)** _(enum: `view`, `edit`)_
+          - `principal` — union **(required)**
+            - _oneOf_ — exactly one of:
+              - **`userId`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`groupId`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `definition` — DashboardDefinition **(required)**
+      - `sheets` — array
+        - _array of_ `DashboardSheet`
+          - `id` — string **(required)** _(minLen=8; maxLen=8)_
+          - `name` — string **(required)** _(minLen=1; maxLen=128)_
+          - `visuals` — array **(required)**
+            - _array of_ `DashboardVisual`
+              - _(nesting depth limit — see `DashboardVisual` in the Schemas appendix)_
+          - `filter` — ListConversationsFilter
+            - `id` — array
+              - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+            - `entity` — ListConversationsFilterEntity
+              - _(nesting depth limit — see `ListConversationsFilterEntity` in the Schemas appendix)_
+            - `participants` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `participantsToInclude` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `participantsToExclude` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `chatbots` — array
+              - _array of_ `string`
+            - `voicebots` — array
+              - _array of_ `string`
+            - `service` — array
+              - _array of_ `string`
+            - `group` — array
+              - _array of_ `string`
+            - `department` — array
+              - _array of_ `string`
+            - `tag` — array
+              - _array of_ `string`
+            - `pbx` — array
+              - _array of_ `string`
+            - `trunk` — array
+              - _array of_ `string`
+            - `queue` — array
+              - _array of_ `string`
+            - `country` — array
+              - _array of_ `string`
+            - `location` — array
+              - _array of_ `string`
+            - `phases` — array
+              - _array of_ `string`
+            - `language` — array
+              - _array of_ `string`
+            - `duration` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `connectTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `talkTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `waitTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `queueTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `holdTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `interaction` — ListConversationsFilterInteraction
+              - _(nesting depth limit — see `ListConversationsFilterInteraction` in the Schemas appendix)_
+            - `recorded` — boolean
+            - `transcribed` — boolean
+            - `direction` — ListConversationsFilterDirection
+              - _(nesting depth limit — see `ListConversationsFilterDirection` in the Schemas appendix)_
+            - `insights` — array
+              - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+            - `channel` — ListConversationsFilterChannel
+              - _(nesting depth limit — see `ListConversationsFilterChannel` in the Schemas appendix)_
+            - `date` — union
+              - _(nesting depth limit — see `ListConversationsFilterDate` in the Schemas appendix)_
+            - `dayOfWeek` — ListConversationsFilterDateIndex
+              - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+            - `hourOfDay` — ListConversationsFilterDateIndex
+              - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+            - `present` — array
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+            - `absent` — array
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+      - `filter` — ListConversationsFilter
+        - `id` — array
+          - _array of_ `ConversationTarget`
+            - _oneOf_ — exactly one of:
+              - **`call`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`conference`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`chat`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `entity` — ListConversationsFilterEntity
+          - `call` — boolean
+          - `conference` — boolean
+          - `chat` — boolean
+        - `participants` — array
+          - _array of_ `ListConversationsFilterParticipant`
+            - _oneOf_ — exactly one of:
+              - **`email`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`phone`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`extension`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `participantsToInclude` — array
+          - _array of_ `ListConversationsFilterParticipant`
+            - _oneOf_ — exactly one of:
+              - **`email`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`phone`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`extension`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `participantsToExclude` — array
+          - _array of_ `ListConversationsFilterParticipant`
+            - _oneOf_ — exactly one of:
+              - **`email`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`phone`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`extension`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `chatbots` — array
+          - _array of_ `string`
+        - `voicebots` — array
+          - _array of_ `string`
+        - `service` — array
+          - _array of_ `string`
+        - `group` — array
+          - _array of_ `string`
+        - `department` — array
+          - _array of_ `string`
+        - `tag` — array
+          - _array of_ `string`
+        - `pbx` — array
+          - _array of_ `string`
+        - `trunk` — array
+          - _array of_ `string`
+        - `queue` — array
+          - _array of_ `string`
+        - `country` — array
+          - _array of_ `string`
+        - `location` — array
+          - _array of_ `string`
+        - `phases` — array
+          - _array of_ `string`
+        - `language` — array
+          - _array of_ `string`
+        - `duration` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `connectTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `talkTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `waitTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `queueTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `holdTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `interaction` — ListConversationsFilterInteraction
+          - `talkRatio` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `wordsPerMinute` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `interruptions` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `patience` — ListConversationsFilterFloat
+            - `from` — number _(format=float)_
+            - `to` — number _(format=float)_
+          - `longestMonologue` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `longestCustomerStory` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+        - `recorded` — boolean
+        - `transcribed` — boolean
+        - `direction` — ListConversationsFilterDirection
+          - `inbound` — boolean
+          - `outbound` — boolean
+          - `internal` — boolean
+        - `insights` — array
+          - _array of_ `ListConversationsFilterInsight`
+            - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+            - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+            - `match` — string
+            - `matchAny` — array
+              - _array of_ `string`
+        - `channel` — ListConversationsFilterChannel
+          - `sms` — boolean
+          - `whatsapp` — boolean
+          - `kite` — boolean
+        - `date` — union
+          - _oneOf_ — exactly one of:
+            - **`absolute`**
+              - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+            - **`predefined`**
+              - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+        - `dayOfWeek` — ListConversationsFilterDateIndex
+          - `index` — number
+          - `timeZone` — string
+        - `hourOfDay` — ListConversationsFilterDateIndex
+          - `index` — number
+          - `timeZone` — string
+        - `present` — array
+          - _array of_ `ListConversationsFilterField`
+            - _oneOf_ — exactly one of:
+              - **`direction`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`service`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`group`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`department`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`chatbot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`voicebot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`tag`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`pbx`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`trunk`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`queue`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`country`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`location`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`language`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`projection`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `absent` — array
+          - _array of_ `ListConversationsFilterField`
+            - _oneOf_ — exactly one of:
+              - **`direction`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`service`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`group`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`department`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`chatbot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`voicebot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`tag`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`pbx`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`trunk`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`queue`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`country`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`location`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`language`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`projection`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+- Errors: `400`, `403`
+
+#### `DELETE` `/v2/insights/dashboards/{id}`
+
+Deletes a dashboard by its ID.
+
+- operationId: `DeleteDashboard`
+- **Scopes**: `insights:DeleteDashboard`
+- **Parameters**
+  - `id` (path) — string **(required)** _(minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- Errors: `400`, `403`
+
+#### `PATCH` `/v2/insights/dashboards/{id}/access`
+
+Enables a dashboard by its ID.
+
+- operationId: `UpdateDashboardAccess`
+- **Scopes**: `insights:UpdateDashboardAccess`
+- **Parameters**
+  - `id` (path) — string **(required)** _(minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Request body** (`application/json` — `UpdateDashboardAccessRequestContent`) **(required)**
+  - `access` — DashboardAccess **(required)**
+    - `visibility` — string _(enum: `explicit`, `organization`)_
+    - `grants` — array
+      - _array of_ `DashboardGrant`
+        - `permission` — string **(required)** _(enum: `view`, `edit`)_
+        - `principal` — union **(required)**
+          - _oneOf_ — exactly one of:
+            - **`userId`**
+              - `userId` — string **(required)** _(minLen=12; maxLen=12)_
+            - **`groupId`**
+              - `groupId` — string **(required)**
+  - `notify` — DashboardAccessNotify
+    - `emails` — array **(required)**
+      - _array of_ `string`
+    - `message` — string
+- **Response 200** (`UpdateDashboardAccessResponseContent`)
+  - `dashboard` — Dashboard **(required)**
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `id` — string **(required)** _(minLen=1; maxLen=32)_
+    - `createdAt` — string **(required)**
+    - `createdBy` — string **(required)**
+    - `createdByName` — string **(required)**
+    - `updatedAt` — string
+    - `metadata` — DashboardMetadata
+      - `predefined` — boolean
+      - `removable` — boolean
+      - `sortable` — boolean
+    - `access` — DashboardAccess
+      - `visibility` — string _(enum: `explicit`, `organization`)_
+      - `grants` — array
+        - _array of_ `DashboardGrant`
+          - `permission` — string **(required)** _(enum: `view`, `edit`)_
+          - `principal` — union **(required)**
+            - _oneOf_ — exactly one of:
+              - **`userId`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`groupId`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `definition` — DashboardDefinition **(required)**
+      - `sheets` — array
+        - _array of_ `DashboardSheet`
+          - `id` — string **(required)** _(minLen=8; maxLen=8)_
+          - `name` — string **(required)** _(minLen=1; maxLen=128)_
+          - `visuals` — array **(required)**
+            - _array of_ `DashboardVisual`
+              - _(nesting depth limit — see `DashboardVisual` in the Schemas appendix)_
+          - `filter` — ListConversationsFilter
+            - `id` — array
+              - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+            - `entity` — ListConversationsFilterEntity
+              - _(nesting depth limit — see `ListConversationsFilterEntity` in the Schemas appendix)_
+            - `participants` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `participantsToInclude` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `participantsToExclude` — array
+              - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+            - `chatbots` — array
+              - _array of_ `string`
+            - `voicebots` — array
+              - _array of_ `string`
+            - `service` — array
+              - _array of_ `string`
+            - `group` — array
+              - _array of_ `string`
+            - `department` — array
+              - _array of_ `string`
+            - `tag` — array
+              - _array of_ `string`
+            - `pbx` — array
+              - _array of_ `string`
+            - `trunk` — array
+              - _array of_ `string`
+            - `queue` — array
+              - _array of_ `string`
+            - `country` — array
+              - _array of_ `string`
+            - `location` — array
+              - _array of_ `string`
+            - `phases` — array
+              - _array of_ `string`
+            - `language` — array
+              - _array of_ `string`
+            - `duration` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `connectTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `talkTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `waitTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `queueTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `holdTime` — ListConversationsFilterNumber
+              - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+            - `interaction` — ListConversationsFilterInteraction
+              - _(nesting depth limit — see `ListConversationsFilterInteraction` in the Schemas appendix)_
+            - `recorded` — boolean
+            - `transcribed` — boolean
+            - `direction` — ListConversationsFilterDirection
+              - _(nesting depth limit — see `ListConversationsFilterDirection` in the Schemas appendix)_
+            - `insights` — array
+              - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+            - `channel` — ListConversationsFilterChannel
+              - _(nesting depth limit — see `ListConversationsFilterChannel` in the Schemas appendix)_
+            - `date` — union
+              - _(nesting depth limit — see `ListConversationsFilterDate` in the Schemas appendix)_
+            - `dayOfWeek` — ListConversationsFilterDateIndex
+              - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+            - `hourOfDay` — ListConversationsFilterDateIndex
+              - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+            - `present` — array
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+            - `absent` — array
+              - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+      - `filter` — ListConversationsFilter
+        - `id` — array
+          - _array of_ `ConversationTarget`
+            - _oneOf_ — exactly one of:
+              - **`call`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`conference`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`chat`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `entity` — ListConversationsFilterEntity
+          - `call` — boolean
+          - `conference` — boolean
+          - `chat` — boolean
+        - `participants` — array
+          - _array of_ `ListConversationsFilterParticipant`
+            - _oneOf_ — exactly one of:
+              - **`email`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`phone`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`extension`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `participantsToInclude` — array
+          - _array of_ `ListConversationsFilterParticipant`
+            - _oneOf_ — exactly one of:
+              - **`email`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`phone`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`extension`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `participantsToExclude` — array
+          - _array of_ `ListConversationsFilterParticipant`
+            - _oneOf_ — exactly one of:
+              - **`email`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`phone`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`extension`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `chatbots` — array
+          - _array of_ `string`
+        - `voicebots` — array
+          - _array of_ `string`
+        - `service` — array
+          - _array of_ `string`
+        - `group` — array
+          - _array of_ `string`
+        - `department` — array
+          - _array of_ `string`
+        - `tag` — array
+          - _array of_ `string`
+        - `pbx` — array
+          - _array of_ `string`
+        - `trunk` — array
+          - _array of_ `string`
+        - `queue` — array
+          - _array of_ `string`
+        - `country` — array
+          - _array of_ `string`
+        - `location` — array
+          - _array of_ `string`
+        - `phases` — array
+          - _array of_ `string`
+        - `language` — array
+          - _array of_ `string`
+        - `duration` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `connectTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `talkTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `waitTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `queueTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `holdTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `interaction` — ListConversationsFilterInteraction
+          - `talkRatio` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `wordsPerMinute` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `interruptions` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `patience` — ListConversationsFilterFloat
+            - `from` — number _(format=float)_
+            - `to` — number _(format=float)_
+          - `longestMonologue` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `longestCustomerStory` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+        - `recorded` — boolean
+        - `transcribed` — boolean
+        - `direction` — ListConversationsFilterDirection
+          - `inbound` — boolean
+          - `outbound` — boolean
+          - `internal` — boolean
+        - `insights` — array
+          - _array of_ `ListConversationsFilterInsight`
+            - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+            - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+            - `match` — string
+            - `matchAny` — array
+              - _array of_ `string`
+        - `channel` — ListConversationsFilterChannel
+          - `sms` — boolean
+          - `whatsapp` — boolean
+          - `kite` — boolean
+        - `date` — union
+          - _oneOf_ — exactly one of:
+            - **`absolute`**
+              - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+            - **`predefined`**
+              - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+        - `dayOfWeek` — ListConversationsFilterDateIndex
+          - `index` — number
+          - `timeZone` — string
+        - `hourOfDay` — ListConversationsFilterDateIndex
+          - `index` — number
+          - `timeZone` — string
+        - `present` — array
+          - _array of_ `ListConversationsFilterField`
+            - _oneOf_ — exactly one of:
+              - **`direction`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`service`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`group`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`department`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`chatbot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`voicebot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`tag`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`pbx`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`trunk`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`queue`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`country`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`location`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`language`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`projection`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `absent` — array
+          - _array of_ `ListConversationsFilterField`
+            - _oneOf_ — exactly one of:
+              - **`direction`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`service`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`group`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`department`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`chatbot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`voicebot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`tag`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`pbx`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`trunk`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`queue`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`country`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`location`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`language`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`projection`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+- Errors: `400`, `403`
+
+#### `GET` `/v2/insights/filters`
+
+Lists all filters available for the user.
+
+- operationId: `ListFilters`
+- **Scopes**: `insights:ListFilters`, `insights:read`
+- **Parameters**
+  - `company` (query) — string — Company id. eg. it_w123123. Required for s2s auth. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — PBX user id. eg. 123123123. Can be applied only for s2s and pbx authorization.
+- **Response 200** (`ListFiltersResponseContent`)
+  - `filters` — array **(required)**
+    - _array of_ `ListFiltersItem`
+      - `id` — string **(required)** — A unique identifier for the filter. _(minLen=12; maxLen=12)_
+      - `name` — string **(required)** — The user-defined name of the filter. _(minLen=1; maxLen=512)_
+      - `body` — string **(required)** — A JSON payload that represents the filter's configuration. _(minLen=2; maxLen=38400)_
+      - `createdAt` — string **(required)**
+      - `updatedAt` — string **(required)**
+- Errors: `400`, `403`
+
+#### `POST` `/v2/insights/filters`
+
+Creates a new filter with specified name and configuration.
+
+- operationId: `CreateFilter`
+- **Scopes**: `insights:CreateFilter`
+- **Request body** (`application/json` — `CreateFilterRequestContent`) **(required)**
+  - `name` — string **(required)** — The user-defined name of the filter. _(minLen=1; maxLen=512)_
+  - `body` — string **(required)** — A JSON payload that represents the filter's configuration. _(minLen=2; maxLen=38400)_
+- **Response 200** (`CreateFilterResponseContent`)
+  - `item` — ListFiltersItem **(required)**
+    - `id` — string **(required)** — A unique identifier for the filter. _(minLen=12; maxLen=12)_
+    - `name` — string **(required)** — The user-defined name of the filter. _(minLen=1; maxLen=512)_
+    - `body` — string **(required)** — A JSON payload that represents the filter's configuration. _(minLen=2; maxLen=38400)_
+    - `createdAt` — string **(required)**
+    - `updatedAt` — string **(required)**
+- Errors: `400`, `403`
+
+#### `PUT` `/v2/insights/filters/{id}`
+
+Updates an existing filter's name and configuration.
+
+- operationId: `UpdateFilter`
+- **Scopes**: `insights:UpdateFilter`
+- **Parameters**
+  - `id` (path) — string **(required)** — A unique identifier for the filter. _(minLen=12; maxLen=12)_
+- **Request body** (`application/json` — `UpdateFilterRequestContent`) **(required)**
+  - `name` — string **(required)** — The user-defined name of the filter. _(minLen=1; maxLen=512)_
+  - `body` — string **(required)** — A JSON payload that represents the filter's configuration. _(minLen=2; maxLen=38400)_
+- **Response 200** (`UpdateFilterResponseContent`)
+  - `item` — ListFiltersItem **(required)**
+    - `id` — string **(required)** — A unique identifier for the filter. _(minLen=12; maxLen=12)_
+    - `name` — string **(required)** — The user-defined name of the filter. _(minLen=1; maxLen=512)_
+    - `body` — string **(required)** — A JSON payload that represents the filter's configuration. _(minLen=2; maxLen=38400)_
+    - `createdAt` — string **(required)**
+    - `updatedAt` — string **(required)**
+- Errors: `400`, `403`, `404`
+
+#### `DELETE` `/v2/insights/filters/{id}`
+
+Deletes a filter by its ID.
+
+- operationId: `DeleteFilter`
+- **Scopes**: `insights:DeleteFilter`
+- **Parameters**
+  - `id` (path) — string **(required)** — A unique identifier for the filter. _(minLen=12; maxLen=12)_
+- Errors: `400`, `403`
+
+#### `GET` `/v2/insights/history`
+
+.
+
+- operationId: `ListWatchHistory`
+- **Scopes**: `insights:ListWatchHistory`, `insights:read`
+- **Parameters**
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+  - `exclusiveStartKey` (query) — string
+- **Response 200** (`ListWatchHistoryResponseContent`)
+  - `items` — array **(required)**
+    - _array of_ `ListConversationsItem`
+      - `event` — union **(required)**
+        - _oneOf_ — exactly one of:
+          - **`call`**
+            - `call` — CallRecord **(required)**
+              - `flowIndex` — number **(required)**
+              - `startTime` — number **(required)**
+              - `endTime` — number **(required)**
+              - `connectTime` — number — Duration when the called party's phone rang (Ring Time in UI)
+              - `talkTime` — number — Duration of conversation from the moment the call is answered until it ends, excluding hold time
+              - `waitTime` — number — Duration spent on IVR, dialplan applications, playback, etc. before the call is answered
+              - `queueTime` — number — Duration of call waiting in queue
+              - `holdTime` — number — Duration the call was on hold after being answered
+              - `duration` — number **(required)** — Total duration = connectTime + waitTime + queueTime + talkTime + holdTime
+              - `caller` — CallParticipant
+                - _(nesting depth limit — see `CallParticipant` in the Schemas appendix)_
+              - `callee` — CallParticipant
+                - _(nesting depth limit — see `CallParticipant` in the Schemas appendix)_
+              - `service` — string
+              - `serviceNumber` — string
+              - `destination` — string
+              - `direction` — string _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`, `UNDEFINED`)_
+              - `trunkName` — string
+              - `trunkDirection` — string
+              - `queueName` — string
+              - `queueId` — string
+              - `queuePosition` — number — Position of the call in the queue (1-based). Updated from consume events and emitted on live progress and record flows.
+              - `tags` — array
+                - _array of_ `string`
+              - `flags` — array
+                - _array of_ `string`
+              - `callerMos` — string
+              - `calleeMos` — string
+              - `xhoppersConfId` — string
+              - `recordings` — array — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+                - _array of_ `string`
+              - `recordingsData` — array — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+                - _(nesting depth limit — see `CallFlowRecording` in the Schemas appendix)_
+              - `mergeWith` — string
+              - `splitReason` — string
+              - `splitTransferType` — string
+              - `remotePhone` — string
+              - `remotePhoneCountryCode` — number
+              - `remotePhoneCountryCodeStr` — string
+              - `remotePhoneLocation` — string
+              - `callStatus` — string _(enum: `COMPLETED`, `MISSED`)_
+              - `transcriptionStatus` — string _(enum: `AVAILABLE`, `POST_TRANSCRIPTION`, `UNAVAILABLE`)_
+              - `transcriptionLanguage` — string
+              - `transcriptionSeconds` — number
+              - `annotationsStatus` — string _(enum: `AVAILABLE`, `UNAVAILABLE`)_
+              - `annotationsByKey` — AnnotationsMap — The newest annotation per `AnnotationKey`: the current value of everything the conversation tracks, without reading the history. Keyed annotations only — a one-off annotation appears solely in `annotations`.
+                - _(nesting depth limit — see `AnnotationsMap` in the Schemas appendix)_
+              - `attachment` — string — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+              - `attachmentType` — string _(enum: `VOICEMAIL`, `FAX`)_
+              - `attachmentDestinations` — array — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+                - _(nesting depth limit — see `CallFlowAttachmentDestination` in the Schemas appendix)_
+              - `attachments` — array
+                - _(nesting depth limit — see `CallFlowAttachment` in the Schemas appendix)_
+              - `notifications` — CallFlowNotifications
+                - _(nesting depth limit — see `CallFlowNotifications` in the Schemas appendix)_
+              - `id` — string **(required)**
+              - `pbx` — string **(required)**
+              - `time` — number **(required)**
+              - `company` — string **(required)** _(minLen=3; maxLen=30)_
+              - `licenses` — array **(required)**
+                - _(nesting depth limit — see `License` in the Schemas appendix)_
+              - `type` — object **(required)**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+          - **`conference`**
+            - `conference` — ConferenceRecord **(required)**
+              - `id` — string **(required)**
+              - `time` — number **(required)**
+              - `company` — string **(required)** _(minLen=3; maxLen=30)_
+              - `pbx` — string
+              - `startTime` — number **(required)**
+              - `endTime` — number **(required)**
+              - `duration` — number **(required)**
+              - `waitTime` — number
+              - `subject` — string
+              - `direction` — string **(required)** _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`)_
+              - `service` — string
+              - `status` — string _(enum: `COMPLETED`, `MISSED`)_
+              - `participants` — array **(required)**
+                - _(nesting depth limit — see `ConferenceAnalyticsRecordParticipant` in the Schemas appendix)_
+              - `recordings` — array
+                - _(nesting depth limit — see `ConferenceRecording` in the Schemas appendix)_
+              - `transcriptionStatus` — string **(required)** _(enum: `AVAILABLE`, `POST_TRANSCRIPTION`, `UNAVAILABLE`)_
+              - `transcriptionLanguage` — string
+              - `transcriptionSeconds` — number
+              - `annotationsStatus` — string _(enum: `AVAILABLE`, `UNAVAILABLE`)_
+              - `annotationsByKey` — AnnotationsMap — The newest annotation per `AnnotationKey`: the current value of everything the conversation tracks, without reading the history. Keyed annotations only — a one-off annotation appears solely in `annotations`.
+                - _(nesting depth limit — see `AnnotationsMap` in the Schemas appendix)_
+              - `type` — object **(required)**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+          - **`chat`**
+            - `chat` — ChatRecord **(required)**
+              - `id` — string — A unique chat channel identifier, distinguish each chat channel across different types.
+              - `chatId` — string — A unique identifier that distinguishes each chat session within a channel.
+              - `time` — number **(required)**
+              - `company` — string **(required)** _(minLen=3; maxLen=30)_
+              - `pbx` — string
+              - `startTime` — number **(required)**
+              - `endTime` — number **(required)**
+              - `waitTime` — number
+              - `duration` — number **(required)**
+              - `direction` — string **(required)** _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`)_
+              - `subject` — string
+              - `service` — string
+              - `serviceTitle` — string
+              - `tags` — array
+                - _(nesting depth limit — see `ChatTag` in the Schemas appendix)_
+              - `channel` — Channel **(required)**
+                - _(nesting depth limit — see `Channel` in the Schemas appendix)_
+              - `status` — string _(enum: `WAITFIRSTREPLY`, `WAITREPLYFROMGUEST`, `WAITREPLYFROMAGENT`, `COMPLETED`, `MISSED`)_
+              - `participants` — array **(required)**
+                - _(nesting depth limit — see `ChatParticipant` in the Schemas appendix)_
+              - `annotationsStatus` — string _(enum: `AVAILABLE`, `UNAVAILABLE`)_
+              - `annotationsByKey` — AnnotationsMap — The newest annotation per `AnnotationKey`: the current value of everything the conversation tracks, without reading the history. Keyed annotations only — a one-off annotation appears solely in `annotations`.
+                - _(nesting depth limit — see `AnnotationsMap` in the Schemas appendix)_
+              - `type` — object **(required)**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+      - `interaction` — ListConversationsItemInteraction
+        - `talkRatio` — number — Percentage of the call duration during which the agent was speaking.
+        - `wordsPerMinute` — number — Average words per minute spoken by the agent during their speaking time.
+        - `interruptions` — number — Number of times the agent interrupted another participant during the conversation.
+        - `patience` — number — Average time in seconds the agent waited after another participant finished speaking before responding. _(format=float)_
+        - `longestMonologue` — number — Duration in seconds of the agent's longest uninterrupted monologue.
+        - `longestCustomerStory` — number — Duration in seconds of another participant’s longest uninterrupted story or response.
+      - `summary` — ListConversationsItemSummary
+        - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+        - `title` — string
+        - `brief` — string
+        - `insights` — array
+          - _array of_ `ListConversationsItemInsight`
+            - `field` — string **(required)**
+            - `value` — string **(required)**
+        - `language` — string
+      - `highlight` — ListConversationsItemHighlight
+        - `transcription` — array
+          - _array of_ `ListConversationsItemHighlightTranscriptionItem`
+            - `id` — string **(required)**
+            - `user` — string **(required)**
+            - `start` — number **(required)**
+            - `text` — string **(required)**
+        - `summary` — ListConversationsItemHighlightSummary
+          - `title` — string
+          - `brief` — string
+        - `subject` — string
+  - `itemsState` — array **(required)**
+    - _array of_ `WatchItem`
+      - `target` — union **(required)**
+        - _oneOf_ — exactly one of:
+          - **`call`**
+            - `call` — CallConversationTarget **(required)**
+              - `callId` — string **(required)**
+              - `flowIndex` — number **(required)**
+          - **`conference`**
+            - `conference` — ConferenceConversationTarget **(required)**
+              - `conferenceId` — string **(required)**
+          - **`chat`**
+            - `chat` — ChatConversationTarget **(required)**
+              - `chatId` — string **(required)**
+      - `playback` — ConversationPlaybackState
+        - `position` — number
+        - `duration` — number
+      - `firstWatchedAt` — string **(required)**
+      - `lastWatchedAt` — string **(required)**
+  - `lastEvaluatedKey` — string
+- Errors: `400`, `403`
+
+#### `POST` `/v2/insights/history`
+
+.
+
+- operationId: `Watch`
+- **Scopes**: `insights:Watch`
+- **Parameters**
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Request body** (`application/json` — `WatchRequestContent`) **(required)**
+  - `target` — union **(required)**
+    - _oneOf_ — exactly one of:
+      - **`call`**
+        - `call` — CallConversationTarget **(required)**
+          - `callId` — string **(required)**
+          - `flowIndex` — number **(required)**
+      - **`conference`**
+        - `conference` — ConferenceConversationTarget **(required)**
+          - `conferenceId` — string **(required)**
+      - **`chat`**
+        - `chat` — ChatConversationTarget **(required)**
+          - `chatId` — string **(required)**
+  - `playback` — ConversationPlaybackState
+    - `position` — number
+    - `duration` — number
+- Errors: `400`, `403`
+
+#### `GET` `/v2/insights/playlists`
+
+Lists all playlist and pinned configurations available to the user.
+
+- operationId: `ListPlaylists`
+- **Scopes**: `insights:ListPlaylists`, `insights:read`
+- **Parameters**
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Response 200** (`ListPlaylistsResponseContent`)
+  - `playlists` — array **(required)**
+    - _array of_ `Playlist`
+      - `name` — string **(required)** _(minLen=1; maxLen=128)_
+      - `description` — string _(minLen=1; maxLen=4096)_
+      - `id` — string **(required)** _(minLen=1; maxLen=32)_
+      - `createdAt` — string **(required)**
+      - `createdBy` — string **(required)**
+      - `createdByName` — string **(required)**
+      - `updatedAt` — string
+      - `access` — PlaylistAccess
+        - `visibility` — string _(enum: `explicit`, `organization`)_
+        - `grants` — array
+          - _array of_ `PlaylistGrant`
+            - `permission` — string **(required)** _(enum: `view`, `edit`)_
+            - `principal` — union **(required)**
+              - _(nesting depth limit — see `PlaylistPrincipal` in the Schemas appendix)_
+      - `itemsCount` — number **(required)**
+- Errors: `400`, `403`
+
+#### `POST` `/v2/insights/playlists`
+
+Creates a new playlist with specified configuration.
+
+- operationId: `CreatePlaylist`
+- **Scopes**: `insights:CreatePlaylist`
+- **Parameters**
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Request body** (`application/json` — `CreatePlaylistRequestContent`) **(required)**
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `access` — PlaylistAccess
+    - `visibility` — string _(enum: `explicit`, `organization`)_
+    - `grants` — array
+      - _array of_ `PlaylistGrant`
+        - `permission` — string **(required)** _(enum: `view`, `edit`)_
+        - `principal` — union **(required)**
+          - _oneOf_ — exactly one of:
+            - **`userId`**
+              - `userId` — string **(required)** _(minLen=12; maxLen=12)_
+            - **`groupId`**
+              - `groupId` — string **(required)**
+- **Response 200** (`CreatePlaylistResponseContent`)
+  - `playlist` — Playlist **(required)**
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `id` — string **(required)** _(minLen=1; maxLen=32)_
+    - `createdAt` — string **(required)**
+    - `createdBy` — string **(required)**
+    - `createdByName` — string **(required)**
+    - `updatedAt` — string
+    - `access` — PlaylistAccess
+      - `visibility` — string _(enum: `explicit`, `organization`)_
+      - `grants` — array
+        - _array of_ `PlaylistGrant`
+          - `permission` — string **(required)** _(enum: `view`, `edit`)_
+          - `principal` — union **(required)**
+            - _oneOf_ — exactly one of:
+              - **`userId`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`groupId`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `itemsCount` — number **(required)**
+- Errors: `400`, `403`
+
+#### `GET` `/v2/insights/playlists/{id}`
+
+Gets a playlist by its ID.
+
+- operationId: `GetPlaylist`
+- **Scopes**: `insights:GetPlaylist`, `insights:read`
+- **Parameters**
+  - `id` (path) — string **(required)** _(minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Response 200** (`GetPlaylistResponseContent`)
+  - `playlist` — Playlist **(required)**
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `id` — string **(required)** _(minLen=1; maxLen=32)_
+    - `createdAt` — string **(required)**
+    - `createdBy` — string **(required)**
+    - `createdByName` — string **(required)**
+    - `updatedAt` — string
+    - `access` — PlaylistAccess
+      - `visibility` — string _(enum: `explicit`, `organization`)_
+      - `grants` — array
+        - _array of_ `PlaylistGrant`
+          - `permission` — string **(required)** _(enum: `view`, `edit`)_
+          - `principal` — union **(required)**
+            - _oneOf_ — exactly one of:
+              - **`userId`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`groupId`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `itemsCount` — number **(required)**
+- Errors: `400`, `403`, `404`
+
+#### `PUT` `/v2/insights/playlists/{id}`
+
+Updates an existing playlist's configuration.
+
+- operationId: `UpdatePlaylist`
+- **Scopes**: `insights:UpdatePlaylist`
+- **Parameters**
+  - `id` (path) — string **(required)** _(minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Request body** (`application/json` — `UpdatePlaylistRequestContent`) **(required)**
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+- **Response 200** (`UpdatePlaylistResponseContent`)
+  - `playlist` — Playlist **(required)**
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `id` — string **(required)** _(minLen=1; maxLen=32)_
+    - `createdAt` — string **(required)**
+    - `createdBy` — string **(required)**
+    - `createdByName` — string **(required)**
+    - `updatedAt` — string
+    - `access` — PlaylistAccess
+      - `visibility` — string _(enum: `explicit`, `organization`)_
+      - `grants` — array
+        - _array of_ `PlaylistGrant`
+          - `permission` — string **(required)** _(enum: `view`, `edit`)_
+          - `principal` — union **(required)**
+            - _oneOf_ — exactly one of:
+              - **`userId`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`groupId`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `itemsCount` — number **(required)**
+- Errors: `400`, `403`
+
+#### `DELETE` `/v2/insights/playlists/{id}`
+
+Deletes a playlist by its ID.
+
+- operationId: `DeletePlaylist`
+- **Scopes**: `insights:DeletePlaylist`
+- **Parameters**
+  - `id` (path) — string **(required)** _(minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- Errors: `400`, `403`
+
+#### `PATCH` `/v2/insights/playlists/{id}/access`
+
+Enables a playlist by its ID.
+
+- operationId: `UpdatePlaylistAccess`
+- **Scopes**: `insights:UpdatePlaylistAccess`
+- **Parameters**
+  - `id` (path) — string **(required)** _(minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Request body** (`application/json` — `UpdatePlaylistAccessRequestContent`) **(required)**
+  - `access` — PlaylistAccess **(required)**
+    - `visibility` — string _(enum: `explicit`, `organization`)_
+    - `grants` — array
+      - _array of_ `PlaylistGrant`
+        - `permission` — string **(required)** _(enum: `view`, `edit`)_
+        - `principal` — union **(required)**
+          - _oneOf_ — exactly one of:
+            - **`userId`**
+              - `userId` — string **(required)** _(minLen=12; maxLen=12)_
+            - **`groupId`**
+              - `groupId` — string **(required)**
+  - `notify` — PlaylistAccessNotify
+    - `emails` — array **(required)**
+      - _array of_ `string`
+    - `message` — string
+- **Response 200** (`UpdatePlaylistAccessResponseContent`)
+  - `playlist` — Playlist **(required)**
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `id` — string **(required)** _(minLen=1; maxLen=32)_
+    - `createdAt` — string **(required)**
+    - `createdBy` — string **(required)**
+    - `createdByName` — string **(required)**
+    - `updatedAt` — string
+    - `access` — PlaylistAccess
+      - `visibility` — string _(enum: `explicit`, `organization`)_
+      - `grants` — array
+        - _array of_ `PlaylistGrant`
+          - `permission` — string **(required)** _(enum: `view`, `edit`)_
+          - `principal` — union **(required)**
+            - _oneOf_ — exactly one of:
+              - **`userId`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`groupId`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `itemsCount` — number **(required)**
+- Errors: `400`, `403`
+
+#### `GET` `/v2/insights/playlists/{playlistId}/items`
+
+Lists all playlist and pinned configurations available to the user.
+
+- operationId: `ListPlaylistItems`
+- **Scopes**: `insights:ListPlaylistItems`, `insights:read`
+- **Parameters**
+  - `playlistId` (path) — string **(required)** _(minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+  - `exclusiveStartKey` (query) — string
+- **Response 200** (`ListPlaylistItemsResponseContent`)
+  - `items` — array **(required)**
+    - _array of_ `PlaylistItem`
+      - `item` — ListConversationsItem
+        - `event` — union **(required)**
+          - _oneOf_ — exactly one of:
+            - **`call`**
+              - `call` — CallRecord **(required)**
+                - _(nesting depth limit — see `CallRecord` in the Schemas appendix)_
+            - **`conference`**
+              - `conference` — ConferenceRecord **(required)**
+                - _(nesting depth limit — see `ConferenceRecord` in the Schemas appendix)_
+            - **`chat`**
+              - `chat` — ChatRecord **(required)**
+                - _(nesting depth limit — see `ChatRecord` in the Schemas appendix)_
+        - `interaction` — ListConversationsItemInteraction
+          - `talkRatio` — number — Percentage of the call duration during which the agent was speaking.
+          - `wordsPerMinute` — number — Average words per minute spoken by the agent during their speaking time.
+          - `interruptions` — number — Number of times the agent interrupted another participant during the conversation.
+          - `patience` — number — Average time in seconds the agent waited after another participant finished speaking before responding. _(format=float)_
+          - `longestMonologue` — number — Duration in seconds of the agent's longest uninterrupted monologue.
+          - `longestCustomerStory` — number — Duration in seconds of another participant’s longest uninterrupted story or response.
+        - `summary` — ListConversationsItemSummary
+          - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+          - `title` — string
+          - `brief` — string
+          - `insights` — array
+            - _array of_ `ListConversationsItemInsight`
+              - _(nesting depth limit — see `ListConversationsItemInsight` in the Schemas appendix)_
+          - `language` — string
+        - `highlight` — ListConversationsItemHighlight
+          - `transcription` — array
+            - _array of_ `ListConversationsItemHighlightTranscriptionItem`
+              - _(nesting depth limit — see `ListConversationsItemHighlightTranscriptionItem` in the Schemas appendix)_
+          - `summary` — ListConversationsItemHighlightSummary
+            - `title` — string
+            - `brief` — string
+          - `subject` — string
+      - `note` — string
+      - `status` — string **(required)** _(enum: `AVAILABLE`, `UNAVAILABLE`, `NO_ACCESS`)_
+      - `addedAt` — string **(required)**
+      - `addedBy` — string **(required)**
+      - `addedByName` — string **(required)**
+      - `updatedAt` — string
+  - `lastEvaluatedKey` — string
+- Errors: `400`, `403`
+
+#### `POST` `/v2/insights/playlists/{playlistId}/items/associate`
+
+Adds an existing conversation to the specified playlist.
+
+- operationId: `PutPlaylistItem`
+- **Scopes**: `insights:PutPlaylistItem`
+- **Parameters**
+  - `playlistId` (path) — string **(required)** _(minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Request body** (`application/json` — `PutPlaylistItemRequestContent`) **(required)**
+  - `target` — union **(required)**
+    - _oneOf_ — exactly one of:
+      - **`call`**
+        - `call` — CallConversationTarget **(required)**
+          - `callId` — string **(required)**
+          - `flowIndex` — number **(required)**
+      - **`conference`**
+        - `conference` — ConferenceConversationTarget **(required)**
+          - `conferenceId` — string **(required)**
+      - **`chat`**
+        - `chat` — ChatConversationTarget **(required)**
+          - `chatId` — string **(required)**
+  - `note` — string
+- Errors: `400`, `403`
+
+#### `POST` `/v2/insights/playlists/{playlistId}/items/delete`
+
+Removes a conversation from the specified playlist.
+
+- operationId: `DeletePlaylistItem`
+- **Scopes**: `insights:DeletePlaylistItem`
+- **Parameters**
+  - `playlistId` (path) — string **(required)** _(minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+  - `user` (query) — string — The unique identifier of the user when a service or tenant token is used. _(minLen=12; maxLen=12)_
+- **Request body** (`application/json` — `DeletePlaylistItemRequestContent`) **(required)**
+  - `target` — union **(required)**
+    - _oneOf_ — exactly one of:
+      - **`call`**
+        - `call` — CallConversationTarget **(required)**
+          - `callId` — string **(required)**
+          - `flowIndex` — number **(required)**
+      - **`conference`**
+        - `conference` — ConferenceConversationTarget **(required)**
+          - `conferenceId` — string **(required)**
+      - **`chat`**
+        - `chat` — ChatConversationTarget **(required)**
+          - `chatId` — string **(required)**
+- Errors: `400`, `403`
+
+#### `GET` `/v2/insights/projections`
+
+Lists all projections and compatibility categories available for the tenant.
+
+- operationId: `ListProjections`
+- **Scopes**: `insights:ListProjections`, `insights:read`
+- **Parameters**
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+- **Response 200** (`ListProjectionsResponseContent`)
+  - `projections` — array **(required)**
+    - _array of_ `Projection`
+      - `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+      - `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+      - `name` — string **(required)** _(minLen=1; maxLen=128)_
+      - `description` — string _(minLen=1; maxLen=4096)_
+      - `instructions` — string _(minLen=1; maxLen=16384)_
+      - `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+        - _array of_ `ProjectionCondition`
+          - _oneOf_ — exactly one of:
+            - **`entity`**
+              - `entity` — ProjectionEntityCondition **(required)**
+                - _(nesting depth limit — see `ProjectionEntityCondition` in the Schemas appendix)_
+            - **`direction`**
+              - `direction` — ProjectionDirectionCondition **(required)**
+                - _(nesting depth limit — see `ProjectionDirectionCondition` in the Schemas appendix)_
+            - **`participants`**
+              - `participants` — ProjectionParticipantsCondition **(required)**
+                - _(nesting depth limit — see `ProjectionParticipantsCondition` in the Schemas appendix)_
+            - **`duration`**
+              - `duration` — ProjectionDurationCondition **(required)**
+                - _(nesting depth limit — see `ProjectionDurationCondition` in the Schemas appendix)_
+      - `filter` — ListConversationsFilter
+        - `id` — array
+          - _array of_ `ConversationTarget`
+            - _oneOf_ — exactly one of:
+              - **`call`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`conference`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`chat`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `entity` — ListConversationsFilterEntity
+          - `call` — boolean
+          - `conference` — boolean
+          - `chat` — boolean
+        - `participants` — array
+          - _array of_ `ListConversationsFilterParticipant`
+            - _oneOf_ — exactly one of:
+              - **`email`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`phone`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`extension`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `participantsToInclude` — array
+          - _array of_ `ListConversationsFilterParticipant`
+            - _oneOf_ — exactly one of:
+              - **`email`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`phone`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`extension`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `participantsToExclude` — array
+          - _array of_ `ListConversationsFilterParticipant`
+            - _oneOf_ — exactly one of:
+              - **`email`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`phone`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`extension`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `chatbots` — array
+          - _array of_ `string`
+        - `voicebots` — array
+          - _array of_ `string`
+        - `service` — array
+          - _array of_ `string`
+        - `group` — array
+          - _array of_ `string`
+        - `department` — array
+          - _array of_ `string`
+        - `tag` — array
+          - _array of_ `string`
+        - `pbx` — array
+          - _array of_ `string`
+        - `trunk` — array
+          - _array of_ `string`
+        - `queue` — array
+          - _array of_ `string`
+        - `country` — array
+          - _array of_ `string`
+        - `location` — array
+          - _array of_ `string`
+        - `phases` — array
+          - _array of_ `string`
+        - `language` — array
+          - _array of_ `string`
+        - `duration` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `connectTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `talkTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `waitTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `queueTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `holdTime` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `interaction` — ListConversationsFilterInteraction
+          - `talkRatio` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `wordsPerMinute` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `interruptions` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `patience` — ListConversationsFilterFloat
+            - `from` — number _(format=float)_
+            - `to` — number _(format=float)_
+          - `longestMonologue` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+          - `longestCustomerStory` — ListConversationsFilterNumber
+            - `from` — number
+            - `to` — number
+        - `recorded` — boolean
+        - `transcribed` — boolean
+        - `direction` — ListConversationsFilterDirection
+          - `inbound` — boolean
+          - `outbound` — boolean
+          - `internal` — boolean
+        - `insights` — array
+          - _array of_ `ListConversationsFilterInsight`
+            - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+            - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+            - `match` — string
+            - `matchAny` — array
+              - _array of_ `string`
+        - `channel` — ListConversationsFilterChannel
+          - `sms` — boolean
+          - `whatsapp` — boolean
+          - `kite` — boolean
+        - `date` — union
+          - _oneOf_ — exactly one of:
+            - **`absolute`**
+              - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+            - **`predefined`**
+              - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+        - `dayOfWeek` — ListConversationsFilterDateIndex
+          - `index` — number
+          - `timeZone` — string
+        - `hourOfDay` — ListConversationsFilterDateIndex
+          - `index` — number
+          - `timeZone` — string
+        - `present` — array
+          - _array of_ `ListConversationsFilterField`
+            - _oneOf_ — exactly one of:
+              - **`direction`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`service`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`group`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`department`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`chatbot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`voicebot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`tag`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`pbx`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`trunk`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`queue`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`country`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`location`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`language`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`projection`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - `absent` — array
+          - _array of_ `ListConversationsFilterField`
+            - _oneOf_ — exactly one of:
+              - **`direction`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`service`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`group`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`department`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`chatbot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`voicebot`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`tag`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`pbx`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`trunk`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`queue`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`country`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`location`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`language`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`projection`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+      - `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+      - `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+      - `fields` — array **(required)** _(minItems=1; maxItems=64)_
+        - _array of_ `ProjectionField`
+          - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `name` — string **(required)** _(minLen=1; maxLen=256)_
+          - `description` — string _(minLen=1; maxLen=4096)_
+          - `optional` — boolean
+          - `parameter` — union **(required)**
+            - _oneOf_ — exactly one of:
+              - **`text`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`multiline`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+              - **`selection`**
+                - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+      - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `status` — string **(required)** _(enum: `ENABLED`, `PAUSED`, `DISABLED`)_
+      - `version` — number **(required)**
+      - `createdAt` — string **(required)**
+      - `updatedAt` — string
+      - `metadata` — ProjectionMetadata
+        - `predefined` — boolean
+        - `customized` — boolean — True when a predefined projection has tenant-specific overrides applied.
+  - `categories` — array — Compatibility field for legacy clients. Categories are simulated from projection `category`/`categoryId` values.
+    - _array of_ `ProjectionsCategory`
+      - `id` — string **(required)** _(minLen=1; maxLen=32)_
+      - `name` — string **(required)** _(minLen=1; maxLen=128)_
+- Errors: `400`, `403`
+
+#### `POST` `/v2/insights/projections`
+
+Creates a new projection with specified configuration.
+
+- operationId: `CreateProjection`
+- **Scopes**: `insights:CreateProjection`
+- **Parameters**
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+- **Request body** (`application/json` — `CreateProjectionRequestContent`) **(required)**
+  - `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+  - `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `instructions` — string _(minLen=1; maxLen=16384)_
+  - `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+    - _array of_ `ProjectionCondition`
+      - _oneOf_ — exactly one of:
+        - **`entity`**
+          - `entity` — ProjectionEntityCondition **(required)**
+            - `equals` — array **(required)**
+              - _array of_ `ProjectionEntityConditionValue`
+        - **`direction`**
+          - `direction` — ProjectionDirectionCondition **(required)**
+            - `equals` — array **(required)**
+              - _array of_ `CallDirection`
+        - **`participants`**
+          - `participants` — ProjectionParticipantsCondition **(required)**
+            - `emails` — array
+              - _array of_ `string`
+            - `extensions` — array
+              - _array of_ `string`
+            - `groups` — array
+              - _array of_ `string`
+        - **`duration`**
+          - `duration` — ProjectionDurationCondition **(required)**
+            - `minimum` — number **(required)**
+            - `maximum` — number **(required)**
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _oneOf_ — exactly one of:
+          - **`call`**
+            - `call` — CallConversationTarget **(required)**
+              - `callId` — string **(required)**
+              - `flowIndex` — number **(required)**
+          - **`conference`**
+            - `conference` — ConferenceConversationTarget **(required)**
+              - `conferenceId` — string **(required)**
+          - **`chat`**
+            - `chat` — ChatConversationTarget **(required)**
+              - `chatId` — string **(required)**
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interruptions` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `patience` — ListConversationsFilterFloat
+        - `from` — number _(format=float)_
+        - `to` — number _(format=float)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `match` — string
+        - `matchAny` — array
+          - _array of_ `string`
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+            - `from` — string
+            - `to` — string
+            - `timeZone` — string
+        - **`predefined`**
+          - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+            - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+            - `timeZone` — string
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+  - `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+  - `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+  - `fields` — array **(required)** _(minItems=1; maxItems=64)_
+    - _array of_ `ProjectionField`
+      - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `name` — string **(required)** _(minLen=1; maxLen=256)_
+      - `description` — string _(minLen=1; maxLen=4096)_
+      - `optional` — boolean
+      - `parameter` — union **(required)**
+        - _oneOf_ — exactly one of:
+          - **`text`**
+            - `text` — ProjectionTextParameter **(required)**
+          - **`multiline`**
+            - `multiline` — ProjectionMultilineParameter **(required)**
+          - **`selection`**
+            - `selection` — ProjectionSelectionParameter **(required)**
+              - `options` — array **(required)** _(maxItems=100)_
+                - _array of_ `string`
+              - `multi` — boolean
+              - `adaptive` — boolean
+              - `adaptiveOptions` — array — Options generated by AI when adaptive mode was enabled. _(maxItems=100)_
+                - _array of_ `string`
+  - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+- **Response 200** (`CreateProjectionResponseContent`)
+  - `projection` — Projection **(required)**
+    - `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+    - `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `instructions` — string _(minLen=1; maxLen=16384)_
+    - `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+      - _array of_ `ProjectionCondition`
+        - _oneOf_ — exactly one of:
+          - **`entity`**
+            - `entity` — ProjectionEntityCondition **(required)**
+              - `equals` — array **(required)**
+                - _(nesting depth limit — see `ProjectionEntityConditionValue` in the Schemas appendix)_
+          - **`direction`**
+            - `direction` — ProjectionDirectionCondition **(required)**
+              - `equals` — array **(required)**
+                - _(nesting depth limit — see `CallDirection` in the Schemas appendix)_
+          - **`participants`**
+            - `participants` — ProjectionParticipantsCondition **(required)**
+              - `emails` — array
+                - _array of_ `string`
+              - `extensions` — array
+                - _array of_ `string`
+              - `groups` — array
+                - _array of_ `string`
+          - **`duration`**
+            - `duration` — ProjectionDurationCondition **(required)**
+              - `minimum` — number **(required)**
+              - `maximum` — number **(required)**
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _array of_ `ConversationTarget`
+          - _oneOf_ — exactly one of:
+            - **`call`**
+              - `call` — CallConversationTarget **(required)**
+                - _(nesting depth limit — see `CallConversationTarget` in the Schemas appendix)_
+            - **`conference`**
+              - `conference` — ConferenceConversationTarget **(required)**
+                - _(nesting depth limit — see `ConferenceConversationTarget` in the Schemas appendix)_
+            - **`chat`**
+              - `chat` — ChatConversationTarget **(required)**
+                - _(nesting depth limit — see `ChatConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - `call` — boolean
+        - `conference` — boolean
+        - `chat` — boolean
+      - `participants` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToInclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToExclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `connectTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `talkTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `waitTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `queueTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `holdTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interaction` — ListConversationsFilterInteraction
+        - `talkRatio` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `wordsPerMinute` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `interruptions` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `patience` — ListConversationsFilterFloat
+          - `from` — number _(format=float)_
+          - `to` — number _(format=float)_
+        - `longestMonologue` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `longestCustomerStory` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - `inbound` — boolean
+        - `outbound` — boolean
+        - `internal` — boolean
+      - `insights` — array
+        - _array of_ `ListConversationsFilterInsight`
+          - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `match` — string
+          - `matchAny` — array
+            - _array of_ `string`
+      - `channel` — ListConversationsFilterChannel
+        - `sms` — boolean
+        - `whatsapp` — boolean
+        - `kite` — boolean
+      - `date` — union
+        - _oneOf_ — exactly one of:
+          - **`absolute`**
+            - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+              - `from` — string
+              - `to` — string
+              - `timeZone` — string
+          - **`predefined`**
+            - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+              - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+              - `timeZone` — string
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `present` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+      - `absent` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+    - `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+    - `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+    - `fields` — array **(required)** _(minItems=1; maxItems=64)_
+      - _array of_ `ProjectionField`
+        - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `name` — string **(required)** _(minLen=1; maxLen=256)_
+        - `description` — string _(minLen=1; maxLen=4096)_
+        - `optional` — boolean
+        - `parameter` — union **(required)**
+          - _oneOf_ — exactly one of:
+            - **`text`**
+              - `text` — ProjectionTextParameter **(required)**
+            - **`multiline`**
+              - `multiline` — ProjectionMultilineParameter **(required)**
+            - **`selection`**
+              - `selection` — ProjectionSelectionParameter **(required)**
+                - _(nesting depth limit — see `ProjectionSelectionParameter` in the Schemas appendix)_
+    - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `status` — string **(required)** _(enum: `ENABLED`, `PAUSED`, `DISABLED`)_
+    - `version` — number **(required)**
+    - `createdAt` — string **(required)**
+    - `updatedAt` — string
+    - `metadata` — ProjectionMetadata
+      - `predefined` — boolean
+      - `customized` — boolean — True when a predefined projection has tenant-specific overrides applied.
+- Errors: `400`, `403`
+
+#### `POST` `/v2/insights/projections-categories`
+
+> ⚠️ Route marquée `deprecated` dans la spécification publiée.
+
+Deprecated compatibility endpoint. This operation is a no-op and does not modify storage.
+
+- operationId: `CreateProjectionsCategory`
+- **Scopes**: `insights:CreateProjectionsCategory`
+- **Parameters**
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+- **Request body** (`application/json` — `CreateProjectionsCategoryRequestContent`) **(required)**
+  - `id` — string **(required)** _(minLen=1; maxLen=32)_
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+- **Response 200** (`CreateProjectionsCategoryResponseContent`)
+  - `category` — ProjectionsCategory **(required)**
+    - `id` — string **(required)** _(minLen=1; maxLen=32)_
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+- Errors: `400`, `403`
+
+#### `PUT` `/v2/insights/projections-categories/{id}`
+
+> ⚠️ Route marquée `deprecated` dans la spécification publiée.
+
+Deprecated compatibility endpoint. This operation is a no-op and does not modify storage.
+
+- operationId: `UpdateProjectionsCategory`
+- **Scopes**: `insights:UpdateProjectionsCategory`
+- **Parameters**
+  - `id` (path) — string **(required)** _(minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+- **Request body** (`application/json` — `UpdateProjectionsCategoryRequestContent`) **(required)**
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+- **Response 200** (`UpdateProjectionsCategoryResponseContent`)
+  - `category` — ProjectionsCategory **(required)**
+    - `id` — string **(required)** _(minLen=1; maxLen=32)_
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+- Errors: `400`, `403`, `404`
+
+#### `DELETE` `/v2/insights/projections-categories/{id}`
+
+> ⚠️ Route marquée `deprecated` dans la spécification publiée.
+
+Deprecated compatibility endpoint. This operation is a no-op and does not modify storage.
+
+- operationId: `DeleteProjectionsCategory`
+- **Scopes**: `insights:DeleteProjectionsCategory`
+- **Parameters**
+  - `id` (path) — string **(required)** _(minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+- Errors: `400`, `403`
+
+#### `GET` `/v2/insights/projections/{id}`
+
+Gets a projection by its ID.
+
+- operationId: `GetProjection`
+- **Scopes**: `insights:GetProjection`, `insights:read`
+- **Parameters**
+  - `id` (path) — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+- **Response 200** (`GetProjectionResponseContent`)
+  - `projection` — Projection **(required)**
+    - `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+    - `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `instructions` — string _(minLen=1; maxLen=16384)_
+    - `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+      - _array of_ `ProjectionCondition`
+        - _oneOf_ — exactly one of:
+          - **`entity`**
+            - `entity` — ProjectionEntityCondition **(required)**
+              - `equals` — array **(required)**
+                - _(nesting depth limit — see `ProjectionEntityConditionValue` in the Schemas appendix)_
+          - **`direction`**
+            - `direction` — ProjectionDirectionCondition **(required)**
+              - `equals` — array **(required)**
+                - _(nesting depth limit — see `CallDirection` in the Schemas appendix)_
+          - **`participants`**
+            - `participants` — ProjectionParticipantsCondition **(required)**
+              - `emails` — array
+                - _array of_ `string`
+              - `extensions` — array
+                - _array of_ `string`
+              - `groups` — array
+                - _array of_ `string`
+          - **`duration`**
+            - `duration` — ProjectionDurationCondition **(required)**
+              - `minimum` — number **(required)**
+              - `maximum` — number **(required)**
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _array of_ `ConversationTarget`
+          - _oneOf_ — exactly one of:
+            - **`call`**
+              - `call` — CallConversationTarget **(required)**
+                - _(nesting depth limit — see `CallConversationTarget` in the Schemas appendix)_
+            - **`conference`**
+              - `conference` — ConferenceConversationTarget **(required)**
+                - _(nesting depth limit — see `ConferenceConversationTarget` in the Schemas appendix)_
+            - **`chat`**
+              - `chat` — ChatConversationTarget **(required)**
+                - _(nesting depth limit — see `ChatConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - `call` — boolean
+        - `conference` — boolean
+        - `chat` — boolean
+      - `participants` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToInclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToExclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `connectTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `talkTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `waitTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `queueTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `holdTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interaction` — ListConversationsFilterInteraction
+        - `talkRatio` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `wordsPerMinute` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `interruptions` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `patience` — ListConversationsFilterFloat
+          - `from` — number _(format=float)_
+          - `to` — number _(format=float)_
+        - `longestMonologue` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `longestCustomerStory` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - `inbound` — boolean
+        - `outbound` — boolean
+        - `internal` — boolean
+      - `insights` — array
+        - _array of_ `ListConversationsFilterInsight`
+          - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `match` — string
+          - `matchAny` — array
+            - _array of_ `string`
+      - `channel` — ListConversationsFilterChannel
+        - `sms` — boolean
+        - `whatsapp` — boolean
+        - `kite` — boolean
+      - `date` — union
+        - _oneOf_ — exactly one of:
+          - **`absolute`**
+            - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+              - `from` — string
+              - `to` — string
+              - `timeZone` — string
+          - **`predefined`**
+            - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+              - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+              - `timeZone` — string
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `present` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+      - `absent` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+    - `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+    - `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+    - `fields` — array **(required)** _(minItems=1; maxItems=64)_
+      - _array of_ `ProjectionField`
+        - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `name` — string **(required)** _(minLen=1; maxLen=256)_
+        - `description` — string _(minLen=1; maxLen=4096)_
+        - `optional` — boolean
+        - `parameter` — union **(required)**
+          - _oneOf_ — exactly one of:
+            - **`text`**
+              - `text` — ProjectionTextParameter **(required)**
+            - **`multiline`**
+              - `multiline` — ProjectionMultilineParameter **(required)**
+            - **`selection`**
+              - `selection` — ProjectionSelectionParameter **(required)**
+                - _(nesting depth limit — see `ProjectionSelectionParameter` in the Schemas appendix)_
+    - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `status` — string **(required)** _(enum: `ENABLED`, `PAUSED`, `DISABLED`)_
+    - `version` — number **(required)**
+    - `createdAt` — string **(required)**
+    - `updatedAt` — string
+    - `metadata` — ProjectionMetadata
+      - `predefined` — boolean
+      - `customized` — boolean — True when a predefined projection has tenant-specific overrides applied.
+- Errors: `400`, `403`, `404`
+
+#### `PUT` `/v2/insights/projections/{id}`
+
+Updates an existing projection's configuration.
+
+- operationId: `UpdateProjection`
+- **Scopes**: `insights:UpdateProjection`
+- **Parameters**
+  - `id` (path) — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+- **Request body** (`application/json` — `UpdateProjectionRequestContent`) **(required)**
+  - `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+  - `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `instructions` — string _(minLen=1; maxLen=16384)_
+  - `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+    - _array of_ `ProjectionCondition`
+      - _oneOf_ — exactly one of:
+        - **`entity`**
+          - `entity` — ProjectionEntityCondition **(required)**
+            - `equals` — array **(required)**
+              - _array of_ `ProjectionEntityConditionValue`
+        - **`direction`**
+          - `direction` — ProjectionDirectionCondition **(required)**
+            - `equals` — array **(required)**
+              - _array of_ `CallDirection`
+        - **`participants`**
+          - `participants` — ProjectionParticipantsCondition **(required)**
+            - `emails` — array
+              - _array of_ `string`
+            - `extensions` — array
+              - _array of_ `string`
+            - `groups` — array
+              - _array of_ `string`
+        - **`duration`**
+          - `duration` — ProjectionDurationCondition **(required)**
+            - `minimum` — number **(required)**
+            - `maximum` — number **(required)**
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _oneOf_ — exactly one of:
+          - **`call`**
+            - `call` — CallConversationTarget **(required)**
+              - `callId` — string **(required)**
+              - `flowIndex` — number **(required)**
+          - **`conference`**
+            - `conference` — ConferenceConversationTarget **(required)**
+              - `conferenceId` — string **(required)**
+          - **`chat`**
+            - `chat` — ChatConversationTarget **(required)**
+              - `chatId` — string **(required)**
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _oneOf_ — exactly one of:
+          - **`email`**
+            - `email` — string **(required)**
+          - **`phone`**
+            - `phone` — string **(required)**
+          - **`extension`**
+            - `extension` — string **(required)**
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interruptions` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `patience` — ListConversationsFilterFloat
+        - `from` — number _(format=float)_
+        - `to` — number _(format=float)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `match` — string
+        - `matchAny` — array
+          - _array of_ `string`
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+            - `from` — string
+            - `to` — string
+            - `timeZone` — string
+        - **`predefined`**
+          - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+            - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+            - `timeZone` — string
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _oneOf_ — exactly one of:
+          - **`direction`**
+            - `direction` — boolean **(required)**
+          - **`service`**
+            - `service` — boolean **(required)**
+          - **`group`**
+            - `group` — boolean **(required)**
+          - **`department`**
+            - `department` — boolean **(required)**
+          - **`chatbot`**
+            - `chatbot` — boolean **(required)**
+          - **`voicebot`**
+            - `voicebot` — boolean **(required)**
+          - **`tag`**
+            - `tag` — boolean **(required)**
+          - **`pbx`**
+            - `pbx` — boolean **(required)**
+          - **`trunk`**
+            - `trunk` — boolean **(required)**
+          - **`queue`**
+            - `queue` — boolean **(required)**
+          - **`country`**
+            - `country` — boolean **(required)**
+          - **`location`**
+            - `location` — boolean **(required)**
+          - **`language`**
+            - `language` — boolean **(required)**
+          - **`projection`**
+            - `projection` — ListConversationsFilterProjectionField **(required)**
+              - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+              - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+  - `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+  - `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+  - `fields` — array **(required)** _(minItems=1; maxItems=64)_
+    - _array of_ `ProjectionField`
+      - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `name` — string **(required)** _(minLen=1; maxLen=256)_
+      - `description` — string _(minLen=1; maxLen=4096)_
+      - `optional` — boolean
+      - `parameter` — union **(required)**
+        - _oneOf_ — exactly one of:
+          - **`text`**
+            - `text` — ProjectionTextParameter **(required)**
+          - **`multiline`**
+            - `multiline` — ProjectionMultilineParameter **(required)**
+          - **`selection`**
+            - `selection` — ProjectionSelectionParameter **(required)**
+              - `options` — array **(required)** _(maxItems=100)_
+                - _array of_ `string`
+              - `multi` — boolean
+              - `adaptive` — boolean
+              - `adaptiveOptions` — array — Options generated by AI when adaptive mode was enabled. _(maxItems=100)_
+                - _array of_ `string`
+- **Response 200** (`UpdateProjectionResponseContent`)
+  - `projection` — Projection **(required)**
+    - `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+    - `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `instructions` — string _(minLen=1; maxLen=16384)_
+    - `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+      - _array of_ `ProjectionCondition`
+        - _oneOf_ — exactly one of:
+          - **`entity`**
+            - `entity` — ProjectionEntityCondition **(required)**
+              - `equals` — array **(required)**
+                - _(nesting depth limit — see `ProjectionEntityConditionValue` in the Schemas appendix)_
+          - **`direction`**
+            - `direction` — ProjectionDirectionCondition **(required)**
+              - `equals` — array **(required)**
+                - _(nesting depth limit — see `CallDirection` in the Schemas appendix)_
+          - **`participants`**
+            - `participants` — ProjectionParticipantsCondition **(required)**
+              - `emails` — array
+                - _array of_ `string`
+              - `extensions` — array
+                - _array of_ `string`
+              - `groups` — array
+                - _array of_ `string`
+          - **`duration`**
+            - `duration` — ProjectionDurationCondition **(required)**
+              - `minimum` — number **(required)**
+              - `maximum` — number **(required)**
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _array of_ `ConversationTarget`
+          - _oneOf_ — exactly one of:
+            - **`call`**
+              - `call` — CallConversationTarget **(required)**
+                - _(nesting depth limit — see `CallConversationTarget` in the Schemas appendix)_
+            - **`conference`**
+              - `conference` — ConferenceConversationTarget **(required)**
+                - _(nesting depth limit — see `ConferenceConversationTarget` in the Schemas appendix)_
+            - **`chat`**
+              - `chat` — ChatConversationTarget **(required)**
+                - _(nesting depth limit — see `ChatConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - `call` — boolean
+        - `conference` — boolean
+        - `chat` — boolean
+      - `participants` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToInclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToExclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `connectTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `talkTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `waitTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `queueTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `holdTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interaction` — ListConversationsFilterInteraction
+        - `talkRatio` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `wordsPerMinute` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `interruptions` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `patience` — ListConversationsFilterFloat
+          - `from` — number _(format=float)_
+          - `to` — number _(format=float)_
+        - `longestMonologue` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `longestCustomerStory` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - `inbound` — boolean
+        - `outbound` — boolean
+        - `internal` — boolean
+      - `insights` — array
+        - _array of_ `ListConversationsFilterInsight`
+          - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `match` — string
+          - `matchAny` — array
+            - _array of_ `string`
+      - `channel` — ListConversationsFilterChannel
+        - `sms` — boolean
+        - `whatsapp` — boolean
+        - `kite` — boolean
+      - `date` — union
+        - _oneOf_ — exactly one of:
+          - **`absolute`**
+            - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+              - `from` — string
+              - `to` — string
+              - `timeZone` — string
+          - **`predefined`**
+            - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+              - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+              - `timeZone` — string
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `present` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+      - `absent` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+    - `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+    - `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+    - `fields` — array **(required)** _(minItems=1; maxItems=64)_
+      - _array of_ `ProjectionField`
+        - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `name` — string **(required)** _(minLen=1; maxLen=256)_
+        - `description` — string _(minLen=1; maxLen=4096)_
+        - `optional` — boolean
+        - `parameter` — union **(required)**
+          - _oneOf_ — exactly one of:
+            - **`text`**
+              - `text` — ProjectionTextParameter **(required)**
+            - **`multiline`**
+              - `multiline` — ProjectionMultilineParameter **(required)**
+            - **`selection`**
+              - `selection` — ProjectionSelectionParameter **(required)**
+                - _(nesting depth limit — see `ProjectionSelectionParameter` in the Schemas appendix)_
+    - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `status` — string **(required)** _(enum: `ENABLED`, `PAUSED`, `DISABLED`)_
+    - `version` — number **(required)**
+    - `createdAt` — string **(required)**
+    - `updatedAt` — string
+    - `metadata` — ProjectionMetadata
+      - `predefined` — boolean
+      - `customized` — boolean — True when a predefined projection has tenant-specific overrides applied.
+- Errors: `400`, `403`
+
+#### `DELETE` `/v2/insights/projections/{id}`
+
+Deletes a projection by its ID.
+
+- operationId: `DeleteProjection`
+- **Scopes**: `insights:DeleteProjection`
+- **Parameters**
+  - `id` (path) — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+- Errors: `400`, `403`
+
+#### `PATCH` `/v2/insights/projections/{id}/disable`
+
+Disables a projection by its ID.
+
+- operationId: `DisableProjection`
+- **Scopes**: `insights:DisableProjection`
+- **Parameters**
+  - `id` (path) — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+- **Response 200** (`DisableProjectionResponseContent`)
+  - `projection` — Projection **(required)**
+    - `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+    - `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `instructions` — string _(minLen=1; maxLen=16384)_
+    - `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+      - _array of_ `ProjectionCondition`
+        - _oneOf_ — exactly one of:
+          - **`entity`**
+            - `entity` — ProjectionEntityCondition **(required)**
+              - `equals` — array **(required)**
+                - _(nesting depth limit — see `ProjectionEntityConditionValue` in the Schemas appendix)_
+          - **`direction`**
+            - `direction` — ProjectionDirectionCondition **(required)**
+              - `equals` — array **(required)**
+                - _(nesting depth limit — see `CallDirection` in the Schemas appendix)_
+          - **`participants`**
+            - `participants` — ProjectionParticipantsCondition **(required)**
+              - `emails` — array
+                - _array of_ `string`
+              - `extensions` — array
+                - _array of_ `string`
+              - `groups` — array
+                - _array of_ `string`
+          - **`duration`**
+            - `duration` — ProjectionDurationCondition **(required)**
+              - `minimum` — number **(required)**
+              - `maximum` — number **(required)**
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _array of_ `ConversationTarget`
+          - _oneOf_ — exactly one of:
+            - **`call`**
+              - `call` — CallConversationTarget **(required)**
+                - _(nesting depth limit — see `CallConversationTarget` in the Schemas appendix)_
+            - **`conference`**
+              - `conference` — ConferenceConversationTarget **(required)**
+                - _(nesting depth limit — see `ConferenceConversationTarget` in the Schemas appendix)_
+            - **`chat`**
+              - `chat` — ChatConversationTarget **(required)**
+                - _(nesting depth limit — see `ChatConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - `call` — boolean
+        - `conference` — boolean
+        - `chat` — boolean
+      - `participants` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToInclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToExclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `connectTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `talkTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `waitTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `queueTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `holdTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interaction` — ListConversationsFilterInteraction
+        - `talkRatio` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `wordsPerMinute` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `interruptions` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `patience` — ListConversationsFilterFloat
+          - `from` — number _(format=float)_
+          - `to` — number _(format=float)_
+        - `longestMonologue` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `longestCustomerStory` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - `inbound` — boolean
+        - `outbound` — boolean
+        - `internal` — boolean
+      - `insights` — array
+        - _array of_ `ListConversationsFilterInsight`
+          - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `match` — string
+          - `matchAny` — array
+            - _array of_ `string`
+      - `channel` — ListConversationsFilterChannel
+        - `sms` — boolean
+        - `whatsapp` — boolean
+        - `kite` — boolean
+      - `date` — union
+        - _oneOf_ — exactly one of:
+          - **`absolute`**
+            - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+              - `from` — string
+              - `to` — string
+              - `timeZone` — string
+          - **`predefined`**
+            - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+              - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+              - `timeZone` — string
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `present` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+      - `absent` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+    - `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+    - `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+    - `fields` — array **(required)** _(minItems=1; maxItems=64)_
+      - _array of_ `ProjectionField`
+        - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `name` — string **(required)** _(minLen=1; maxLen=256)_
+        - `description` — string _(minLen=1; maxLen=4096)_
+        - `optional` — boolean
+        - `parameter` — union **(required)**
+          - _oneOf_ — exactly one of:
+            - **`text`**
+              - `text` — ProjectionTextParameter **(required)**
+            - **`multiline`**
+              - `multiline` — ProjectionMultilineParameter **(required)**
+            - **`selection`**
+              - `selection` — ProjectionSelectionParameter **(required)**
+                - _(nesting depth limit — see `ProjectionSelectionParameter` in the Schemas appendix)_
+    - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `status` — string **(required)** _(enum: `ENABLED`, `PAUSED`, `DISABLED`)_
+    - `version` — number **(required)**
+    - `createdAt` — string **(required)**
+    - `updatedAt` — string
+    - `metadata` — ProjectionMetadata
+      - `predefined` — boolean
+      - `customized` — boolean — True when a predefined projection has tenant-specific overrides applied.
+- Errors: `400`, `403`
+
+#### `PATCH` `/v2/insights/projections/{id}/enable`
+
+Enables a projection by its ID.
+
+- operationId: `EnableProjection`
+- **Scopes**: `insights:EnableProjection`
+- **Parameters**
+  - `id` (path) — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+- **Response 200** (`EnableProjectionResponseContent`)
+  - `projection` — Projection **(required)**
+    - `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+    - `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `instructions` — string _(minLen=1; maxLen=16384)_
+    - `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+      - _array of_ `ProjectionCondition`
+        - _oneOf_ — exactly one of:
+          - **`entity`**
+            - `entity` — ProjectionEntityCondition **(required)**
+              - `equals` — array **(required)**
+                - _(nesting depth limit — see `ProjectionEntityConditionValue` in the Schemas appendix)_
+          - **`direction`**
+            - `direction` — ProjectionDirectionCondition **(required)**
+              - `equals` — array **(required)**
+                - _(nesting depth limit — see `CallDirection` in the Schemas appendix)_
+          - **`participants`**
+            - `participants` — ProjectionParticipantsCondition **(required)**
+              - `emails` — array
+                - _array of_ `string`
+              - `extensions` — array
+                - _array of_ `string`
+              - `groups` — array
+                - _array of_ `string`
+          - **`duration`**
+            - `duration` — ProjectionDurationCondition **(required)**
+              - `minimum` — number **(required)**
+              - `maximum` — number **(required)**
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _array of_ `ConversationTarget`
+          - _oneOf_ — exactly one of:
+            - **`call`**
+              - `call` — CallConversationTarget **(required)**
+                - _(nesting depth limit — see `CallConversationTarget` in the Schemas appendix)_
+            - **`conference`**
+              - `conference` — ConferenceConversationTarget **(required)**
+                - _(nesting depth limit — see `ConferenceConversationTarget` in the Schemas appendix)_
+            - **`chat`**
+              - `chat` — ChatConversationTarget **(required)**
+                - _(nesting depth limit — see `ChatConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - `call` — boolean
+        - `conference` — boolean
+        - `chat` — boolean
+      - `participants` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToInclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToExclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `connectTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `talkTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `waitTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `queueTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `holdTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interaction` — ListConversationsFilterInteraction
+        - `talkRatio` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `wordsPerMinute` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `interruptions` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `patience` — ListConversationsFilterFloat
+          - `from` — number _(format=float)_
+          - `to` — number _(format=float)_
+        - `longestMonologue` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `longestCustomerStory` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - `inbound` — boolean
+        - `outbound` — boolean
+        - `internal` — boolean
+      - `insights` — array
+        - _array of_ `ListConversationsFilterInsight`
+          - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `match` — string
+          - `matchAny` — array
+            - _array of_ `string`
+      - `channel` — ListConversationsFilterChannel
+        - `sms` — boolean
+        - `whatsapp` — boolean
+        - `kite` — boolean
+      - `date` — union
+        - _oneOf_ — exactly one of:
+          - **`absolute`**
+            - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+              - `from` — string
+              - `to` — string
+              - `timeZone` — string
+          - **`predefined`**
+            - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+              - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+              - `timeZone` — string
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `present` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+      - `absent` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+    - `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+    - `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+    - `fields` — array **(required)** _(minItems=1; maxItems=64)_
+      - _array of_ `ProjectionField`
+        - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `name` — string **(required)** _(minLen=1; maxLen=256)_
+        - `description` — string _(minLen=1; maxLen=4096)_
+        - `optional` — boolean
+        - `parameter` — union **(required)**
+          - _oneOf_ — exactly one of:
+            - **`text`**
+              - `text` — ProjectionTextParameter **(required)**
+            - **`multiline`**
+              - `multiline` — ProjectionMultilineParameter **(required)**
+            - **`selection`**
+              - `selection` — ProjectionSelectionParameter **(required)**
+                - _(nesting depth limit — see `ProjectionSelectionParameter` in the Schemas appendix)_
+    - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `status` — string **(required)** _(enum: `ENABLED`, `PAUSED`, `DISABLED`)_
+    - `version` — number **(required)**
+    - `createdAt` — string **(required)**
+    - `updatedAt` — string
+    - `metadata` — ProjectionMetadata
+      - `predefined` — boolean
+      - `customized` — boolean — True when a predefined projection has tenant-specific overrides applied.
+- Errors: `400`, `403`
+
+#### `PATCH` `/v2/insights/projections/{id}/pause`
+
+Pauses a projection by its ID.
+
+- operationId: `PauseProjection`
+- **Scopes**: `insights:PauseProjection`
+- **Parameters**
+  - `id` (path) — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+  - `company` (query) — string — The unique identifier of the tenant when a service token is used. _(minLen=3; maxLen=30)_
+- **Response 200** (`PauseProjectionResponseContent`)
+  - `projection` — Projection **(required)**
+    - `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+    - `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `instructions` — string _(minLen=1; maxLen=16384)_
+    - `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+      - _array of_ `ProjectionCondition`
+        - _oneOf_ — exactly one of:
+          - **`entity`**
+            - `entity` — ProjectionEntityCondition **(required)**
+              - `equals` — array **(required)**
+                - _(nesting depth limit — see `ProjectionEntityConditionValue` in the Schemas appendix)_
+          - **`direction`**
+            - `direction` — ProjectionDirectionCondition **(required)**
+              - `equals` — array **(required)**
+                - _(nesting depth limit — see `CallDirection` in the Schemas appendix)_
+          - **`participants`**
+            - `participants` — ProjectionParticipantsCondition **(required)**
+              - `emails` — array
+                - _array of_ `string`
+              - `extensions` — array
+                - _array of_ `string`
+              - `groups` — array
+                - _array of_ `string`
+          - **`duration`**
+            - `duration` — ProjectionDurationCondition **(required)**
+              - `minimum` — number **(required)**
+              - `maximum` — number **(required)**
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _array of_ `ConversationTarget`
+          - _oneOf_ — exactly one of:
+            - **`call`**
+              - `call` — CallConversationTarget **(required)**
+                - _(nesting depth limit — see `CallConversationTarget` in the Schemas appendix)_
+            - **`conference`**
+              - `conference` — ConferenceConversationTarget **(required)**
+                - _(nesting depth limit — see `ConferenceConversationTarget` in the Schemas appendix)_
+            - **`chat`**
+              - `chat` — ChatConversationTarget **(required)**
+                - _(nesting depth limit — see `ChatConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - `call` — boolean
+        - `conference` — boolean
+        - `chat` — boolean
+      - `participants` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToInclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `participantsToExclude` — array
+        - _array of_ `ListConversationsFilterParticipant`
+          - _oneOf_ — exactly one of:
+            - **`email`**
+              - `email` — string **(required)**
+            - **`phone`**
+              - `phone` — string **(required)**
+            - **`extension`**
+              - `extension` — string **(required)**
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `connectTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `talkTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `waitTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `queueTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `holdTime` — ListConversationsFilterNumber
+        - `from` — number
+        - `to` — number
+      - `interaction` — ListConversationsFilterInteraction
+        - `talkRatio` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `wordsPerMinute` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `interruptions` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `patience` — ListConversationsFilterFloat
+          - `from` — number _(format=float)_
+          - `to` — number _(format=float)_
+        - `longestMonologue` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+        - `longestCustomerStory` — ListConversationsFilterNumber
+          - `from` — number
+          - `to` — number
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - `inbound` — boolean
+        - `outbound` — boolean
+        - `internal` — boolean
+      - `insights` — array
+        - _array of_ `ListConversationsFilterInsight`
+          - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+          - `match` — string
+          - `matchAny` — array
+            - _array of_ `string`
+      - `channel` — ListConversationsFilterChannel
+        - `sms` — boolean
+        - `whatsapp` — boolean
+        - `kite` — boolean
+      - `date` — union
+        - _oneOf_ — exactly one of:
+          - **`absolute`**
+            - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+              - `from` — string
+              - `to` — string
+              - `timeZone` — string
+          - **`predefined`**
+            - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+              - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+              - `timeZone` — string
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - `index` — number
+        - `timeZone` — string
+      - `present` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+      - `absent` — array
+        - _array of_ `ListConversationsFilterField`
+          - _oneOf_ — exactly one of:
+            - **`direction`**
+              - `direction` — boolean **(required)**
+            - **`service`**
+              - `service` — boolean **(required)**
+            - **`group`**
+              - `group` — boolean **(required)**
+            - **`department`**
+              - `department` — boolean **(required)**
+            - **`chatbot`**
+              - `chatbot` — boolean **(required)**
+            - **`voicebot`**
+              - `voicebot` — boolean **(required)**
+            - **`tag`**
+              - `tag` — boolean **(required)**
+            - **`pbx`**
+              - `pbx` — boolean **(required)**
+            - **`trunk`**
+              - `trunk` — boolean **(required)**
+            - **`queue`**
+              - `queue` — boolean **(required)**
+            - **`country`**
+              - `country` — boolean **(required)**
+            - **`location`**
+              - `location` — boolean **(required)**
+            - **`language`**
+              - `language` — boolean **(required)**
+            - **`projection`**
+              - `projection` — ListConversationsFilterProjectionField **(required)**
+                - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+    - `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+    - `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+    - `fields` — array **(required)** _(minItems=1; maxItems=64)_
+      - _array of_ `ProjectionField`
+        - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `name` — string **(required)** _(minLen=1; maxLen=256)_
+        - `description` — string _(minLen=1; maxLen=4096)_
+        - `optional` — boolean
+        - `parameter` — union **(required)**
+          - _oneOf_ — exactly one of:
+            - **`text`**
+              - `text` — ProjectionTextParameter **(required)**
+            - **`multiline`**
+              - `multiline` — ProjectionMultilineParameter **(required)**
+            - **`selection`**
+              - `selection` — ProjectionSelectionParameter **(required)**
+                - _(nesting depth limit — see `ProjectionSelectionParameter` in the Schemas appendix)_
+    - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `status` — string **(required)** _(enum: `ENABLED`, `PAUSED`, `DISABLED`)_
+    - `version` — number **(required)**
+    - `createdAt` — string **(required)**
+    - `updatedAt` — string
+    - `metadata` — ProjectionMetadata
+      - `predefined` — boolean
+      - `customized` — boolean — True when a predefined projection has tenant-specific overrides applied.
+- Errors: `400`, `403`
+
+### Schemas appendix — Insights API
+
+<details><summary>244 component schemas</summary>
+
+**`AggregationBucket`**
+
+- `key` — string **(required)** — The value for this bucket. For example, 'INBOUND' if grouping by direction, or '0-5min' if grouping by duration.
+- `count` — number **(required)** — Number of conversations falling into this bucket.
+- `interval` — string _(enum: `month`, `week`, `day`, `hour`, `minute`)_
+- `filter` — ListConversationsFilter
+  - `id` — array
+    - _array of_ `ConversationTarget`
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `entity` — ListConversationsFilterEntity
+    - `call` — boolean
+    - `conference` — boolean
+    - `chat` — boolean
+  - `participants` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToInclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToExclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `chatbots` — array
+    - _array of_ `string`
+  - `voicebots` — array
+    - _array of_ `string`
+  - `service` — array
+    - _array of_ `string`
+  - `group` — array
+    - _array of_ `string`
+  - `department` — array
+    - _array of_ `string`
+  - `tag` — array
+    - _array of_ `string`
+  - `pbx` — array
+    - _array of_ `string`
+  - `trunk` — array
+    - _array of_ `string`
+  - `queue` — array
+    - _array of_ `string`
+  - `country` — array
+    - _array of_ `string`
+  - `location` — array
+    - _array of_ `string`
+  - `phases` — array
+    - _array of_ `string`
+  - `language` — array
+    - _array of_ `string`
+  - `duration` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `connectTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `talkTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `waitTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `queueTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `holdTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interaction` — ListConversationsFilterInteraction
+    - `talkRatio` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `wordsPerMinute` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interruptions` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `patience` — ListConversationsFilterFloat
+      - `from` — number _(format=float)_
+      - `to` — number _(format=float)_
+    - `longestMonologue` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `longestCustomerStory` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+  - `recorded` — boolean
+  - `transcribed` — boolean
+  - `direction` — ListConversationsFilterDirection
+    - `inbound` — boolean
+    - `outbound` — boolean
+    - `internal` — boolean
+  - `insights` — array
+    - _array of_ `ListConversationsFilterInsight`
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `match` — string
+      - `matchAny` — array
+        - _array of_ `string`
+  - `channel` — ListConversationsFilterChannel
+    - `sms` — boolean
+    - `whatsapp` — boolean
+    - `kite` — boolean
+  - `date` — union
+    - _oneOf_ — exactly one of:
+      - **`absolute`**
+        - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+      - **`predefined`**
+        - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+  - `dayOfWeek` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `hourOfDay` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `present` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `absent` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+- `aggregation` — AggregationResult
+  - `aggregation` — union **(required)**
+    - _oneOf_ — exactly one of:
+      - **`projection`**
+        - `projection` — AggregationProjectionDefinition **(required)**
+          - _(nesting depth limit — see `AggregationProjectionDefinition` in the Schemas appendix)_
+      - **`direction`**
+        - `direction` — AggregationNoConfigurationDefinition **(required)**
+      - **`duration`**
+        - `duration` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`connectTime`**
+        - `connectTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`talkTime`**
+        - `talkTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`waitTime`**
+        - `waitTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`queueTime`**
+        - `queueTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`holdTime`**
+        - `holdTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`service`**
+        - `service` — AggregationNoConfigurationDefinition **(required)**
+      - **`extension`**
+        - `extension` — AggregationNoConfigurationDefinition **(required)**
+      - **`chatbot`**
+        - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+      - **`voicebot`**
+        - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+      - **`group`**
+        - `group` — AggregationNoConfigurationDefinition **(required)**
+      - **`department`**
+        - `department` — AggregationNoConfigurationDefinition **(required)**
+      - **`tag`**
+        - `tag` — AggregationNoConfigurationDefinition **(required)**
+      - **`pbx`**
+        - `pbx` — AggregationNoConfigurationDefinition **(required)**
+      - **`trunk`**
+        - `trunk` — AggregationNoConfigurationDefinition **(required)**
+      - **`queue`**
+        - `queue` — AggregationNoConfigurationDefinition **(required)**
+      - **`country`**
+        - `country` — AggregationNoConfigurationDefinition **(required)**
+      - **`location`**
+        - `location` — AggregationNoConfigurationDefinition **(required)**
+      - **`language`**
+        - `language` — AggregationNoConfigurationDefinition **(required)**
+      - **`entity`**
+        - `entity` — AggregationNoConfigurationDefinition **(required)**
+      - **`channel`**
+        - `channel` — AggregationNoConfigurationDefinition **(required)**
+      - **`recorded`**
+        - `recorded` — AggregationNoConfigurationDefinition **(required)**
+      - **`date`**
+        - `date` — AggregationDateDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDateDefinition` in the Schemas appendix)_
+      - **`dayOfWeek`**
+        - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDayOfWeekDefinition` in the Schemas appendix)_
+      - **`hourOfDay`**
+        - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+          - _(nesting depth limit — see `AggregationHourOfDayDefinition` in the Schemas appendix)_
+  - `buckets` — array **(required)** — The list of buckets generated for this aggregation level.
+    - _array of_ `AggregationBucket`
+      - _(nesting depth limit — see `AggregationBucket` in the Schemas appendix)_
+
+**`AggregationDateDefinition`**
+
+- `timeZone` — string
+
+**`AggregationDateInterval`**
+
+- string _(enum: `month`, `week`, `day`, `hour`, `minute`)_
+
+**`AggregationDayOfWeekDefinition`**
+
+- `timeZone` — string
+
+**`AggregationDefinition`**
+
+- _oneOf_ — exactly one of:
+  - **`projection`**
+    - `projection` — AggregationProjectionDefinition **(required)**
+      - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+  - **`direction`**
+    - `direction` — AggregationNoConfigurationDefinition **(required)**
+  - **`duration`**
+    - `duration` — AggregationDurationDefinition **(required)**
+      - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+        - _array of_ `DurationGroupBucket`
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+  - **`connectTime`**
+    - `connectTime` — AggregationDurationDefinition **(required)**
+      - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+        - _array of_ `DurationGroupBucket`
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+  - **`talkTime`**
+    - `talkTime` — AggregationDurationDefinition **(required)**
+      - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+        - _array of_ `DurationGroupBucket`
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+  - **`waitTime`**
+    - `waitTime` — AggregationDurationDefinition **(required)**
+      - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+        - _array of_ `DurationGroupBucket`
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+  - **`queueTime`**
+    - `queueTime` — AggregationDurationDefinition **(required)**
+      - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+        - _array of_ `DurationGroupBucket`
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+  - **`holdTime`**
+    - `holdTime` — AggregationDurationDefinition **(required)**
+      - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+        - _array of_ `DurationGroupBucket`
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+  - **`service`**
+    - `service` — AggregationNoConfigurationDefinition **(required)**
+  - **`extension`**
+    - `extension` — AggregationNoConfigurationDefinition **(required)**
+  - **`chatbot`**
+    - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+  - **`voicebot`**
+    - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+  - **`group`**
+    - `group` — AggregationNoConfigurationDefinition **(required)**
+  - **`department`**
+    - `department` — AggregationNoConfigurationDefinition **(required)**
+  - **`tag`**
+    - `tag` — AggregationNoConfigurationDefinition **(required)**
+  - **`pbx`**
+    - `pbx` — AggregationNoConfigurationDefinition **(required)**
+  - **`trunk`**
+    - `trunk` — AggregationNoConfigurationDefinition **(required)**
+  - **`queue`**
+    - `queue` — AggregationNoConfigurationDefinition **(required)**
+  - **`country`**
+    - `country` — AggregationNoConfigurationDefinition **(required)**
+  - **`location`**
+    - `location` — AggregationNoConfigurationDefinition **(required)**
+  - **`language`**
+    - `language` — AggregationNoConfigurationDefinition **(required)**
+  - **`entity`**
+    - `entity` — AggregationNoConfigurationDefinition **(required)**
+  - **`channel`**
+    - `channel` — AggregationNoConfigurationDefinition **(required)**
+  - **`recorded`**
+    - `recorded` — AggregationNoConfigurationDefinition **(required)**
+  - **`date`**
+    - `date` — AggregationDateDefinition **(required)**
+      - `timeZone` — string
+  - **`dayOfWeek`**
+    - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+      - `timeZone` — string
+  - **`hourOfDay`**
+    - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+      - `timeZone` — string
+
+**`AggregationDurationDefinition`**
+
+- `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+  - _array of_ `DurationGroupBucket`
+    - `title` — string **(required)** — The human-readable label for this duration bucket (e.g., '0-5 minutes').
+    - `from` — number — The lower bound for this duration bucket (greater than or equal to).
+    - `to` — number — The upper bound for this duration bucket (exclusive).
+
+**`AggregationHourOfDayDefinition`**
+
+- `timeZone` — string
+
+**`AggregationNoConfigurationDefinition`**
+
+- AggregationNoConfigurationDefinition
+
+**`AggregationProjectionDefinition`**
+
+- `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+- `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+
+**`AggregationResult`**
+
+- `aggregation` — union **(required)**
+  - _oneOf_ — exactly one of:
+    - **`projection`**
+      - `projection` — AggregationProjectionDefinition **(required)**
+        - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - **`direction`**
+      - `direction` — AggregationNoConfigurationDefinition **(required)**
+    - **`duration`**
+      - `duration` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`connectTime`**
+      - `connectTime` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`talkTime`**
+      - `talkTime` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`waitTime`**
+      - `waitTime` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`queueTime`**
+      - `queueTime` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`holdTime`**
+      - `holdTime` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`service`**
+      - `service` — AggregationNoConfigurationDefinition **(required)**
+    - **`extension`**
+      - `extension` — AggregationNoConfigurationDefinition **(required)**
+    - **`chatbot`**
+      - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+    - **`voicebot`**
+      - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+    - **`group`**
+      - `group` — AggregationNoConfigurationDefinition **(required)**
+    - **`department`**
+      - `department` — AggregationNoConfigurationDefinition **(required)**
+    - **`tag`**
+      - `tag` — AggregationNoConfigurationDefinition **(required)**
+    - **`pbx`**
+      - `pbx` — AggregationNoConfigurationDefinition **(required)**
+    - **`trunk`**
+      - `trunk` — AggregationNoConfigurationDefinition **(required)**
+    - **`queue`**
+      - `queue` — AggregationNoConfigurationDefinition **(required)**
+    - **`country`**
+      - `country` — AggregationNoConfigurationDefinition **(required)**
+    - **`location`**
+      - `location` — AggregationNoConfigurationDefinition **(required)**
+    - **`language`**
+      - `language` — AggregationNoConfigurationDefinition **(required)**
+    - **`entity`**
+      - `entity` — AggregationNoConfigurationDefinition **(required)**
+    - **`channel`**
+      - `channel` — AggregationNoConfigurationDefinition **(required)**
+    - **`recorded`**
+      - `recorded` — AggregationNoConfigurationDefinition **(required)**
+    - **`date`**
+      - `date` — AggregationDateDefinition **(required)**
+        - `timeZone` — string
+    - **`dayOfWeek`**
+      - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+        - `timeZone` — string
+    - **`hourOfDay`**
+      - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+        - `timeZone` — string
+- `buckets` — array **(required)** — The list of buckets generated for this aggregation level.
+  - _array of_ `AggregationBucket`
+    - `key` — string **(required)** — The value for this bucket. For example, 'INBOUND' if grouping by direction, or '0-5min' if grouping by duration.
+    - `count` — number **(required)** — Number of conversations falling into this bucket.
+    - `interval` — string _(enum: `month`, `week`, `day`, `hour`, `minute`)_
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - _(nesting depth limit — see `ListConversationsFilterEntity` in the Schemas appendix)_
+      - `participants` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToInclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToExclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `connectTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `talkTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `waitTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `queueTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `holdTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interaction` — ListConversationsFilterInteraction
+        - _(nesting depth limit — see `ListConversationsFilterInteraction` in the Schemas appendix)_
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - _(nesting depth limit — see `ListConversationsFilterDirection` in the Schemas appendix)_
+      - `insights` — array
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+      - `channel` — ListConversationsFilterChannel
+        - _(nesting depth limit — see `ListConversationsFilterChannel` in the Schemas appendix)_
+      - `date` — union
+        - _(nesting depth limit — see `ListConversationsFilterDate` in the Schemas appendix)_
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `present` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+      - `absent` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+    - `aggregation` — AggregationResult
+      - _(nesting depth limit — see `AggregationResult` in the Schemas appendix)_
+
+**`AnalysisSettings`**
+
+- `defaultModel` — string — Default provider and model identifier for projections that do not define a custom model. Example: 'openai://gpt-5'.
+- `disabled` — boolean — True to disable analysis completely for the organization.
+- `filter` — ListConversationsFilter
+  - `id` — array
+    - _array of_ `ConversationTarget`
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `entity` — ListConversationsFilterEntity
+    - `call` — boolean
+    - `conference` — boolean
+    - `chat` — boolean
+  - `participants` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToInclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToExclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `chatbots` — array
+    - _array of_ `string`
+  - `voicebots` — array
+    - _array of_ `string`
+  - `service` — array
+    - _array of_ `string`
+  - `group` — array
+    - _array of_ `string`
+  - `department` — array
+    - _array of_ `string`
+  - `tag` — array
+    - _array of_ `string`
+  - `pbx` — array
+    - _array of_ `string`
+  - `trunk` — array
+    - _array of_ `string`
+  - `queue` — array
+    - _array of_ `string`
+  - `country` — array
+    - _array of_ `string`
+  - `location` — array
+    - _array of_ `string`
+  - `phases` — array
+    - _array of_ `string`
+  - `language` — array
+    - _array of_ `string`
+  - `duration` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `connectTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `talkTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `waitTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `queueTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `holdTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interaction` — ListConversationsFilterInteraction
+    - `talkRatio` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `wordsPerMinute` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interruptions` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `patience` — ListConversationsFilterFloat
+      - `from` — number _(format=float)_
+      - `to` — number _(format=float)_
+    - `longestMonologue` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `longestCustomerStory` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+  - `recorded` — boolean
+  - `transcribed` — boolean
+  - `direction` — ListConversationsFilterDirection
+    - `inbound` — boolean
+    - `outbound` — boolean
+    - `internal` — boolean
+  - `insights` — array
+    - _array of_ `ListConversationsFilterInsight`
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `match` — string
+      - `matchAny` — array
+        - _array of_ `string`
+  - `channel` — ListConversationsFilterChannel
+    - `sms` — boolean
+    - `whatsapp` — boolean
+    - `kite` — boolean
+  - `date` — union
+    - _oneOf_ — exactly one of:
+      - **`absolute`**
+        - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+      - **`predefined`**
+        - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+  - `dayOfWeek` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `hourOfDay` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `present` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `absent` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+- `deleteAssetsAfterSuccess` — boolean — True to delete raw transcript and recording assets after a successful initial analysis run.
+
+**`Annotation`**
+
+- `id` — string **(required)** — Identity of this emission. Annotations are applied once per id: re-sending one already recorded on the conversation is ignored.
+- `time` — number **(required)**
+- `key` — string — Identity of the value, when the annotation is one reading of something that changes over the conversation. See AnnotationKey. _(pattern=^[a-z0-9][a-z0-9_.-]*$; maxLen=100)_
+- `payload` — union **(required)**
+  - _oneOf_ — exactly one of:
+    - **`tag`**
+      - `tag` — string **(required)** _(maxLen=50)_
+    - **`text`**
+      - `text` — string **(required)** _(maxLen=4096)_
+    - **`variables`**
+      - `variables` — AnnotationVariablesValue **(required)** — Capability variable values captured for an annotation. Runtime services enforce serialized payload size limits.
+        - `value` — any **(required)**
+    - **`result`**
+      - `result` — AnnotationResultValue **(required)** — Tool result captured for an annotation. Runtime services enforce serialized payload size limits.
+        - `value` — any **(required)**
+    - **`metric`**
+      - `metric` — AnnotationMetricValue **(required)** — A named value observed during the conversation, and the reading it replaces — a CSAT score, a talk ratio, the outcome of an evaluation. Emitted with an `AnnotationKey`, which is what makes the newest reading addressable in `annotationsByKey` while the series stays in `annotations`. Runtime services enforce serialized payload size limits.
+        - `value` — any **(required)** — The reading, as its producer models it: a score, a label, a number, or an object such as `{"customerRatio": 0.42, "agentRatio": 0.58}`.
+        - `previous` — any — The reading this one replaces, so a consumer can render the change without loading the history. Absent on the first reading.
+        - `label` — string — Human-readable name of the value, e.g. 'CSAT' or 'Talk ratio'. _(maxLen=100)_
+- `source` — AnnotationSource **(required)** — Producer of an annotation. Generic identifiers allow callers to attach context such as tool id/name, user id/name, etc., without constraining the source type to a fixed shape.
+  - `type` — string **(required)** _(enum: `chatbot`, `voicebot`, `user`, `system`, `copilot`)_
+  - `id` — string — Stable identifier of the producer (e.g. tool id, user id, copilot session id).
+  - `name` — string — Human-readable name of the producer (e.g. tool name, user display name).
+
+**`AnnotationMetricValue`**
+
+_A named value observed during the conversation, and the reading it replaces — a CSAT score, a talk ratio, the outcome of an evaluation. Emitted with an `AnnotationKey`, which is what makes the newest reading addressable in `annotationsByKey` while the series stays in `annotations`. Runtime services enforce serialized payload size limits._
+
+- `value` — any **(required)** — The reading, as its producer models it: a score, a label, a number, or an object such as `{"customerRatio": 0.42, "agentRatio": 0.58}`.
+- `previous` — any — The reading this one replaces, so a consumer can render the change without loading the history. Absent on the first reading.
+- `label` — string — Human-readable name of the value, e.g. 'CSAT' or 'Talk ratio'. _(maxLen=100)_
+
+**`AnnotationPayload`**
+
+- _oneOf_ — exactly one of:
+  - **`tag`**
+    - `tag` — string **(required)** _(maxLen=50)_
+  - **`text`**
+    - `text` — string **(required)** _(maxLen=4096)_
+  - **`variables`**
+    - `variables` — AnnotationVariablesValue **(required)** — Capability variable values captured for an annotation. Runtime services enforce serialized payload size limits.
+      - `value` — any **(required)**
+  - **`result`**
+    - `result` — AnnotationResultValue **(required)** — Tool result captured for an annotation. Runtime services enforce serialized payload size limits.
+      - `value` — any **(required)**
+  - **`metric`**
+    - `metric` — AnnotationMetricValue **(required)** — A named value observed during the conversation, and the reading it replaces — a CSAT score, a talk ratio, the outcome of an evaluation. Emitted with an `AnnotationKey`, which is what makes the newest reading addressable in `annotationsByKey` while the series stays in `annotations`. Runtime services enforce serialized payload size limits.
+      - `value` — any **(required)** — The reading, as its producer models it: a score, a label, a number, or an object such as `{"customerRatio": 0.42, "agentRatio": 0.58}`.
+      - `previous` — any — The reading this one replaces, so a consumer can render the change without loading the history. Absent on the first reading.
+      - `label` — string — Human-readable name of the value, e.g. 'CSAT' or 'Talk ratio'. _(maxLen=100)_
+
+**`AnnotationResultValue`**
+
+_Tool result captured for an annotation. Runtime services enforce serialized payload size limits._
+
+- `value` — any **(required)**
+
+**`AnnotationSource`**
+
+_Producer of an annotation. Generic identifiers allow callers to attach context such as tool id/name, user id/name, etc., without constraining the source type to a fixed shape._
+
+- `type` — string **(required)** _(enum: `chatbot`, `voicebot`, `user`, `system`, `copilot`)_
+- `id` — string — Stable identifier of the producer (e.g. tool id, user id, copilot session id).
+- `name` — string — Human-readable name of the producer (e.g. tool name, user display name).
+
+**`AnnotationSourceType`**
+
+- string _(enum: `chatbot`, `voicebot`, `user`, `system`, `copilot`)_
+
+**`AnnotationVariablesValue`**
+
+_Capability variable values captured for an annotation. Runtime services enforce serialized payload size limits._
+
+- `value` — any **(required)**
+
+**`AnnotationsMap`**
+
+_The newest annotation per `AnnotationKey`: the current value of everything the conversation tracks, without reading the history. Keyed annotations only — a one-off annotation appears solely in `annotations`._
+
+- _map of_ `Annotation`
+  - `id` — string **(required)** — Identity of this emission. Annotations are applied once per id: re-sending one already recorded on the conversation is ignored.
+  - `time` — number **(required)**
+  - `key` — string — Identity of the value, when the annotation is one reading of something that changes over the conversation. See AnnotationKey. _(pattern=^[a-z0-9][a-z0-9_.-]*$; maxLen=100)_
+  - `payload` — union **(required)**
+    - _oneOf_ — exactly one of:
+      - **`tag`**
+        - `tag` — string **(required)** _(maxLen=50)_
+      - **`text`**
+        - `text` — string **(required)** _(maxLen=4096)_
+      - **`variables`**
+        - `variables` — AnnotationVariablesValue **(required)** — Capability variable values captured for an annotation. Runtime services enforce serialized payload size limits.
+          - _(nesting depth limit — see `AnnotationVariablesValue` in the Schemas appendix)_
+      - **`result`**
+        - `result` — AnnotationResultValue **(required)** — Tool result captured for an annotation. Runtime services enforce serialized payload size limits.
+          - _(nesting depth limit — see `AnnotationResultValue` in the Schemas appendix)_
+      - **`metric`**
+        - `metric` — AnnotationMetricValue **(required)** — A named value observed during the conversation, and the reading it replaces — a CSAT score, a talk ratio, the outcome of an evaluation. Emitted with an `AnnotationKey`, which is what makes the newest reading addressable in `annotationsByKey` while the series stays in `annotations`. Runtime services enforce serialized payload size limits.
+          - _(nesting depth limit — see `AnnotationMetricValue` in the Schemas appendix)_
+  - `source` — AnnotationSource **(required)** — Producer of an annotation. Generic identifiers allow callers to attach context such as tool id/name, user id/name, etc., without constraining the source type to a fixed shape.
+    - `type` — string **(required)** _(enum: `chatbot`, `voicebot`, `user`, `system`, `copilot`)_
+    - `id` — string — Stable identifier of the producer (e.g. tool id, user id, copilot session id).
+    - `name` — string — Human-readable name of the producer (e.g. tool name, user display name).
+
+**`AnnotationsStatus`**
+
+- string _(enum: `AVAILABLE`, `UNAVAILABLE`)_
+
+**`CallConversationTarget`**
+
+- `callId` — string **(required)**
+- `flowIndex` — number **(required)**
+
+**`CallDevice`**
+
+- string _(enum: `COLLABORATION_WEB`, `COLLABORATION_IOS`, `COLLABORATION_ANDROID`, `XBEES_WEB`, `XBEES_IOS`, `XBEES_ANDROID`, `WILDIX_PHONE`, `WILDIX_DEVICE`, `VOICEBOT`, `UNKNOWN`, `COLLABORATION7_WEB`, `COLLABORATION7_IOS`, … (+5))_
+
+**`CallDirection`**
+
+- string _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`, `UNDEFINED`)_
+
+**`CallFlowAttachment`**
+
+- _oneOf_ — exactly one of:
+  - **`recording`**
+    - `recording` — CallFlowRecording **(required)**
+      - `fileName` — string **(required)**
+      - `start` — number **(required)**
+      - `end` — number **(required)**
+      - `owner` — string **(required)** _(enum: `callee`, `caller`, `system`)_
+      - `url` — string **(required)**
+      - `pauses` — array **(required)**
+        - _array of_ `CallRecordPause`
+          - _(nesting depth limit — see `CallRecordPause` in the Schemas appendix)_
+  - **`fax`**
+    - `fax` — CallFlowFax **(required)**
+      - `url` — string **(required)**
+      - `status` — string _(enum: `ok`, `error`)_
+      - `destinations` — array
+        - _array of_ `CallFlowAttachmentDestination`
+          - _(nesting depth limit — see `CallFlowAttachmentDestination` in the Schemas appendix)_
+      - `owner` — string _(enum: `callee`, `caller`, `system`)_
+      - `error` — string — Text with the reason for the error in case of unsuccessful fax delivery
+  - **`voicemail`**
+    - `voicemail` — CallFlowVoicemail **(required)**
+      - `url` — string **(required)**
+      - `destinations` — array
+        - _array of_ `CallFlowAttachmentDestination`
+          - _(nesting depth limit — see `CallFlowAttachmentDestination` in the Schemas appendix)_
+      - `owner` — string _(enum: `callee`, `caller`, `system`)_
+
+**`CallFlowAttachmentDestination`**
+
+- `phone` — string
+- `name` — string
+- `email` — string
+- `userId` — string
+- `userExtension` — string
+- `userDepartment` — string
+- `groupId` — string
+- `groupName` — string
+
+**`CallFlowAttachmentStatus`**
+
+- string _(enum: `ok`, `error`)_
+
+**`CallFlowAttachmentType`**
+
+- string _(enum: `VOICEMAIL`, `FAX`)_
+
+**`CallFlowFax`**
+
+- `url` — string **(required)**
+- `status` — string _(enum: `ok`, `error`)_
+- `destinations` — array
+  - _array of_ `CallFlowAttachmentDestination`
+    - `phone` — string
+    - `name` — string
+    - `email` — string
+    - `userId` — string
+    - `userExtension` — string
+    - `userDepartment` — string
+    - `groupId` — string
+    - `groupName` — string
+- `owner` — string _(enum: `callee`, `caller`, `system`)_
+- `error` — string — Text with the reason for the error in case of unsuccessful fax delivery
+
+**`CallFlowNotifications`**
+
+- `destinations` — array
+  - _array of_ `CallFlowAttachmentDestination`
+    - `phone` — string
+    - `name` — string
+    - `email` — string
+    - `userId` — string
+    - `userExtension` — string
+    - `userDepartment` — string
+    - `groupId` — string
+    - `groupName` — string
+- `type` — array
+  - _array of_ `string`
+
+**`CallFlowRecording`**
+
+- `fileName` — string **(required)**
+- `start` — number **(required)**
+- `end` — number **(required)**
+- `owner` — string **(required)** _(enum: `callee`, `caller`, `system`)_
+- `url` — string **(required)**
+- `pauses` — array **(required)**
+  - _array of_ `CallRecordPause`
+    - `start` — number
+    - `end` — number
+    - `reason` — string _(enum: `pause`, `hold`)_
+
+**`CallFlowTranscriptionStatus`**
+
+- string _(enum: `AVAILABLE`, `POST_TRANSCRIPTION`, `UNAVAILABLE`)_
+
+**`CallFlowVoicemail`**
+
+- `url` — string **(required)**
+- `destinations` — array
+  - _array of_ `CallFlowAttachmentDestination`
+    - `phone` — string
+    - `name` — string
+    - `email` — string
+    - `userId` — string
+    - `userExtension` — string
+    - `userDepartment` — string
+    - `groupId` — string
+    - `groupName` — string
+- `owner` — string _(enum: `callee`, `caller`, `system`)_
+
+**`CallParticipant`**
+
+- `type` — string **(required)** _(enum: `REMOTE`, `LOCAL`)_
+- `phone` — string
+- `name` — string
+- `company` — string _(minLen=3; maxLen=30)_
+- `email` — string
+- `userId` — string
+- `userExtension` — string
+- `userDepartment` — string
+- `groupId` — string
+- `groupName` — string
+- `userAgent` — string
+- `userDevice` — string _(enum: `COLLABORATION_WEB`, `COLLABORATION_IOS`, `COLLABORATION_ANDROID`, `XBEES_WEB`, `XBEES_IOS`, `XBEES_ANDROID`, `WILDIX_PHONE`, `WILDIX_DEVICE`, `VOICEBOT`, `UNKNOWN`, `COLLABORATION7_WEB`, `COLLABORATION7_IOS`, … (+5))_
+- `role` — string **(required)** _(enum: `CLIENT`, `AGENT`)_
+- `license` — string
+- `sipCallId` — string — A unique identifier for the SIP call session used to control the call e.g., answer, hold, transfer, hang up.
+- `publicAddress` — string — Represents a network endpoint consisting of a public IP address and a port number. Example: '123.45.67.89:59317'
+- `privateAddress` — string — Represents a network endpoint consisting of a private IP address and a port number. Example: '172.16.1.2:54003'
+- `location` — string — The location specifies a geographic point using latitude and longitude coordinates. Example 'lat=29.3008&lon=1.7002'
+
+**`CallParticipantRole`**
+
+- string _(enum: `CLIENT`, `AGENT`)_
+
+**`CallParticipantType`**
+
+- string _(enum: `REMOTE`, `LOCAL`)_
+
+**`CallRecord`**
+
+- `flowIndex` — number **(required)**
+- `startTime` — number **(required)**
+- `endTime` — number **(required)**
+- `connectTime` — number — Duration when the called party's phone rang (Ring Time in UI)
+- `talkTime` — number — Duration of conversation from the moment the call is answered until it ends, excluding hold time
+- `waitTime` — number — Duration spent on IVR, dialplan applications, playback, etc. before the call is answered
+- `queueTime` — number — Duration of call waiting in queue
+- `holdTime` — number — Duration the call was on hold after being answered
+- `duration` — number **(required)** — Total duration = connectTime + waitTime + queueTime + talkTime + holdTime
+- `caller` — CallParticipant
+  - `type` — string **(required)** _(enum: `REMOTE`, `LOCAL`)_
+  - `phone` — string
+  - `name` — string
+  - `company` — string _(minLen=3; maxLen=30)_
+  - `email` — string
+  - `userId` — string
+  - `userExtension` — string
+  - `userDepartment` — string
+  - `groupId` — string
+  - `groupName` — string
+  - `userAgent` — string
+  - `userDevice` — string _(enum: `COLLABORATION_WEB`, `COLLABORATION_IOS`, `COLLABORATION_ANDROID`, `XBEES_WEB`, `XBEES_IOS`, `XBEES_ANDROID`, `WILDIX_PHONE`, `WILDIX_DEVICE`, `VOICEBOT`, `UNKNOWN`, `COLLABORATION7_WEB`, `COLLABORATION7_IOS`, … (+5))_
+  - `role` — string **(required)** _(enum: `CLIENT`, `AGENT`)_
+  - `license` — string
+  - `sipCallId` — string — A unique identifier for the SIP call session used to control the call e.g., answer, hold, transfer, hang up.
+  - `publicAddress` — string — Represents a network endpoint consisting of a public IP address and a port number. Example: '123.45.67.89:59317'
+  - `privateAddress` — string — Represents a network endpoint consisting of a private IP address and a port number. Example: '172.16.1.2:54003'
+  - `location` — string — The location specifies a geographic point using latitude and longitude coordinates. Example 'lat=29.3008&lon=1.7002'
+- `callee` — CallParticipant
+  - `type` — string **(required)** _(enum: `REMOTE`, `LOCAL`)_
+  - `phone` — string
+  - `name` — string
+  - `company` — string _(minLen=3; maxLen=30)_
+  - `email` — string
+  - `userId` — string
+  - `userExtension` — string
+  - `userDepartment` — string
+  - `groupId` — string
+  - `groupName` — string
+  - `userAgent` — string
+  - `userDevice` — string _(enum: `COLLABORATION_WEB`, `COLLABORATION_IOS`, `COLLABORATION_ANDROID`, `XBEES_WEB`, `XBEES_IOS`, `XBEES_ANDROID`, `WILDIX_PHONE`, `WILDIX_DEVICE`, `VOICEBOT`, `UNKNOWN`, `COLLABORATION7_WEB`, `COLLABORATION7_IOS`, … (+5))_
+  - `role` — string **(required)** _(enum: `CLIENT`, `AGENT`)_
+  - `license` — string
+  - `sipCallId` — string — A unique identifier for the SIP call session used to control the call e.g., answer, hold, transfer, hang up.
+  - `publicAddress` — string — Represents a network endpoint consisting of a public IP address and a port number. Example: '123.45.67.89:59317'
+  - `privateAddress` — string — Represents a network endpoint consisting of a private IP address and a port number. Example: '172.16.1.2:54003'
+  - `location` — string — The location specifies a geographic point using latitude and longitude coordinates. Example 'lat=29.3008&lon=1.7002'
+- `service` — string
+- `serviceNumber` — string
+- `destination` — string
+- `direction` — string _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`, `UNDEFINED`)_
+- `trunkName` — string
+- `trunkDirection` — string
+- `queueName` — string
+- `queueId` — string
+- `queuePosition` — number — Position of the call in the queue (1-based). Updated from consume events and emitted on live progress and record flows.
+- `tags` — array
+  - _array of_ `string`
+- `flags` — array
+  - _array of_ `string`
+- `callerMos` — string
+- `calleeMos` — string
+- `xhoppersConfId` — string
+- `recordings` — array — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+  - _array of_ `string`
+- `recordingsData` — array — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+  - _array of_ `CallFlowRecording`
+    - `fileName` — string **(required)**
+    - `start` — number **(required)**
+    - `end` — number **(required)**
+    - `owner` — string **(required)** _(enum: `callee`, `caller`, `system`)_
+    - `url` — string **(required)**
+    - `pauses` — array **(required)**
+      - _array of_ `CallRecordPause`
+        - _(nesting depth limit — see `CallRecordPause` in the Schemas appendix)_
+- `mergeWith` — string
+- `splitReason` — string
+- `splitTransferType` — string
+- `remotePhone` — string
+- `remotePhoneCountryCode` — number
+- `remotePhoneCountryCodeStr` — string
+- `remotePhoneLocation` — string
+- `callStatus` — string _(enum: `COMPLETED`, `MISSED`)_
+- `transcriptionStatus` — string _(enum: `AVAILABLE`, `POST_TRANSCRIPTION`, `UNAVAILABLE`)_
+- `transcriptionLanguage` — string
+- `transcriptionSeconds` — number
+- `annotationsStatus` — string _(enum: `AVAILABLE`, `UNAVAILABLE`)_
+- `annotationsByKey` — AnnotationsMap — The newest annotation per `AnnotationKey`: the current value of everything the conversation tracks, without reading the history. Keyed annotations only — a one-off annotation appears solely in `annotations`.
+  - _map of_ `Annotation`
+    - `id` — string **(required)** — Identity of this emission. Annotations are applied once per id: re-sending one already recorded on the conversation is ignored.
+    - `time` — number **(required)**
+    - `key` — string — Identity of the value, when the annotation is one reading of something that changes over the conversation. See AnnotationKey. _(pattern=^[a-z0-9][a-z0-9_.-]*$; maxLen=100)_
+    - `payload` — union **(required)**
+      - _oneOf_ — exactly one of:
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`text`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`variables`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`result`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`metric`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `source` — AnnotationSource **(required)** — Producer of an annotation. Generic identifiers allow callers to attach context such as tool id/name, user id/name, etc., without constraining the source type to a fixed shape.
+      - `type` — string **(required)** _(enum: `chatbot`, `voicebot`, `user`, `system`, `copilot`)_
+      - `id` — string — Stable identifier of the producer (e.g. tool id, user id, copilot session id).
+      - `name` — string — Human-readable name of the producer (e.g. tool name, user display name).
+- `attachment` — string — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+- `attachmentType` — string _(enum: `VOICEMAIL`, `FAX`)_
+- `attachmentDestinations` — array — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+  - _array of_ `CallFlowAttachmentDestination`
+    - `phone` — string
+    - `name` — string
+    - `email` — string
+    - `userId` — string
+    - `userExtension` — string
+    - `userDepartment` — string
+    - `groupId` — string
+    - `groupName` — string
+- `attachments` — array
+  - _array of_ `CallFlowAttachment`
+    - _oneOf_ — exactly one of:
+      - **`recording`**
+        - `recording` — CallFlowRecording **(required)**
+          - _(nesting depth limit — see `CallFlowRecording` in the Schemas appendix)_
+      - **`fax`**
+        - `fax` — CallFlowFax **(required)**
+          - _(nesting depth limit — see `CallFlowFax` in the Schemas appendix)_
+      - **`voicemail`**
+        - `voicemail` — CallFlowVoicemail **(required)**
+          - _(nesting depth limit — see `CallFlowVoicemail` in the Schemas appendix)_
+- `notifications` — CallFlowNotifications
+  - `destinations` — array
+    - _array of_ `CallFlowAttachmentDestination`
+      - `phone` — string
+      - `name` — string
+      - `email` — string
+      - `userId` — string
+      - `userExtension` — string
+      - `userDepartment` — string
+      - `groupId` — string
+      - `groupName` — string
+  - `type` — array
+    - _array of_ `string`
+- `id` — string **(required)**
+- `pbx` — string **(required)**
+- `time` — number **(required)**
+- `company` — string **(required)** _(minLen=3; maxLen=30)_
+- `licenses` — array **(required)**
+  - _array of_ `License`
+- `type` — object **(required)**
+
+**`CallRecordOwner`**
+
+- string _(enum: `callee`, `caller`, `system`)_
+
+**`CallRecordPause`**
+
+- `start` — number
+- `end` — number
+- `reason` — string _(enum: `pause`, `hold`)_
+
+**`CallRecordPauseReason`**
+
+- string _(enum: `pause`, `hold`)_
+
+**`Channel`**
+
+- `subject` — string
+- `description` — string
+- `picture` — string — Picture URL
+- `pictureColor` — string — Picture dominant color represented by a hex value.
+- `access` — string _(enum: `private`, `public`)_
+- `company` — string
+- `context` — ChannelContext
+  - `source` — string _(enum: `kite`)_
+  - `target` — string
+  - `events` — array
+    - _array of_ `ChannelContextEvent`
+      - `id` — string
+      - `owner` — string
+      - `start` — string
+      - `end` — string
+      - `summary` — string
+      - `attendees` — array
+        - _(nesting depth limit — see `ChannelContextEventAttendee` in the Schemas appendix)_
+  - `ptt` — ChannelContextPushToTalk
+    - `broadcastId` — string — A unique identifier of x-hoppers broadcast conference. If present x-hoppers application will use broadcast and push-to-talk functionality for the channel.
+- `kite` — boolean
+- `kiteTarget` — string
+- `kiteVariant` — string
+- `kiteAssign` — string
+- `kiteServiceName` — string
+- `kiteDefaultSubject` — string
+- `service` — string
+- `serviceTitle` — string
+- `serviceRecipient` — string
+- `assignee` — User
+  - `id` — string **(required)** _(minLen=12; maxLen=12)_
+  - `name` — string
+  - `email` — string _(pattern=^(^[\w+-]+(\.[\w+-]+)*)@(([\w-]+\.)+\w{2,}$)$)_
+  - `phone` — string
+  - `picture` — string
+  - `locale` — string
+  - `timeZone` — string
+  - `company` — string
+  - `bot` — boolean
+  - `pbxDomain` — string
+  - `pbxPort` — string
+  - `pbxExtension` — string
+  - `pbxSerial` — string
+  - `pbxUserId` — string
+  - `pbxGroupId` — string
+  - `createdAt` — string
+  - `updatedAt` — string
+- `telephony` — boolean
+- `sms` — boolean
+- `mms` — boolean
+- `whatsapp` — boolean
+- `whatsappStatus` — string _(enum: `24h_channel_closed`)_
+- `messagingChannel` — string — A customer messaging channel that reaches x-bees through classound and is not SMS or WhatsApp. One discriminator instead of a boolean per channel, so a new channel adds a member here and not a set of channel fields. An RCS conversation is not a telephony channel, and its customer id is the person's phone number. _(enum: `messenger`, `instagram`, `rcs`)_
+- `messagingStatus` — string — Set when classound refused a reply because the person's messaging window is closed (a 409 on the send). Unset by the next inbound message, which is the only thing that reopens the window. _(enum: `window_closed`)_
+- `messagingSenderId` — string
+- `messagingReplyUntil` — number
+- `broadcast` — boolean
+- `external` — boolean
+- `autoRecord` — boolean
+- `autoTranscribe` — boolean — Indicates if a conference in the channel starts transcription automatically. When absent, clients follow autoRecord, which used to start both recording and transcription.
+- `transcriptionLanguage` — string
+- `wizyGuestViewOnly` — boolean
+- `channelId` — string **(required)** — Direct-channel ids are the 8-4-4-4-8 slices of the two member ids. An `a_` member id puts `_` in a slice, so the pattern allows it. _(pattern=^[0-9a-z_]{8}\b-[0-9a-z_]{4}\b-[0-9a-z_]{4}\b-[0-9a-z_]{4}\b-[0-9a-z_]{8}$; minLen=32; maxLen=32)_
+- `channelType` — string **(required)** _(enum: `direct`, `group`)_
+- `memberCount` — number **(required)**
+- `createdAt` — string **(required)**
+- `createdBy` — string **(required)**
+- `updatedAt` — string
+
+**`ChannelAccess`**
+
+- string _(enum: `private`, `public`)_
+
+**`ChannelContext`**
+
+- `source` — string _(enum: `kite`)_
+- `target` — string
+- `events` — array
+  - _array of_ `ChannelContextEvent`
+    - `id` — string
+    - `owner` — string
+    - `start` — string
+    - `end` — string
+    - `summary` — string
+    - `attendees` — array
+      - _array of_ `ChannelContextEventAttendee`
+        - _(nesting depth limit — see `ChannelContextEventAttendee` in the Schemas appendix)_
+- `ptt` — ChannelContextPushToTalk
+  - `broadcastId` — string — A unique identifier of x-hoppers broadcast conference. If present x-hoppers application will use broadcast and push-to-talk functionality for the channel.
+
+**`ChannelContextEvent`**
+
+- `id` — string
+- `owner` — string
+- `start` — string
+- `end` — string
+- `summary` — string
+- `attendees` — array
+  - _array of_ `ChannelContextEventAttendee`
+    - `email` — string **(required)**
+    - `name` — string
+    - `status` — string **(required)** _(enum: `accepted`, `tentative`, `declined`, `none`)_
+
+**`ChannelContextEventAttendee`**
+
+- `email` — string **(required)**
+- `name` — string
+- `status` — string **(required)** _(enum: `accepted`, `tentative`, `declined`, `none`)_
+
+**`ChannelContextEventAttendeeStatus`**
+
+- string _(enum: `accepted`, `tentative`, `declined`, `none`)_
+
+**`ChannelContextPushToTalk`**
+
+- `broadcastId` — string — A unique identifier of x-hoppers broadcast conference. If present x-hoppers application will use broadcast and push-to-talk functionality for the channel.
+
+**`ChannelContextSource`**
+
+- string _(enum: `kite`)_
+
+**`ChannelMessagingStatus`**
+
+_Set when classound refused a reply because the person's messaging window is closed (a 409 on the send). Unset by the next inbound message, which is the only thing that reopens the window._
+
+- string _(enum: `window_closed`)_
+
+**`ChannelType`**
+
+- string _(enum: `direct`, `group`)_
+
+**`ChannelWhatsAppStatus`**
+
+- string _(enum: `24h_channel_closed`)_
+
+**`ChatConversationTarget`**
+
+- `chatId` — string **(required)**
+
+**`ChatDirection`**
+
+- string _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`)_
+
+**`ChatParticipant`**
+
+- `id` — string **(required)**
+- `info` — ChatParticipantInfo **(required)**
+  - `id` — string **(required)** _(minLen=12; maxLen=12)_
+  - `name` — string
+  - `email` — string _(pattern=^(^[\w+-]+(\.[\w+-]+)*)@(([\w-]+\.)+\w{2,}$)$)_
+  - `phone` — string
+  - `picture` — string
+  - `locale` — string
+  - `timeZone` — string
+  - `company` — string
+  - `bot` — boolean
+  - `pbxDomain` — string
+  - `pbxPort` — string
+  - `pbxExtension` — string
+  - `pbxSerial` — string
+  - `pbxUserId` — string
+  - `pbxGroupId` — string
+  - `createdAt` — string
+  - `updatedAt` — string
+  - `type` — string **(required)** _(enum: `REMOTE`, `LOCAL`)_
+  - `role` — string **(required)** _(enum: `CLIENT`, `AGENT`)_
+
+**`ChatParticipantInfo`**
+
+- `id` — string **(required)** _(minLen=12; maxLen=12)_
+- `name` — string
+- `email` — string _(pattern=^(^[\w+-]+(\.[\w+-]+)*)@(([\w-]+\.)+\w{2,}$)$)_
+- `phone` — string
+- `picture` — string
+- `locale` — string
+- `timeZone` — string
+- `company` — string
+- `bot` — boolean
+- `pbxDomain` — string
+- `pbxPort` — string
+- `pbxExtension` — string
+- `pbxSerial` — string
+- `pbxUserId` — string
+- `pbxGroupId` — string
+- `createdAt` — string
+- `updatedAt` — string
+- `type` — string **(required)** _(enum: `REMOTE`, `LOCAL`)_
+- `role` — string **(required)** _(enum: `CLIENT`, `AGENT`)_
+
+**`ChatParticipantRole`**
+
+- string _(enum: `CLIENT`, `AGENT`)_
+
+**`ChatParticipantType`**
+
+- string _(enum: `REMOTE`, `LOCAL`)_
+
+**`ChatRecord`**
+
+- `id` — string — A unique chat channel identifier, distinguish each chat channel across different types.
+- `chatId` — string — A unique identifier that distinguishes each chat session within a channel.
+- `time` — number **(required)**
+- `company` — string **(required)** _(minLen=3; maxLen=30)_
+- `pbx` — string
+- `startTime` — number **(required)**
+- `endTime` — number **(required)**
+- `waitTime` — number
+- `duration` — number **(required)**
+- `direction` — string **(required)** _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`)_
+- `subject` — string
+- `service` — string
+- `serviceTitle` — string
+- `tags` — array
+  - _array of_ `ChatTag`
+- `channel` — Channel **(required)**
+  - `subject` — string
+  - `description` — string
+  - `picture` — string — Picture URL
+  - `pictureColor` — string — Picture dominant color represented by a hex value.
+  - `access` — string _(enum: `private`, `public`)_
+  - `company` — string
+  - `context` — ChannelContext
+    - `source` — string _(enum: `kite`)_
+    - `target` — string
+    - `events` — array
+      - _array of_ `ChannelContextEvent`
+        - _(nesting depth limit — see `ChannelContextEvent` in the Schemas appendix)_
+    - `ptt` — ChannelContextPushToTalk
+      - `broadcastId` — string — A unique identifier of x-hoppers broadcast conference. If present x-hoppers application will use broadcast and push-to-talk functionality for the channel.
+  - `kite` — boolean
+  - `kiteTarget` — string
+  - `kiteVariant` — string
+  - `kiteAssign` — string
+  - `kiteServiceName` — string
+  - `kiteDefaultSubject` — string
+  - `service` — string
+  - `serviceTitle` — string
+  - `serviceRecipient` — string
+  - `assignee` — User
+    - `id` — string **(required)** _(minLen=12; maxLen=12)_
+    - `name` — string
+    - `email` — string _(pattern=^(^[\w+-]+(\.[\w+-]+)*)@(([\w-]+\.)+\w{2,}$)$)_
+    - `phone` — string
+    - `picture` — string
+    - `locale` — string
+    - `timeZone` — string
+    - `company` — string
+    - `bot` — boolean
+    - `pbxDomain` — string
+    - `pbxPort` — string
+    - `pbxExtension` — string
+    - `pbxSerial` — string
+    - `pbxUserId` — string
+    - `pbxGroupId` — string
+    - `createdAt` — string
+    - `updatedAt` — string
+  - `telephony` — boolean
+  - `sms` — boolean
+  - `mms` — boolean
+  - `whatsapp` — boolean
+  - `whatsappStatus` — string _(enum: `24h_channel_closed`)_
+  - `messagingChannel` — string — A customer messaging channel that reaches x-bees through classound and is not SMS or WhatsApp. One discriminator instead of a boolean per channel, so a new channel adds a member here and not a set of channel fields. An RCS conversation is not a telephony channel, and its customer id is the person's phone number. _(enum: `messenger`, `instagram`, `rcs`)_
+  - `messagingStatus` — string — Set when classound refused a reply because the person's messaging window is closed (a 409 on the send). Unset by the next inbound message, which is the only thing that reopens the window. _(enum: `window_closed`)_
+  - `messagingSenderId` — string
+  - `messagingReplyUntil` — number
+  - `broadcast` — boolean
+  - `external` — boolean
+  - `autoRecord` — boolean
+  - `autoTranscribe` — boolean — Indicates if a conference in the channel starts transcription automatically. When absent, clients follow autoRecord, which used to start both recording and transcription.
+  - `transcriptionLanguage` — string
+  - `wizyGuestViewOnly` — boolean
+  - `channelId` — string **(required)** — Direct-channel ids are the 8-4-4-4-8 slices of the two member ids. An `a_` member id puts `_` in a slice, so the pattern allows it. _(pattern=^[0-9a-z_]{8}\b-[0-9a-z_]{4}\b-[0-9a-z_]{4}\b-[0-9a-z_]{4}\b-[0-9a-z_]{8}$; minLen=32; maxLen=32)_
+  - `channelType` — string **(required)** _(enum: `direct`, `group`)_
+  - `memberCount` — number **(required)**
+  - `createdAt` — string **(required)**
+  - `createdBy` — string **(required)**
+  - `updatedAt` — string
+- `status` — string _(enum: `WAITFIRSTREPLY`, `WAITREPLYFROMGUEST`, `WAITREPLYFROMAGENT`, `COMPLETED`, `MISSED`)_
+- `participants` — array **(required)**
+  - _array of_ `ChatParticipant`
+    - `id` — string **(required)**
+    - `info` — ChatParticipantInfo **(required)**
+      - `id` — string **(required)** _(minLen=12; maxLen=12)_
+      - `name` — string
+      - `email` — string _(pattern=^(^[\w+-]+(\.[\w+-]+)*)@(([\w-]+\.)+\w{2,}$)$)_
+      - `phone` — string
+      - `picture` — string
+      - `locale` — string
+      - `timeZone` — string
+      - `company` — string
+      - `bot` — boolean
+      - `pbxDomain` — string
+      - `pbxPort` — string
+      - `pbxExtension` — string
+      - `pbxSerial` — string
+      - `pbxUserId` — string
+      - `pbxGroupId` — string
+      - `createdAt` — string
+      - `updatedAt` — string
+      - `type` — string **(required)** _(enum: `REMOTE`, `LOCAL`)_
+      - `role` — string **(required)** _(enum: `CLIENT`, `AGENT`)_
+- `annotationsStatus` — string _(enum: `AVAILABLE`, `UNAVAILABLE`)_
+- `annotationsByKey` — AnnotationsMap — The newest annotation per `AnnotationKey`: the current value of everything the conversation tracks, without reading the history. Keyed annotations only — a one-off annotation appears solely in `annotations`.
+  - _map of_ `Annotation`
+    - `id` — string **(required)** — Identity of this emission. Annotations are applied once per id: re-sending one already recorded on the conversation is ignored.
+    - `time` — number **(required)**
+    - `key` — string — Identity of the value, when the annotation is one reading of something that changes over the conversation. See AnnotationKey. _(pattern=^[a-z0-9][a-z0-9_.-]*$; maxLen=100)_
+    - `payload` — union **(required)**
+      - _oneOf_ — exactly one of:
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`text`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`variables`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`result`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`metric`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `source` — AnnotationSource **(required)** — Producer of an annotation. Generic identifiers allow callers to attach context such as tool id/name, user id/name, etc., without constraining the source type to a fixed shape.
+      - `type` — string **(required)** _(enum: `chatbot`, `voicebot`, `user`, `system`, `copilot`)_
+      - `id` — string — Stable identifier of the producer (e.g. tool id, user id, copilot session id).
+      - `name` — string — Human-readable name of the producer (e.g. tool name, user display name).
+- `type` — object **(required)**
+
+**`ChatStatus`**
+
+- string _(enum: `WAITFIRSTREPLY`, `WAITREPLYFROMGUEST`, `WAITREPLYFROMAGENT`, `COMPLETED`, `MISSED`)_
+
+**`ChatTag`**
+
+- string _(enum: `sms`, `telephony`, `whatsapp`)_
+
+**`ConferenceAnalyticsRecordParticipant`**
+
+- `jid` — string **(required)**
+- `info` — ConferenceParticipant **(required)**
+  - `type` — string **(required)** _(enum: `EXTERNAL`, `EXTERNAL_DIAL_IN`, `PBX`, `PBX_SIP`, `XBS`)_
+  - `role` — string _(enum: `CLIENT`, `AGENT`)_
+  - `jid` — string — A unique identifier to avoid duplicates if user re-connect from different devices.
+  - `name` — string
+  - `email` — string
+  - `phone` — string
+  - `department` — string
+  - `company` — string _(minLen=3; maxLen=30)_
+  - `pbxSerial` — string
+  - `pbxExtension` — string
+  - `pbxGroupId` — string
+  - `xbsId` — string
+  - `license` — string _(enum: `basic`, `essential`, `business`, `premium`, `wizyconf`)_
+- `totalDuration` — number **(required)**
+- `totalSpeakDuration` — number **(required)**
+- `joinTime` — number **(required)**
+
+**`ConferenceConversationTarget`**
+
+- `conferenceId` — string **(required)**
+
+**`ConferenceDirection`**
+
+- string _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`)_
+
+**`ConferenceParticipant`**
+
+- `type` — string **(required)** _(enum: `EXTERNAL`, `EXTERNAL_DIAL_IN`, `PBX`, `PBX_SIP`, `XBS`)_
+- `role` — string _(enum: `CLIENT`, `AGENT`)_
+- `jid` — string — A unique identifier to avoid duplicates if user re-connect from different devices.
+- `name` — string
+- `email` — string
+- `phone` — string
+- `department` — string
+- `company` — string _(minLen=3; maxLen=30)_
+- `pbxSerial` — string
+- `pbxExtension` — string
+- `pbxGroupId` — string
+- `xbsId` — string
+- `license` — string _(enum: `basic`, `essential`, `business`, `premium`, `wizyconf`)_
+
+**`ConferenceParticipantRole`**
+
+- string _(enum: `CLIENT`, `AGENT`)_
+
+**`ConferenceParticipantType`**
+
+- string _(enum: `EXTERNAL`, `EXTERNAL_DIAL_IN`, `PBX`, `PBX_SIP`, `XBS`)_
+
+**`ConferenceRecord`**
+
+- `id` — string **(required)**
+- `time` — number **(required)**
+- `company` — string **(required)** _(minLen=3; maxLen=30)_
+- `pbx` — string
+- `startTime` — number **(required)**
+- `endTime` — number **(required)**
+- `duration` — number **(required)**
+- `waitTime` — number
+- `subject` — string
+- `direction` — string **(required)** _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`)_
+- `service` — string
+- `status` — string _(enum: `COMPLETED`, `MISSED`)_
+- `participants` — array **(required)**
+  - _array of_ `ConferenceAnalyticsRecordParticipant`
+    - `jid` — string **(required)**
+    - `info` — ConferenceParticipant **(required)**
+      - `type` — string **(required)** _(enum: `EXTERNAL`, `EXTERNAL_DIAL_IN`, `PBX`, `PBX_SIP`, `XBS`)_
+      - `role` — string _(enum: `CLIENT`, `AGENT`)_
+      - `jid` — string — A unique identifier to avoid duplicates if user re-connect from different devices.
+      - `name` — string
+      - `email` — string
+      - `phone` — string
+      - `department` — string
+      - `company` — string _(minLen=3; maxLen=30)_
+      - `pbxSerial` — string
+      - `pbxExtension` — string
+      - `pbxGroupId` — string
+      - `xbsId` — string
+      - `license` — string _(enum: `basic`, `essential`, `business`, `premium`, `wizyconf`)_
+    - `totalDuration` — number **(required)**
+    - `totalSpeakDuration` — number **(required)**
+    - `joinTime` — number **(required)**
+- `recordings` — array
+  - _array of_ `ConferenceRecording`
+    - `url` — string **(required)**
+    - `start` — number **(required)**
+    - `end` — number **(required)**
+- `transcriptionStatus` — string **(required)** _(enum: `AVAILABLE`, `POST_TRANSCRIPTION`, `UNAVAILABLE`)_
+- `transcriptionLanguage` — string
+- `transcriptionSeconds` — number
+- `annotationsStatus` — string _(enum: `AVAILABLE`, `UNAVAILABLE`)_
+- `annotationsByKey` — AnnotationsMap — The newest annotation per `AnnotationKey`: the current value of everything the conversation tracks, without reading the history. Keyed annotations only — a one-off annotation appears solely in `annotations`.
+  - _map of_ `Annotation`
+    - `id` — string **(required)** — Identity of this emission. Annotations are applied once per id: re-sending one already recorded on the conversation is ignored.
+    - `time` — number **(required)**
+    - `key` — string — Identity of the value, when the annotation is one reading of something that changes over the conversation. See AnnotationKey. _(pattern=^[a-z0-9][a-z0-9_.-]*$; maxLen=100)_
+    - `payload` — union **(required)**
+      - _oneOf_ — exactly one of:
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`text`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`variables`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`result`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`metric`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `source` — AnnotationSource **(required)** — Producer of an annotation. Generic identifiers allow callers to attach context such as tool id/name, user id/name, etc., without constraining the source type to a fixed shape.
+      - `type` — string **(required)** _(enum: `chatbot`, `voicebot`, `user`, `system`, `copilot`)_
+      - `id` — string — Stable identifier of the producer (e.g. tool id, user id, copilot session id).
+      - `name` — string — Human-readable name of the producer (e.g. tool name, user display name).
+- `type` — object **(required)**
+
+**`ConferenceRecording`**
+
+- `url` — string **(required)**
+- `start` — number **(required)**
+- `end` — number **(required)**
+
+**`ConferenceTimeFramesChunk`**
+
+- `start` — number **(required)**
+- `end` — number **(required)**
+
+**`ConferenceTimeFramesListItem`**
+
+- `jid` — string **(required)**
+- `frames` — array **(required)**
+  - _array of_ `ConferenceTimeFramesChunk`
+    - `start` — number **(required)**
+    - `end` — number **(required)**
+
+**`ConferenceTranscriptionStatus`**
+
+- string _(enum: `AVAILABLE`, `POST_TRANSCRIPTION`, `UNAVAILABLE`)_
+
+**`ConversationFileCategory`**
+
+- string _(enum: `channels`, `recordings`, `wizyconfRecordings`)_
+
+**`ConversationPlaybackState`**
+
+- `position` — number
+- `duration` — number
+
+**`ConversationState`**
+
+- `playlists` — array
+  - _array of_ `string`
+- `playback` — ConversationPlaybackState
+  - `position` — number
+  - `duration` — number
+- `firstWatchedAt` — string
+- `lastWatchedAt` — string
+- `canDelete` — boolean — True when the requester may delete the conversation from Revenue Intelligence (DeleteCallAssets / DeleteConferenceAssets).
+
+**`ConversationStatus`**
+
+- string _(enum: `COMPLETED`, `MISSED`)_
+
+**`ConversationTarget`**
+
+- _oneOf_ — exactly one of:
+  - **`call`**
+    - `call` — CallConversationTarget **(required)**
+      - `callId` — string **(required)**
+      - `flowIndex` — number **(required)**
+  - **`conference`**
+    - `conference` — ConferenceConversationTarget **(required)**
+      - `conferenceId` — string **(required)**
+  - **`chat`**
+    - `chat` — ChatConversationTarget **(required)**
+      - `chatId` — string **(required)**
+
+**`CreateDashboardRequestContent`**
+
+- `name` — string **(required)** _(minLen=1; maxLen=128)_
+- `description` — string _(minLen=1; maxLen=4096)_
+- `access` — DashboardAccess
+  - `visibility` — string _(enum: `explicit`, `organization`)_
+  - `grants` — array
+    - _array of_ `DashboardGrant`
+      - `permission` — string **(required)** _(enum: `view`, `edit`)_
+      - `principal` — union **(required)**
+        - _(nesting depth limit — see `DashboardPrincipal` in the Schemas appendix)_
+- `definition` — DashboardDefinition **(required)**
+  - `sheets` — array
+    - _array of_ `DashboardSheet`
+      - `id` — string **(required)** _(minLen=8; maxLen=8)_
+      - `name` — string **(required)** _(minLen=1; maxLen=128)_
+      - `visuals` — array **(required)**
+        - _(nesting depth limit — see `DashboardVisual` in the Schemas appendix)_
+      - `filter` — ListConversationsFilter
+        - _(nesting depth limit — see `ListConversationsFilter` in the Schemas appendix)_
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interruptions` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `patience` — ListConversationsFilterFloat
+        - _(nesting depth limit — see `ListConversationsFilterFloat` in the Schemas appendix)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`predefined`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+
+**`CreateDashboardResponseContent`**
+
+- `dashboard` — Dashboard **(required)**
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `id` — string **(required)** _(minLen=1; maxLen=32)_
+  - `createdAt` — string **(required)**
+  - `createdBy` — string **(required)**
+  - `createdByName` — string **(required)**
+  - `updatedAt` — string
+  - `metadata` — DashboardMetadata
+    - `predefined` — boolean
+    - `removable` — boolean
+    - `sortable` — boolean
+  - `access` — DashboardAccess
+    - `visibility` — string _(enum: `explicit`, `organization`)_
+    - `grants` — array
+      - _array of_ `DashboardGrant`
+        - _(nesting depth limit — see `DashboardGrant` in the Schemas appendix)_
+  - `definition` — DashboardDefinition **(required)**
+    - `sheets` — array
+      - _array of_ `DashboardSheet`
+        - _(nesting depth limit — see `DashboardSheet` in the Schemas appendix)_
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - _(nesting depth limit — see `ListConversationsFilterEntity` in the Schemas appendix)_
+      - `participants` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToInclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToExclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `connectTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `talkTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `waitTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `queueTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `holdTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interaction` — ListConversationsFilterInteraction
+        - _(nesting depth limit — see `ListConversationsFilterInteraction` in the Schemas appendix)_
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - _(nesting depth limit — see `ListConversationsFilterDirection` in the Schemas appendix)_
+      - `insights` — array
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+      - `channel` — ListConversationsFilterChannel
+        - _(nesting depth limit — see `ListConversationsFilterChannel` in the Schemas appendix)_
+      - `date` — union
+        - _(nesting depth limit — see `ListConversationsFilterDate` in the Schemas appendix)_
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `present` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+      - `absent` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+
+**`CreateFilterRequestContent`**
+
+- `name` — string **(required)** — The user-defined name of the filter. _(minLen=1; maxLen=512)_
+- `body` — string **(required)** — A JSON payload that represents the filter's configuration. _(minLen=2; maxLen=38400)_
+
+**`CreateFilterResponseContent`**
+
+- `item` — ListFiltersItem **(required)**
+  - `id` — string **(required)** — A unique identifier for the filter. _(minLen=12; maxLen=12)_
+  - `name` — string **(required)** — The user-defined name of the filter. _(minLen=1; maxLen=512)_
+  - `body` — string **(required)** — A JSON payload that represents the filter's configuration. _(minLen=2; maxLen=38400)_
+  - `createdAt` — string **(required)**
+  - `updatedAt` — string **(required)**
+
+**`CreatePlaylistRequestContent`**
+
+- `name` — string **(required)** _(minLen=1; maxLen=128)_
+- `description` — string _(minLen=1; maxLen=4096)_
+- `access` — PlaylistAccess
+  - `visibility` — string _(enum: `explicit`, `organization`)_
+  - `grants` — array
+    - _array of_ `PlaylistGrant`
+      - `permission` — string **(required)** _(enum: `view`, `edit`)_
+      - `principal` — union **(required)**
+        - _(nesting depth limit — see `PlaylistPrincipal` in the Schemas appendix)_
+
+**`CreatePlaylistResponseContent`**
+
+- `playlist` — Playlist **(required)**
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `id` — string **(required)** _(minLen=1; maxLen=32)_
+  - `createdAt` — string **(required)**
+  - `createdBy` — string **(required)**
+  - `createdByName` — string **(required)**
+  - `updatedAt` — string
+  - `access` — PlaylistAccess
+    - `visibility` — string _(enum: `explicit`, `organization`)_
+    - `grants` — array
+      - _array of_ `PlaylistGrant`
+        - _(nesting depth limit — see `PlaylistGrant` in the Schemas appendix)_
+  - `itemsCount` — number **(required)**
+
+**`CreateProjectionRequestContent`**
+
+- `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+- `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+- `name` — string **(required)** _(minLen=1; maxLen=128)_
+- `description` — string _(minLen=1; maxLen=4096)_
+- `instructions` — string _(minLen=1; maxLen=16384)_
+- `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+  - _array of_ `ProjectionCondition`
+    - _oneOf_ — exactly one of:
+      - **`entity`**
+        - `entity` — ProjectionEntityCondition **(required)**
+          - _(nesting depth limit — see `ProjectionEntityCondition` in the Schemas appendix)_
+      - **`direction`**
+        - `direction` — ProjectionDirectionCondition **(required)**
+          - _(nesting depth limit — see `ProjectionDirectionCondition` in the Schemas appendix)_
+      - **`participants`**
+        - `participants` — ProjectionParticipantsCondition **(required)**
+          - _(nesting depth limit — see `ProjectionParticipantsCondition` in the Schemas appendix)_
+      - **`duration`**
+        - `duration` — ProjectionDurationCondition **(required)**
+          - _(nesting depth limit — see `ProjectionDurationCondition` in the Schemas appendix)_
+- `filter` — ListConversationsFilter
+  - `id` — array
+    - _array of_ `ConversationTarget`
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `entity` — ListConversationsFilterEntity
+    - `call` — boolean
+    - `conference` — boolean
+    - `chat` — boolean
+  - `participants` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToInclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToExclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `chatbots` — array
+    - _array of_ `string`
+  - `voicebots` — array
+    - _array of_ `string`
+  - `service` — array
+    - _array of_ `string`
+  - `group` — array
+    - _array of_ `string`
+  - `department` — array
+    - _array of_ `string`
+  - `tag` — array
+    - _array of_ `string`
+  - `pbx` — array
+    - _array of_ `string`
+  - `trunk` — array
+    - _array of_ `string`
+  - `queue` — array
+    - _array of_ `string`
+  - `country` — array
+    - _array of_ `string`
+  - `location` — array
+    - _array of_ `string`
+  - `phases` — array
+    - _array of_ `string`
+  - `language` — array
+    - _array of_ `string`
+  - `duration` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `connectTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `talkTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `waitTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `queueTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `holdTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interaction` — ListConversationsFilterInteraction
+    - `talkRatio` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `wordsPerMinute` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interruptions` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `patience` — ListConversationsFilterFloat
+      - `from` — number _(format=float)_
+      - `to` — number _(format=float)_
+    - `longestMonologue` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `longestCustomerStory` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+  - `recorded` — boolean
+  - `transcribed` — boolean
+  - `direction` — ListConversationsFilterDirection
+    - `inbound` — boolean
+    - `outbound` — boolean
+    - `internal` — boolean
+  - `insights` — array
+    - _array of_ `ListConversationsFilterInsight`
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `match` — string
+      - `matchAny` — array
+        - _array of_ `string`
+  - `channel` — ListConversationsFilterChannel
+    - `sms` — boolean
+    - `whatsapp` — boolean
+    - `kite` — boolean
+  - `date` — union
+    - _oneOf_ — exactly one of:
+      - **`absolute`**
+        - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+      - **`predefined`**
+        - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+  - `dayOfWeek` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `hourOfDay` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `present` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `absent` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+- `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+- `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+- `fields` — array **(required)** _(minItems=1; maxItems=64)_
+  - _array of_ `ProjectionField`
+    - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `name` — string **(required)** _(minLen=1; maxLen=256)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `optional` — boolean
+    - `parameter` — union **(required)**
+      - _oneOf_ — exactly one of:
+        - **`text`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`multiline`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`selection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+- `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+
+**`CreateProjectionResponseContent`**
+
+- `projection` — Projection **(required)**
+  - `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+  - `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `instructions` — string _(minLen=1; maxLen=16384)_
+  - `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+    - _array of_ `ProjectionCondition`
+      - _oneOf_ — exactly one of:
+        - **`entity`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`participants`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`duration`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interruptions` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `patience` — ListConversationsFilterFloat
+        - _(nesting depth limit — see `ListConversationsFilterFloat` in the Schemas appendix)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`predefined`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+  - `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+  - `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+  - `fields` — array **(required)** _(minItems=1; maxItems=64)_
+    - _array of_ `ProjectionField`
+      - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `name` — string **(required)** _(minLen=1; maxLen=256)_
+      - `description` — string _(minLen=1; maxLen=4096)_
+      - `optional` — boolean
+      - `parameter` — union **(required)**
+        - _(nesting depth limit — see `ProjectionParameter` in the Schemas appendix)_
+  - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+  - `status` — string **(required)** _(enum: `ENABLED`, `PAUSED`, `DISABLED`)_
+  - `version` — number **(required)**
+  - `createdAt` — string **(required)**
+  - `updatedAt` — string
+  - `metadata` — ProjectionMetadata
+    - `predefined` — boolean
+    - `customized` — boolean — True when a predefined projection has tenant-specific overrides applied.
+
+**`CreateProjectionsCategoryRequestContent`**
+
+- `id` — string **(required)** _(minLen=1; maxLen=32)_
+- `name` — string **(required)** _(minLen=1; maxLen=128)_
+
+**`CreateProjectionsCategoryResponseContent`**
+
+- `category` — ProjectionsCategory **(required)**
+  - `id` — string **(required)** _(minLen=1; maxLen=32)_
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+
+**`Dashboard`**
+
+- `name` — string **(required)** _(minLen=1; maxLen=128)_
+- `description` — string _(minLen=1; maxLen=4096)_
+- `id` — string **(required)** _(minLen=1; maxLen=32)_
+- `createdAt` — string **(required)**
+- `createdBy` — string **(required)**
+- `createdByName` — string **(required)**
+- `updatedAt` — string
+- `metadata` — DashboardMetadata
+  - `predefined` — boolean
+  - `removable` — boolean
+  - `sortable` — boolean
+- `access` — DashboardAccess
+  - `visibility` — string _(enum: `explicit`, `organization`)_
+  - `grants` — array
+    - _array of_ `DashboardGrant`
+      - `permission` — string **(required)** _(enum: `view`, `edit`)_
+      - `principal` — union **(required)**
+        - _(nesting depth limit — see `DashboardPrincipal` in the Schemas appendix)_
+- `definition` — DashboardDefinition **(required)**
+  - `sheets` — array
+    - _array of_ `DashboardSheet`
+      - `id` — string **(required)** _(minLen=8; maxLen=8)_
+      - `name` — string **(required)** _(minLen=1; maxLen=128)_
+      - `visuals` — array **(required)**
+        - _(nesting depth limit — see `DashboardVisual` in the Schemas appendix)_
+      - `filter` — ListConversationsFilter
+        - _(nesting depth limit — see `ListConversationsFilter` in the Schemas appendix)_
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interruptions` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `patience` — ListConversationsFilterFloat
+        - _(nesting depth limit — see `ListConversationsFilterFloat` in the Schemas appendix)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`predefined`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+
+**`DashboardAccess`**
+
+- `visibility` — string _(enum: `explicit`, `organization`)_
+- `grants` — array
+  - _array of_ `DashboardGrant`
+    - `permission` — string **(required)** _(enum: `view`, `edit`)_
+    - `principal` — union **(required)**
+      - _oneOf_ — exactly one of:
+        - **`userId`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`groupId`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+
+**`DashboardAccessNotify`**
+
+- `emails` — array **(required)**
+  - _array of_ `string`
+- `message` — string
+
+**`DashboardDefinition`**
+
+- `sheets` — array
+  - _array of_ `DashboardSheet`
+    - `id` — string **(required)** _(minLen=8; maxLen=8)_
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `visuals` — array **(required)**
+      - _array of_ `DashboardVisual`
+        - _(nesting depth limit — see `DashboardVisual` in the Schemas appendix)_
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - _(nesting depth limit — see `ListConversationsFilterEntity` in the Schemas appendix)_
+      - `participants` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToInclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToExclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `connectTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `talkTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `waitTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `queueTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `holdTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interaction` — ListConversationsFilterInteraction
+        - _(nesting depth limit — see `ListConversationsFilterInteraction` in the Schemas appendix)_
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - _(nesting depth limit — see `ListConversationsFilterDirection` in the Schemas appendix)_
+      - `insights` — array
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+      - `channel` — ListConversationsFilterChannel
+        - _(nesting depth limit — see `ListConversationsFilterChannel` in the Schemas appendix)_
+      - `date` — union
+        - _(nesting depth limit — see `ListConversationsFilterDate` in the Schemas appendix)_
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `present` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+      - `absent` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+- `filter` — ListConversationsFilter
+  - `id` — array
+    - _array of_ `ConversationTarget`
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `entity` — ListConversationsFilterEntity
+    - `call` — boolean
+    - `conference` — boolean
+    - `chat` — boolean
+  - `participants` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToInclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToExclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `chatbots` — array
+    - _array of_ `string`
+  - `voicebots` — array
+    - _array of_ `string`
+  - `service` — array
+    - _array of_ `string`
+  - `group` — array
+    - _array of_ `string`
+  - `department` — array
+    - _array of_ `string`
+  - `tag` — array
+    - _array of_ `string`
+  - `pbx` — array
+    - _array of_ `string`
+  - `trunk` — array
+    - _array of_ `string`
+  - `queue` — array
+    - _array of_ `string`
+  - `country` — array
+    - _array of_ `string`
+  - `location` — array
+    - _array of_ `string`
+  - `phases` — array
+    - _array of_ `string`
+  - `language` — array
+    - _array of_ `string`
+  - `duration` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `connectTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `talkTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `waitTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `queueTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `holdTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interaction` — ListConversationsFilterInteraction
+    - `talkRatio` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `wordsPerMinute` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interruptions` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `patience` — ListConversationsFilterFloat
+      - `from` — number _(format=float)_
+      - `to` — number _(format=float)_
+    - `longestMonologue` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `longestCustomerStory` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+  - `recorded` — boolean
+  - `transcribed` — boolean
+  - `direction` — ListConversationsFilterDirection
+    - `inbound` — boolean
+    - `outbound` — boolean
+    - `internal` — boolean
+  - `insights` — array
+    - _array of_ `ListConversationsFilterInsight`
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `match` — string
+      - `matchAny` — array
+        - _array of_ `string`
+  - `channel` — ListConversationsFilterChannel
+    - `sms` — boolean
+    - `whatsapp` — boolean
+    - `kite` — boolean
+  - `date` — union
+    - _oneOf_ — exactly one of:
+      - **`absolute`**
+        - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+      - **`predefined`**
+        - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+  - `dayOfWeek` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `hourOfDay` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `present` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `absent` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+
+**`DashboardGrant`**
+
+- `permission` — string **(required)** _(enum: `view`, `edit`)_
+- `principal` — union **(required)**
+  - _oneOf_ — exactly one of:
+    - **`userId`**
+      - `userId` — string **(required)** _(minLen=12; maxLen=12)_
+    - **`groupId`**
+      - `groupId` — string **(required)**
+
+**`DashboardMetadata`**
+
+- `predefined` — boolean
+- `removable` — boolean
+- `sortable` — boolean
+
+**`DashboardPermission`**
+
+- string _(enum: `view`, `edit`)_
+
+**`DashboardPrincipal`**
+
+- _oneOf_ — exactly one of:
+  - **`userId`**
+    - `userId` — string **(required)** _(minLen=12; maxLen=12)_
+  - **`groupId`**
+    - `groupId` — string **(required)**
+
+**`DashboardSheet`**
+
+- `id` — string **(required)** _(minLen=8; maxLen=8)_
+- `name` — string **(required)** _(minLen=1; maxLen=128)_
+- `visuals` — array **(required)**
+  - _array of_ `DashboardVisual`
+    - `id` — string **(required)** _(minLen=12; maxLen=12)_
+    - `position` — DashboardVisualGrid **(required)**
+      - `x` — number
+      - `y` — number
+      - `w` — number
+      - `h` — number
+    - `component` — any **(required)**
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - _(nesting depth limit — see `ListConversationsFilterEntity` in the Schemas appendix)_
+      - `participants` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToInclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToExclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `connectTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `talkTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `waitTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `queueTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `holdTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interaction` — ListConversationsFilterInteraction
+        - _(nesting depth limit — see `ListConversationsFilterInteraction` in the Schemas appendix)_
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - _(nesting depth limit — see `ListConversationsFilterDirection` in the Schemas appendix)_
+      - `insights` — array
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+      - `channel` — ListConversationsFilterChannel
+        - _(nesting depth limit — see `ListConversationsFilterChannel` in the Schemas appendix)_
+      - `date` — union
+        - _(nesting depth limit — see `ListConversationsFilterDate` in the Schemas appendix)_
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `present` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+      - `absent` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+- `filter` — ListConversationsFilter
+  - `id` — array
+    - _array of_ `ConversationTarget`
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `entity` — ListConversationsFilterEntity
+    - `call` — boolean
+    - `conference` — boolean
+    - `chat` — boolean
+  - `participants` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToInclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToExclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `chatbots` — array
+    - _array of_ `string`
+  - `voicebots` — array
+    - _array of_ `string`
+  - `service` — array
+    - _array of_ `string`
+  - `group` — array
+    - _array of_ `string`
+  - `department` — array
+    - _array of_ `string`
+  - `tag` — array
+    - _array of_ `string`
+  - `pbx` — array
+    - _array of_ `string`
+  - `trunk` — array
+    - _array of_ `string`
+  - `queue` — array
+    - _array of_ `string`
+  - `country` — array
+    - _array of_ `string`
+  - `location` — array
+    - _array of_ `string`
+  - `phases` — array
+    - _array of_ `string`
+  - `language` — array
+    - _array of_ `string`
+  - `duration` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `connectTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `talkTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `waitTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `queueTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `holdTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interaction` — ListConversationsFilterInteraction
+    - `talkRatio` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `wordsPerMinute` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interruptions` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `patience` — ListConversationsFilterFloat
+      - `from` — number _(format=float)_
+      - `to` — number _(format=float)_
+    - `longestMonologue` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `longestCustomerStory` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+  - `recorded` — boolean
+  - `transcribed` — boolean
+  - `direction` — ListConversationsFilterDirection
+    - `inbound` — boolean
+    - `outbound` — boolean
+    - `internal` — boolean
+  - `insights` — array
+    - _array of_ `ListConversationsFilterInsight`
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `match` — string
+      - `matchAny` — array
+        - _array of_ `string`
+  - `channel` — ListConversationsFilterChannel
+    - `sms` — boolean
+    - `whatsapp` — boolean
+    - `kite` — boolean
+  - `date` — union
+    - _oneOf_ — exactly one of:
+      - **`absolute`**
+        - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+      - **`predefined`**
+        - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+  - `dayOfWeek` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `hourOfDay` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `present` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `absent` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+
+**`DashboardVisibility`**
+
+- string _(enum: `explicit`, `organization`)_
+
+**`DashboardVisual`**
+
+- `id` — string **(required)** _(minLen=12; maxLen=12)_
+- `position` — DashboardVisualGrid **(required)**
+  - `x` — number
+  - `y` — number
+  - `w` — number
+  - `h` — number
+- `component` — any **(required)**
+- `filter` — ListConversationsFilter
+  - `id` — array
+    - _array of_ `ConversationTarget`
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `entity` — ListConversationsFilterEntity
+    - `call` — boolean
+    - `conference` — boolean
+    - `chat` — boolean
+  - `participants` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToInclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToExclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `chatbots` — array
+    - _array of_ `string`
+  - `voicebots` — array
+    - _array of_ `string`
+  - `service` — array
+    - _array of_ `string`
+  - `group` — array
+    - _array of_ `string`
+  - `department` — array
+    - _array of_ `string`
+  - `tag` — array
+    - _array of_ `string`
+  - `pbx` — array
+    - _array of_ `string`
+  - `trunk` — array
+    - _array of_ `string`
+  - `queue` — array
+    - _array of_ `string`
+  - `country` — array
+    - _array of_ `string`
+  - `location` — array
+    - _array of_ `string`
+  - `phases` — array
+    - _array of_ `string`
+  - `language` — array
+    - _array of_ `string`
+  - `duration` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `connectTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `talkTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `waitTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `queueTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `holdTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interaction` — ListConversationsFilterInteraction
+    - `talkRatio` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `wordsPerMinute` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interruptions` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `patience` — ListConversationsFilterFloat
+      - `from` — number _(format=float)_
+      - `to` — number _(format=float)_
+    - `longestMonologue` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `longestCustomerStory` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+  - `recorded` — boolean
+  - `transcribed` — boolean
+  - `direction` — ListConversationsFilterDirection
+    - `inbound` — boolean
+    - `outbound` — boolean
+    - `internal` — boolean
+  - `insights` — array
+    - _array of_ `ListConversationsFilterInsight`
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `match` — string
+      - `matchAny` — array
+        - _array of_ `string`
+  - `channel` — ListConversationsFilterChannel
+    - `sms` — boolean
+    - `whatsapp` — boolean
+    - `kite` — boolean
+  - `date` — union
+    - _oneOf_ — exactly one of:
+      - **`absolute`**
+        - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+      - **`predefined`**
+        - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+  - `dayOfWeek` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `hourOfDay` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `present` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `absent` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+
+**`DashboardVisualGrid`**
+
+- `x` — number
+- `y` — number
+- `w` — number
+- `h` — number
+
+**`DeleteCallAssetsResponseContent`**
+
+- `flowIndexes` — array **(required)** — The flows of the call that were deleted.
+  - _array of_ `number`
+- `deletedAt` — string **(required)** — ISO 8601 time of the first deletion request for this call.
+
+**`DeleteConferenceAssetsResponseContent`**
+
+- `deletedAt` — string **(required)** — ISO 8601 time of the first deletion request for this conference.
+
+**`DeletePlaylistItemRequestContent`**
+
+- `target` — union **(required)**
+  - _oneOf_ — exactly one of:
+    - **`call`**
+      - `call` — CallConversationTarget **(required)**
+        - `callId` — string **(required)**
+        - `flowIndex` — number **(required)**
+    - **`conference`**
+      - `conference` — ConferenceConversationTarget **(required)**
+        - `conferenceId` — string **(required)**
+    - **`chat`**
+      - `chat` — ChatConversationTarget **(required)**
+        - `chatId` — string **(required)**
+
+**`DisableProjectionResponseContent`**
+
+- `projection` — Projection **(required)**
+  - `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+  - `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `instructions` — string _(minLen=1; maxLen=16384)_
+  - `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+    - _array of_ `ProjectionCondition`
+      - _oneOf_ — exactly one of:
+        - **`entity`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`participants`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`duration`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interruptions` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `patience` — ListConversationsFilterFloat
+        - _(nesting depth limit — see `ListConversationsFilterFloat` in the Schemas appendix)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`predefined`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+  - `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+  - `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+  - `fields` — array **(required)** _(minItems=1; maxItems=64)_
+    - _array of_ `ProjectionField`
+      - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `name` — string **(required)** _(minLen=1; maxLen=256)_
+      - `description` — string _(minLen=1; maxLen=4096)_
+      - `optional` — boolean
+      - `parameter` — union **(required)**
+        - _(nesting depth limit — see `ProjectionParameter` in the Schemas appendix)_
+  - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+  - `status` — string **(required)** _(enum: `ENABLED`, `PAUSED`, `DISABLED`)_
+  - `version` — number **(required)**
+  - `createdAt` — string **(required)**
+  - `updatedAt` — string
+  - `metadata` — ProjectionMetadata
+    - `predefined` — boolean
+    - `customized` — boolean — True when a predefined projection has tenant-specific overrides applied.
+
+**`DownloadStrategy`**
+
+- number _(enum: `0`, `1`)_
+
+**`DurationGroupBucket`**
+
+- `title` — string **(required)** — The human-readable label for this duration bucket (e.g., '0-5 minutes').
+- `from` — number — The lower bound for this duration bucket (greater than or equal to).
+- `to` — number — The upper bound for this duration bucket (exclusive).
+
+**`EnableProjectionResponseContent`**
+
+- `projection` — Projection **(required)**
+  - `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+  - `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `instructions` — string _(minLen=1; maxLen=16384)_
+  - `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+    - _array of_ `ProjectionCondition`
+      - _oneOf_ — exactly one of:
+        - **`entity`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`participants`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`duration`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interruptions` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `patience` — ListConversationsFilterFloat
+        - _(nesting depth limit — see `ListConversationsFilterFloat` in the Schemas appendix)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`predefined`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+  - `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+  - `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+  - `fields` — array **(required)** _(minItems=1; maxItems=64)_
+    - _array of_ `ProjectionField`
+      - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `name` — string **(required)** _(minLen=1; maxLen=256)_
+      - `description` — string _(minLen=1; maxLen=4096)_
+      - `optional` — boolean
+      - `parameter` — union **(required)**
+        - _(nesting depth limit — see `ProjectionParameter` in the Schemas appendix)_
+  - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+  - `status` — string **(required)** _(enum: `ENABLED`, `PAUSED`, `DISABLED`)_
+  - `version` — number **(required)**
+  - `createdAt` — string **(required)**
+  - `updatedAt` — string
+  - `metadata` — ProjectionMetadata
+    - `predefined` — boolean
+    - `customized` — boolean — True when a predefined projection has tenant-specific overrides applied.
+
+**`FileNotFoundExceptionResponseContent`**
+
+- `message` — string **(required)**
+
+**`FilterNotFoundExceptionResponseContent`**
+
+- `message` — string **(required)**
+
+**`FlatAggregationBucket`**
+
+- `key` — string **(required)** — The value for this bucket. For example, 'INBOUND' if grouping by direction, or '0-5min' if grouping by duration.
+- `count` — number **(required)** — Number of conversations falling into this bucket.
+- `interval` — string _(enum: `month`, `week`, `day`, `hour`, `minute`)_
+- `filter` — ListConversationsFilter
+  - `id` — array
+    - _array of_ `ConversationTarget`
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `entity` — ListConversationsFilterEntity
+    - `call` — boolean
+    - `conference` — boolean
+    - `chat` — boolean
+  - `participants` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToInclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToExclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `chatbots` — array
+    - _array of_ `string`
+  - `voicebots` — array
+    - _array of_ `string`
+  - `service` — array
+    - _array of_ `string`
+  - `group` — array
+    - _array of_ `string`
+  - `department` — array
+    - _array of_ `string`
+  - `tag` — array
+    - _array of_ `string`
+  - `pbx` — array
+    - _array of_ `string`
+  - `trunk` — array
+    - _array of_ `string`
+  - `queue` — array
+    - _array of_ `string`
+  - `country` — array
+    - _array of_ `string`
+  - `location` — array
+    - _array of_ `string`
+  - `phases` — array
+    - _array of_ `string`
+  - `language` — array
+    - _array of_ `string`
+  - `duration` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `connectTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `talkTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `waitTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `queueTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `holdTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interaction` — ListConversationsFilterInteraction
+    - `talkRatio` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `wordsPerMinute` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interruptions` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `patience` — ListConversationsFilterFloat
+      - `from` — number _(format=float)_
+      - `to` — number _(format=float)_
+    - `longestMonologue` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `longestCustomerStory` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+  - `recorded` — boolean
+  - `transcribed` — boolean
+  - `direction` — ListConversationsFilterDirection
+    - `inbound` — boolean
+    - `outbound` — boolean
+    - `internal` — boolean
+  - `insights` — array
+    - _array of_ `ListConversationsFilterInsight`
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `match` — string
+      - `matchAny` — array
+        - _array of_ `string`
+  - `channel` — ListConversationsFilterChannel
+    - `sms` — boolean
+    - `whatsapp` — boolean
+    - `kite` — boolean
+  - `date` — union
+    - _oneOf_ — exactly one of:
+      - **`absolute`**
+        - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+      - **`predefined`**
+        - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+  - `dayOfWeek` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `hourOfDay` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `present` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `absent` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+
+**`FlatAggregationResult`**
+
+- `aggregation` — union **(required)**
+  - _oneOf_ — exactly one of:
+    - **`projection`**
+      - `projection` — AggregationProjectionDefinition **(required)**
+        - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - **`direction`**
+      - `direction` — AggregationNoConfigurationDefinition **(required)**
+    - **`duration`**
+      - `duration` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`connectTime`**
+      - `connectTime` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`talkTime`**
+      - `talkTime` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`waitTime`**
+      - `waitTime` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`queueTime`**
+      - `queueTime` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`holdTime`**
+      - `holdTime` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`service`**
+      - `service` — AggregationNoConfigurationDefinition **(required)**
+    - **`extension`**
+      - `extension` — AggregationNoConfigurationDefinition **(required)**
+    - **`chatbot`**
+      - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+    - **`voicebot`**
+      - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+    - **`group`**
+      - `group` — AggregationNoConfigurationDefinition **(required)**
+    - **`department`**
+      - `department` — AggregationNoConfigurationDefinition **(required)**
+    - **`tag`**
+      - `tag` — AggregationNoConfigurationDefinition **(required)**
+    - **`pbx`**
+      - `pbx` — AggregationNoConfigurationDefinition **(required)**
+    - **`trunk`**
+      - `trunk` — AggregationNoConfigurationDefinition **(required)**
+    - **`queue`**
+      - `queue` — AggregationNoConfigurationDefinition **(required)**
+    - **`country`**
+      - `country` — AggregationNoConfigurationDefinition **(required)**
+    - **`location`**
+      - `location` — AggregationNoConfigurationDefinition **(required)**
+    - **`language`**
+      - `language` — AggregationNoConfigurationDefinition **(required)**
+    - **`entity`**
+      - `entity` — AggregationNoConfigurationDefinition **(required)**
+    - **`channel`**
+      - `channel` — AggregationNoConfigurationDefinition **(required)**
+    - **`recorded`**
+      - `recorded` — AggregationNoConfigurationDefinition **(required)**
+    - **`date`**
+      - `date` — AggregationDateDefinition **(required)**
+        - `timeZone` — string
+    - **`dayOfWeek`**
+      - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+        - `timeZone` — string
+    - **`hourOfDay`**
+      - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+        - `timeZone` — string
+- `buckets` — array **(required)** — The list of buckets generated for this insight.
+  - _array of_ `FlatAggregationBucket`
+    - `key` — string **(required)** — The value for this bucket. For example, 'INBOUND' if grouping by direction, or '0-5min' if grouping by duration.
+    - `count` — number **(required)** — Number of conversations falling into this bucket.
+    - `interval` — string _(enum: `month`, `week`, `day`, `hour`, `minute`)_
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - _(nesting depth limit — see `ListConversationsFilterEntity` in the Schemas appendix)_
+      - `participants` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToInclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToExclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `connectTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `talkTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `waitTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `queueTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `holdTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interaction` — ListConversationsFilterInteraction
+        - _(nesting depth limit — see `ListConversationsFilterInteraction` in the Schemas appendix)_
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - _(nesting depth limit — see `ListConversationsFilterDirection` in the Schemas appendix)_
+      - `insights` — array
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+      - `channel` — ListConversationsFilterChannel
+        - _(nesting depth limit — see `ListConversationsFilterChannel` in the Schemas appendix)_
+      - `date` — union
+        - _(nesting depth limit — see `ListConversationsFilterDate` in the Schemas appendix)_
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `present` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+      - `absent` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+
+**`ForbiddenExceptionResponseContent`**
+
+- `message` — string **(required)**
+
+**`GetAnalysisSettingsResponseContent`**
+
+- `settings` — AnalysisSettings **(required)**
+  - `defaultModel` — string — Default provider and model identifier for projections that do not define a custom model. Example: 'openai://gpt-5'.
+  - `disabled` — boolean — True to disable analysis completely for the organization.
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interruptions` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `patience` — ListConversationsFilterFloat
+        - _(nesting depth limit — see `ListConversationsFilterFloat` in the Schemas appendix)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`predefined`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+  - `deleteAssetsAfterSuccess` — boolean — True to delete raw transcript and recording assets after a successful initial analysis run.
+
+**`GetCallCharacteristicsResponseContent`**
+
+- `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+- `characteristics` — InsightsCharacteristics
+  - `nonTalkTime` — InsightsNonTalkTime
+    - `chunks` — array
+      - _array of_ `InsightsNonTalkTimeChunk`
+        - _(nesting depth limit — see `InsightsNonTalkTimeChunk` in the Schemas appendix)_
+  - `interruptions` — InsightsInterruptions
+    - `chunks` — array
+      - _array of_ `InsightsInterruptionsChunk`
+        - _(nesting depth limit — see `InsightsInterruptionsChunk` in the Schemas appendix)_
+  - `duration` — number
+  - `sentiment` — InsightsSentiment
+    - `score` — number _(format=float)_
+    - `scoreByParticipant` — array
+      - _array of_ `InsightsSentimentScoreByParticipantChunk`
+        - _(nesting depth limit — see `InsightsSentimentScoreByParticipantChunk` in the Schemas appendix)_
+    - `scoreByPeriod` — array
+      - _array of_ `InsightsSentimentScoreByPeriodChunk`
+        - _(nesting depth limit — see `InsightsSentimentScoreByPeriodChunk` in the Schemas appendix)_
+  - `talkSpeed` — InsightsCharacteristicsTalkSpeed
+    - `detailsByParticipant` — array
+      - _array of_ `InsightsTalkSpeedChunk`
+        - _(nesting depth limit — see `InsightsTalkSpeedChunk` in the Schemas appendix)_
+  - `talkTime` — InsightsTalkTime
+    - `detailsByParticipant` — array
+      - _array of_ `InsightsTalkTimeChunk`
+        - _(nesting depth limit — see `InsightsTalkTimeChunk` in the Schemas appendix)_
+
+**`GetCallInsightsResponseContent`**
+
+- `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+- `insights` — array
+  - _array of_ `ProjectionInsights`
+    - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `version` — number **(required)** — A version of projection that was used to generate the insights.
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+    - `reason` — string _(enum: `TRANSCRIPTION_TOO_SMALL`, `CONDITIONS_NOT_MATCH`, `INTERNAL_ERROR`)_
+    - `fields` — array **(required)**
+      - _array of_ `ProjectionInsightsField`
+        - _(nesting depth limit — see `ProjectionInsightsField` in the Schemas appendix)_
+
+**`GetCallStateResponseContent`**
+
+- `state` — ConversationState **(required)**
+  - `playlists` — array
+    - _array of_ `string`
+  - `playback` — ConversationPlaybackState
+    - `position` — number
+    - `duration` — number
+  - `firstWatchedAt` — string
+  - `lastWatchedAt` — string
+  - `canDelete` — boolean — True when the requester may delete the conversation from Revenue Intelligence (DeleteCallAssets / DeleteConferenceAssets).
+
+**`GetCallSummaryResponseContent`**
+
+- `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+- `summary` — TranscriptionSummary
+  - `title` — string
+  - `brief` — string
+  - `json` — TranscriptionSummaryJson
+    - `callBriefVeryShortTitle` — string
+    - `callBrief` — string
+    - `customerInsights` — array
+      - _array of_ `string`
+    - `keyPoints` — array
+      - _array of_ `string`
+    - `competitiveInformation` — array
+      - _array of_ `string`
+    - `implementationTimeline` — array
+      - _array of_ `string`
+    - `budget` — array
+      - _array of_ `string`
+    - `customerResponse` — array
+      - _array of_ `string`
+    - `salesProposals` — array
+      - _array of_ `string`
+    - `actionItems` — array
+      - _array of_ `string`
+    - `nextSteps` — array
+      - _array of_ `string`
+    - `csat` — TranscriptionSummaryCsat
+      - `score` — string
+      - `reason` — string
+    - `topics` — array
+      - _array of_ `string`
+    - `review` — array
+      - _array of_ `string`
+    - `progress` — array
+      - _array of_ `string`
+    - `issues` — array
+      - _array of_ `string`
+    - `decisions` — array
+      - _array of_ `string`
+    - `tags` — array
+      - _array of_ `string`
+
+**`GetChatInsightsResponseContent`**
+
+- `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+- `insights` — array
+  - _array of_ `ProjectionInsights`
+    - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `version` — number **(required)** — A version of projection that was used to generate the insights.
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+    - `reason` — string _(enum: `TRANSCRIPTION_TOO_SMALL`, `CONDITIONS_NOT_MATCH`, `INTERNAL_ERROR`)_
+    - `fields` — array **(required)**
+      - _array of_ `ProjectionInsightsField`
+        - _(nesting depth limit — see `ProjectionInsightsField` in the Schemas appendix)_
+
+**`GetChatStateResponseContent`**
+
+- `state` — ConversationState **(required)**
+  - `playlists` — array
+    - _array of_ `string`
+  - `playback` — ConversationPlaybackState
+    - `position` — number
+    - `duration` — number
+  - `firstWatchedAt` — string
+  - `lastWatchedAt` — string
+  - `canDelete` — boolean — True when the requester may delete the conversation from Revenue Intelligence (DeleteCallAssets / DeleteConferenceAssets).
+
+**`GetChatSummaryResponseContent`**
+
+- `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+- `summary` — TranscriptionSummary
+  - `title` — string
+  - `brief` — string
+  - `json` — TranscriptionSummaryJson
+    - `callBriefVeryShortTitle` — string
+    - `callBrief` — string
+    - `customerInsights` — array
+      - _array of_ `string`
+    - `keyPoints` — array
+      - _array of_ `string`
+    - `competitiveInformation` — array
+      - _array of_ `string`
+    - `implementationTimeline` — array
+      - _array of_ `string`
+    - `budget` — array
+      - _array of_ `string`
+    - `customerResponse` — array
+      - _array of_ `string`
+    - `salesProposals` — array
+      - _array of_ `string`
+    - `actionItems` — array
+      - _array of_ `string`
+    - `nextSteps` — array
+      - _array of_ `string`
+    - `csat` — TranscriptionSummaryCsat
+      - `score` — string
+      - `reason` — string
+    - `topics` — array
+      - _array of_ `string`
+    - `review` — array
+      - _array of_ `string`
+    - `progress` — array
+      - _array of_ `string`
+    - `issues` — array
+      - _array of_ `string`
+    - `decisions` — array
+      - _array of_ `string`
+    - `tags` — array
+      - _array of_ `string`
+
+**`GetConferenceInsightsResponseContent`**
+
+- `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+- `insights` — array
+  - _array of_ `ProjectionInsights`
+    - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `version` — number **(required)** — A version of projection that was used to generate the insights.
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+    - `reason` — string _(enum: `TRANSCRIPTION_TOO_SMALL`, `CONDITIONS_NOT_MATCH`, `INTERNAL_ERROR`)_
+    - `fields` — array **(required)**
+      - _array of_ `ProjectionInsightsField`
+        - _(nesting depth limit — see `ProjectionInsightsField` in the Schemas appendix)_
+
+**`GetConferenceRecordingPresignedDownloadUrlResponseContent`**
+
+- `presignedDownloadUrl` — string **(required)** — The presigned URL for downloading the recording.
+
+**`GetConferenceStateResponseContent`**
+
+- `state` — ConversationState **(required)**
+  - `playlists` — array
+    - _array of_ `string`
+  - `playback` — ConversationPlaybackState
+    - `position` — number
+    - `duration` — number
+  - `firstWatchedAt` — string
+  - `lastWatchedAt` — string
+  - `canDelete` — boolean — True when the requester may delete the conversation from Revenue Intelligence (DeleteCallAssets / DeleteConferenceAssets).
+
+**`GetConferenceSummaryResponseContent`**
+
+- `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+- `summary` — TranscriptionSummary
+  - `title` — string
+  - `brief` — string
+  - `json` — TranscriptionSummaryJson
+    - `callBriefVeryShortTitle` — string
+    - `callBrief` — string
+    - `customerInsights` — array
+      - _array of_ `string`
+    - `keyPoints` — array
+      - _array of_ `string`
+    - `competitiveInformation` — array
+      - _array of_ `string`
+    - `implementationTimeline` — array
+      - _array of_ `string`
+    - `budget` — array
+      - _array of_ `string`
+    - `customerResponse` — array
+      - _array of_ `string`
+    - `salesProposals` — array
+      - _array of_ `string`
+    - `actionItems` — array
+      - _array of_ `string`
+    - `nextSteps` — array
+      - _array of_ `string`
+    - `csat` — TranscriptionSummaryCsat
+      - `score` — string
+      - `reason` — string
+    - `topics` — array
+      - _array of_ `string`
+    - `review` — array
+      - _array of_ `string`
+    - `progress` — array
+      - _array of_ `string`
+    - `issues` — array
+      - _array of_ `string`
+    - `decisions` — array
+      - _array of_ `string`
+    - `tags` — array
+      - _array of_ `string`
+
+**`GetConferenceTimeFramesResponseContent`**
+
+- `timeFrames` — array
+  - _array of_ `ConferenceTimeFramesListItem`
+    - `jid` — string **(required)**
+    - `frames` — array **(required)**
+      - _array of_ `ConferenceTimeFramesChunk`
+        - _(nesting depth limit — see `ConferenceTimeFramesChunk` in the Schemas appendix)_
+
+**`GetDashboardResponseContent`**
+
+- `dashboard` — Dashboard **(required)**
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `id` — string **(required)** _(minLen=1; maxLen=32)_
+  - `createdAt` — string **(required)**
+  - `createdBy` — string **(required)**
+  - `createdByName` — string **(required)**
+  - `updatedAt` — string
+  - `metadata` — DashboardMetadata
+    - `predefined` — boolean
+    - `removable` — boolean
+    - `sortable` — boolean
+  - `access` — DashboardAccess
+    - `visibility` — string _(enum: `explicit`, `organization`)_
+    - `grants` — array
+      - _array of_ `DashboardGrant`
+        - _(nesting depth limit — see `DashboardGrant` in the Schemas appendix)_
+  - `definition` — DashboardDefinition **(required)**
+    - `sheets` — array
+      - _array of_ `DashboardSheet`
+        - _(nesting depth limit — see `DashboardSheet` in the Schemas appendix)_
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - _(nesting depth limit — see `ListConversationsFilterEntity` in the Schemas appendix)_
+      - `participants` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToInclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToExclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `connectTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `talkTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `waitTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `queueTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `holdTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interaction` — ListConversationsFilterInteraction
+        - _(nesting depth limit — see `ListConversationsFilterInteraction` in the Schemas appendix)_
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - _(nesting depth limit — see `ListConversationsFilterDirection` in the Schemas appendix)_
+      - `insights` — array
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+      - `channel` — ListConversationsFilterChannel
+        - _(nesting depth limit — see `ListConversationsFilterChannel` in the Schemas appendix)_
+      - `date` — union
+        - _(nesting depth limit — see `ListConversationsFilterDate` in the Schemas appendix)_
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `present` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+      - `absent` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+
+**`GetPlaylistResponseContent`**
+
+- `playlist` — Playlist **(required)**
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `id` — string **(required)** _(minLen=1; maxLen=32)_
+  - `createdAt` — string **(required)**
+  - `createdBy` — string **(required)**
+  - `createdByName` — string **(required)**
+  - `updatedAt` — string
+  - `access` — PlaylistAccess
+    - `visibility` — string _(enum: `explicit`, `organization`)_
+    - `grants` — array
+      - _array of_ `PlaylistGrant`
+        - _(nesting depth limit — see `PlaylistGrant` in the Schemas appendix)_
+  - `itemsCount` — number **(required)**
+
+**`GetProjectionResponseContent`**
+
+- `projection` — Projection **(required)**
+  - `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+  - `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `instructions` — string _(minLen=1; maxLen=16384)_
+  - `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+    - _array of_ `ProjectionCondition`
+      - _oneOf_ — exactly one of:
+        - **`entity`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`participants`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`duration`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interruptions` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `patience` — ListConversationsFilterFloat
+        - _(nesting depth limit — see `ListConversationsFilterFloat` in the Schemas appendix)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`predefined`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+  - `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+  - `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+  - `fields` — array **(required)** _(minItems=1; maxItems=64)_
+    - _array of_ `ProjectionField`
+      - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `name` — string **(required)** _(minLen=1; maxLen=256)_
+      - `description` — string _(minLen=1; maxLen=4096)_
+      - `optional` — boolean
+      - `parameter` — union **(required)**
+        - _(nesting depth limit — see `ProjectionParameter` in the Schemas appendix)_
+  - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+  - `status` — string **(required)** _(enum: `ENABLED`, `PAUSED`, `DISABLED`)_
+  - `version` — number **(required)**
+  - `createdAt` — string **(required)**
+  - `updatedAt` — string
+  - `metadata` — ProjectionMetadata
+    - `predefined` — boolean
+    - `customized` — boolean — True when a predefined projection has tenant-specific overrides applied.
+
+**`InsightResult`**
+
+_This shape is deprecated._
+
+- `insight` — union **(required)**
+  - _oneOf_ — exactly one of:
+    - **`projection`**
+      - `projection` — AggregationProjectionDefinition **(required)**
+        - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+        - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - **`direction`**
+      - `direction` — AggregationNoConfigurationDefinition **(required)**
+    - **`duration`**
+      - `duration` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`connectTime`**
+      - `connectTime` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`talkTime`**
+      - `talkTime` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`waitTime`**
+      - `waitTime` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`queueTime`**
+      - `queueTime` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`holdTime`**
+      - `holdTime` — AggregationDurationDefinition **(required)**
+        - `buckets` — array — A custom list of buckets to use for the duration aggregation. If not provided, default buckets will be used.
+          - _(nesting depth limit — see `DurationGroupBucket` in the Schemas appendix)_
+    - **`service`**
+      - `service` — AggregationNoConfigurationDefinition **(required)**
+    - **`extension`**
+      - `extension` — AggregationNoConfigurationDefinition **(required)**
+    - **`chatbot`**
+      - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+    - **`voicebot`**
+      - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+    - **`group`**
+      - `group` — AggregationNoConfigurationDefinition **(required)**
+    - **`department`**
+      - `department` — AggregationNoConfigurationDefinition **(required)**
+    - **`tag`**
+      - `tag` — AggregationNoConfigurationDefinition **(required)**
+    - **`pbx`**
+      - `pbx` — AggregationNoConfigurationDefinition **(required)**
+    - **`trunk`**
+      - `trunk` — AggregationNoConfigurationDefinition **(required)**
+    - **`queue`**
+      - `queue` — AggregationNoConfigurationDefinition **(required)**
+    - **`country`**
+      - `country` — AggregationNoConfigurationDefinition **(required)**
+    - **`location`**
+      - `location` — AggregationNoConfigurationDefinition **(required)**
+    - **`language`**
+      - `language` — AggregationNoConfigurationDefinition **(required)**
+    - **`entity`**
+      - `entity` — AggregationNoConfigurationDefinition **(required)**
+    - **`channel`**
+      - `channel` — AggregationNoConfigurationDefinition **(required)**
+    - **`recorded`**
+      - `recorded` — AggregationNoConfigurationDefinition **(required)**
+    - **`date`**
+      - `date` — AggregationDateDefinition **(required)**
+        - `timeZone` — string
+    - **`dayOfWeek`**
+      - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+        - `timeZone` — string
+    - **`hourOfDay`**
+      - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+        - `timeZone` — string
+- `buckets` — array **(required)** — The list of buckets generated for this insight. _(deprecated)_
+  - _array of_ `InsightsBucket`
+    - `key` — string **(required)** — The value for this bucket. For example, 'INBOUND' if grouping by direction, or '0-5min' if grouping by duration.
+    - `count` — number **(required)** — Number of conversations falling into this bucket.
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - _(nesting depth limit — see `ListConversationsFilterEntity` in the Schemas appendix)_
+      - `participants` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToInclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToExclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `connectTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `talkTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `waitTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `queueTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `holdTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interaction` — ListConversationsFilterInteraction
+        - _(nesting depth limit — see `ListConversationsFilterInteraction` in the Schemas appendix)_
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - _(nesting depth limit — see `ListConversationsFilterDirection` in the Schemas appendix)_
+      - `insights` — array
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+      - `channel` — ListConversationsFilterChannel
+        - _(nesting depth limit — see `ListConversationsFilterChannel` in the Schemas appendix)_
+      - `date` — union
+        - _(nesting depth limit — see `ListConversationsFilterDate` in the Schemas appendix)_
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `present` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+      - `absent` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+
+**`InsightsBucket`**
+
+_This shape is deprecated._
+
+- `key` — string **(required)** — The value for this bucket. For example, 'INBOUND' if grouping by direction, or '0-5min' if grouping by duration.
+- `count` — number **(required)** — Number of conversations falling into this bucket.
+- `filter` — ListConversationsFilter
+  - `id` — array
+    - _array of_ `ConversationTarget`
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `entity` — ListConversationsFilterEntity
+    - `call` — boolean
+    - `conference` — boolean
+    - `chat` — boolean
+  - `participants` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToInclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToExclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `chatbots` — array
+    - _array of_ `string`
+  - `voicebots` — array
+    - _array of_ `string`
+  - `service` — array
+    - _array of_ `string`
+  - `group` — array
+    - _array of_ `string`
+  - `department` — array
+    - _array of_ `string`
+  - `tag` — array
+    - _array of_ `string`
+  - `pbx` — array
+    - _array of_ `string`
+  - `trunk` — array
+    - _array of_ `string`
+  - `queue` — array
+    - _array of_ `string`
+  - `country` — array
+    - _array of_ `string`
+  - `location` — array
+    - _array of_ `string`
+  - `phases` — array
+    - _array of_ `string`
+  - `language` — array
+    - _array of_ `string`
+  - `duration` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `connectTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `talkTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `waitTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `queueTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `holdTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interaction` — ListConversationsFilterInteraction
+    - `talkRatio` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `wordsPerMinute` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interruptions` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `patience` — ListConversationsFilterFloat
+      - `from` — number _(format=float)_
+      - `to` — number _(format=float)_
+    - `longestMonologue` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `longestCustomerStory` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+  - `recorded` — boolean
+  - `transcribed` — boolean
+  - `direction` — ListConversationsFilterDirection
+    - `inbound` — boolean
+    - `outbound` — boolean
+    - `internal` — boolean
+  - `insights` — array
+    - _array of_ `ListConversationsFilterInsight`
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `match` — string
+      - `matchAny` — array
+        - _array of_ `string`
+  - `channel` — ListConversationsFilterChannel
+    - `sms` — boolean
+    - `whatsapp` — boolean
+    - `kite` — boolean
+  - `date` — union
+    - _oneOf_ — exactly one of:
+      - **`absolute`**
+        - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+      - **`predefined`**
+        - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+  - `dayOfWeek` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `hourOfDay` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `present` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `absent` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+
+**`InsightsCharacteristics`**
+
+- `nonTalkTime` — InsightsNonTalkTime
+  - `chunks` — array
+    - _array of_ `InsightsNonTalkTimeChunk`
+      - `startTime` — number **(required)**
+      - `endTime` — number **(required)**
+- `interruptions` — InsightsInterruptions
+  - `chunks` — array
+    - _array of_ `InsightsInterruptionsChunk`
+      - `startTime` — number **(required)**
+      - `endTime` — number **(required)**
+      - `interrupter` — string **(required)**
+- `duration` — number
+- `sentiment` — InsightsSentiment
+  - `score` — number _(format=float)_
+  - `scoreByParticipant` — array
+    - _array of_ `InsightsSentimentScoreByParticipantChunk`
+      - `interrupter` — string **(required)**
+      - `score` — number **(required)** _(format=float)_
+  - `scoreByPeriod` — array
+    - _array of_ `InsightsSentimentScoreByPeriodChunk`
+      - `score` — number **(required)** _(format=float)_
+      - `participants` — array
+        - _(nesting depth limit — see `InsightsSentimentParticipantScore` in the Schemas appendix)_
+- `talkSpeed` — InsightsCharacteristicsTalkSpeed
+  - `detailsByParticipant` — array
+    - _array of_ `InsightsTalkSpeedChunk`
+      - `interrupter` — string **(required)**
+      - `averageWordsPerMinute` — number
+- `talkTime` — InsightsTalkTime
+  - `detailsByParticipant` — array
+    - _array of_ `InsightsTalkTimeChunk`
+      - `interrupter` — string **(required)**
+      - `totalTime` — number
+
+**`InsightsCharacteristicsTalkSpeed`**
+
+- `detailsByParticipant` — array
+  - _array of_ `InsightsTalkSpeedChunk`
+    - `interrupter` — string **(required)**
+    - `averageWordsPerMinute` — number
+
+**`InsightsInterruptions`**
+
+- `chunks` — array
+  - _array of_ `InsightsInterruptionsChunk`
+    - `startTime` — number **(required)**
+    - `endTime` — number **(required)**
+    - `interrupter` — string **(required)**
+
+**`InsightsInterruptionsChunk`**
+
+- `startTime` — number **(required)**
+- `endTime` — number **(required)**
+- `interrupter` — string **(required)**
+
+**`InsightsNonTalkTime`**
+
+- `chunks` — array
+  - _array of_ `InsightsNonTalkTimeChunk`
+    - `startTime` — number **(required)**
+    - `endTime` — number **(required)**
+
+**`InsightsNonTalkTimeChunk`**
+
+- `startTime` — number **(required)**
+- `endTime` — number **(required)**
+
+**`InsightsReason`**
+
+- string _(enum: `TRANSCRIPTION_TOO_SMALL`, `CONDITIONS_NOT_MATCH`, `INTERNAL_ERROR`)_
+
+**`InsightsSentiment`**
+
+- `score` — number _(format=float)_
+- `scoreByParticipant` — array
+  - _array of_ `InsightsSentimentScoreByParticipantChunk`
+    - `interrupter` — string **(required)**
+    - `score` — number **(required)** _(format=float)_
+- `scoreByPeriod` — array
+  - _array of_ `InsightsSentimentScoreByPeriodChunk`
+    - `score` — number **(required)** _(format=float)_
+    - `participants` — array
+      - _array of_ `InsightsSentimentParticipantScore`
+        - _(nesting depth limit — see `InsightsSentimentParticipantScore` in the Schemas appendix)_
+
+**`InsightsSentimentParticipantScore`**
+
+- `interrupter` — string **(required)**
+- `score` — number **(required)** _(format=float)_
+- `startTime` — number **(required)**
+- `endTime` — number **(required)**
+
+**`InsightsSentimentScoreByParticipantChunk`**
+
+- `interrupter` — string **(required)**
+- `score` — number **(required)** _(format=float)_
+
+**`InsightsSentimentScoreByPeriodChunk`**
+
+- `score` — number **(required)** _(format=float)_
+- `participants` — array
+  - _array of_ `InsightsSentimentParticipantScore`
+    - `interrupter` — string **(required)**
+    - `score` — number **(required)** _(format=float)_
+    - `startTime` — number **(required)**
+    - `endTime` — number **(required)**
+
+**`InsightsStatus`**
+
+- string _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+
+**`InsightsTalkSpeedChunk`**
+
+- `interrupter` — string **(required)**
+- `averageWordsPerMinute` — number
+
+**`InsightsTalkTime`**
+
+- `detailsByParticipant` — array
+  - _array of_ `InsightsTalkTimeChunk`
+    - `interrupter` — string **(required)**
+    - `totalTime` — number
+
+**`InsightsTalkTimeChunk`**
+
+- `interrupter` — string **(required)**
+- `totalTime` — number
+
+**`License`**
+
+- string _(enum: `x-bees`, `uc`)_
+
+**`ListConversationsAggregationsRequestContent`**
+
+- `insights` — array — A list of insights to select. Default - all projections, direction, duration, connectTime, talkTime, waitTime, queueTime, and holdTime.
+  - _array of_ `AggregationDefinition`
+    - _oneOf_ — exactly one of:
+      - **`projection`**
+        - `projection` — AggregationProjectionDefinition **(required)**
+          - _(nesting depth limit — see `AggregationProjectionDefinition` in the Schemas appendix)_
+      - **`direction`**
+        - `direction` — AggregationNoConfigurationDefinition **(required)**
+      - **`duration`**
+        - `duration` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`connectTime`**
+        - `connectTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`talkTime`**
+        - `talkTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`waitTime`**
+        - `waitTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`queueTime`**
+        - `queueTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`holdTime`**
+        - `holdTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`service`**
+        - `service` — AggregationNoConfigurationDefinition **(required)**
+      - **`extension`**
+        - `extension` — AggregationNoConfigurationDefinition **(required)**
+      - **`chatbot`**
+        - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+      - **`voicebot`**
+        - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+      - **`group`**
+        - `group` — AggregationNoConfigurationDefinition **(required)**
+      - **`department`**
+        - `department` — AggregationNoConfigurationDefinition **(required)**
+      - **`tag`**
+        - `tag` — AggregationNoConfigurationDefinition **(required)**
+      - **`pbx`**
+        - `pbx` — AggregationNoConfigurationDefinition **(required)**
+      - **`trunk`**
+        - `trunk` — AggregationNoConfigurationDefinition **(required)**
+      - **`queue`**
+        - `queue` — AggregationNoConfigurationDefinition **(required)**
+      - **`country`**
+        - `country` — AggregationNoConfigurationDefinition **(required)**
+      - **`location`**
+        - `location` — AggregationNoConfigurationDefinition **(required)**
+      - **`language`**
+        - `language` — AggregationNoConfigurationDefinition **(required)**
+      - **`entity`**
+        - `entity` — AggregationNoConfigurationDefinition **(required)**
+      - **`channel`**
+        - `channel` — AggregationNoConfigurationDefinition **(required)**
+      - **`recorded`**
+        - `recorded` — AggregationNoConfigurationDefinition **(required)**
+      - **`date`**
+        - `date` — AggregationDateDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDateDefinition` in the Schemas appendix)_
+      - **`dayOfWeek`**
+        - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDayOfWeekDefinition` in the Schemas appendix)_
+      - **`hourOfDay`**
+        - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+          - _(nesting depth limit — see `AggregationHourOfDayDefinition` in the Schemas appendix)_
+- `filter` — ListConversationsFilter
+  - `id` — array
+    - _array of_ `ConversationTarget`
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `entity` — ListConversationsFilterEntity
+    - `call` — boolean
+    - `conference` — boolean
+    - `chat` — boolean
+  - `participants` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToInclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToExclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `chatbots` — array
+    - _array of_ `string`
+  - `voicebots` — array
+    - _array of_ `string`
+  - `service` — array
+    - _array of_ `string`
+  - `group` — array
+    - _array of_ `string`
+  - `department` — array
+    - _array of_ `string`
+  - `tag` — array
+    - _array of_ `string`
+  - `pbx` — array
+    - _array of_ `string`
+  - `trunk` — array
+    - _array of_ `string`
+  - `queue` — array
+    - _array of_ `string`
+  - `country` — array
+    - _array of_ `string`
+  - `location` — array
+    - _array of_ `string`
+  - `phases` — array
+    - _array of_ `string`
+  - `language` — array
+    - _array of_ `string`
+  - `duration` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `connectTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `talkTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `waitTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `queueTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `holdTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interaction` — ListConversationsFilterInteraction
+    - `talkRatio` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `wordsPerMinute` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interruptions` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `patience` — ListConversationsFilterFloat
+      - `from` — number _(format=float)_
+      - `to` — number _(format=float)_
+    - `longestMonologue` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `longestCustomerStory` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+  - `recorded` — boolean
+  - `transcribed` — boolean
+  - `direction` — ListConversationsFilterDirection
+    - `inbound` — boolean
+    - `outbound` — boolean
+    - `internal` — boolean
+  - `insights` — array
+    - _array of_ `ListConversationsFilterInsight`
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `match` — string
+      - `matchAny` — array
+        - _array of_ `string`
+  - `channel` — ListConversationsFilterChannel
+    - `sms` — boolean
+    - `whatsapp` — boolean
+    - `kite` — boolean
+  - `date` — union
+    - _oneOf_ — exactly one of:
+      - **`absolute`**
+        - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+      - **`predefined`**
+        - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+  - `dayOfWeek` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `hourOfDay` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `present` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `absent` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+
+**`ListConversationsAggregationsResponseContent`**
+
+- `count` — number **(required)** — Total number of conversations matching the filter (before breakdown into buckets).
+- `result` — array — Top-level distribution buckets as per the first grouping. Each bucket can contain nested child buckets for subsequent groupings.
+  - _array of_ `FlatAggregationResult`
+    - `aggregation` — union **(required)**
+      - _oneOf_ — exactly one of:
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`duration`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`connectTime`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`talkTime`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`waitTime`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queueTime`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`holdTime`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`entity`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`channel`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`recorded`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`date`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`dayOfWeek`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`hourOfDay`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `buckets` — array **(required)** — The list of buckets generated for this insight.
+      - _array of_ `FlatAggregationBucket`
+        - _(nesting depth limit — see `FlatAggregationBucket` in the Schemas appendix)_
+
+**`ListConversationsFilter`**
+
+- `id` — array
+  - _array of_ `ConversationTarget`
+    - _oneOf_ — exactly one of:
+      - **`call`**
+        - `call` — CallConversationTarget **(required)**
+          - _(nesting depth limit — see `CallConversationTarget` in the Schemas appendix)_
+      - **`conference`**
+        - `conference` — ConferenceConversationTarget **(required)**
+          - _(nesting depth limit — see `ConferenceConversationTarget` in the Schemas appendix)_
+      - **`chat`**
+        - `chat` — ChatConversationTarget **(required)**
+          - _(nesting depth limit — see `ChatConversationTarget` in the Schemas appendix)_
+- `entity` — ListConversationsFilterEntity
+  - `call` — boolean
+  - `conference` — boolean
+  - `chat` — boolean
+- `participants` — array
+  - _array of_ `ListConversationsFilterParticipant`
+    - _oneOf_ — exactly one of:
+      - **`email`**
+        - `email` — string **(required)**
+      - **`phone`**
+        - `phone` — string **(required)**
+      - **`extension`**
+        - `extension` — string **(required)**
+- `participantsToInclude` — array
+  - _array of_ `ListConversationsFilterParticipant`
+    - _oneOf_ — exactly one of:
+      - **`email`**
+        - `email` — string **(required)**
+      - **`phone`**
+        - `phone` — string **(required)**
+      - **`extension`**
+        - `extension` — string **(required)**
+- `participantsToExclude` — array
+  - _array of_ `ListConversationsFilterParticipant`
+    - _oneOf_ — exactly one of:
+      - **`email`**
+        - `email` — string **(required)**
+      - **`phone`**
+        - `phone` — string **(required)**
+      - **`extension`**
+        - `extension` — string **(required)**
+- `chatbots` — array
+  - _array of_ `string`
+- `voicebots` — array
+  - _array of_ `string`
+- `service` — array
+  - _array of_ `string`
+- `group` — array
+  - _array of_ `string`
+- `department` — array
+  - _array of_ `string`
+- `tag` — array
+  - _array of_ `string`
+- `pbx` — array
+  - _array of_ `string`
+- `trunk` — array
+  - _array of_ `string`
+- `queue` — array
+  - _array of_ `string`
+- `country` — array
+  - _array of_ `string`
+- `location` — array
+  - _array of_ `string`
+- `phases` — array
+  - _array of_ `string`
+- `language` — array
+  - _array of_ `string`
+- `duration` — ListConversationsFilterNumber
+  - `from` — number
+  - `to` — number
+- `connectTime` — ListConversationsFilterNumber
+  - `from` — number
+  - `to` — number
+- `talkTime` — ListConversationsFilterNumber
+  - `from` — number
+  - `to` — number
+- `waitTime` — ListConversationsFilterNumber
+  - `from` — number
+  - `to` — number
+- `queueTime` — ListConversationsFilterNumber
+  - `from` — number
+  - `to` — number
+- `holdTime` — ListConversationsFilterNumber
+  - `from` — number
+  - `to` — number
+- `interaction` — ListConversationsFilterInteraction
+  - `talkRatio` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `wordsPerMinute` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interruptions` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `patience` — ListConversationsFilterFloat
+    - `from` — number _(format=float)_
+    - `to` — number _(format=float)_
+  - `longestMonologue` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `longestCustomerStory` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+- `recorded` — boolean
+- `transcribed` — boolean
+- `direction` — ListConversationsFilterDirection
+  - `inbound` — boolean
+  - `outbound` — boolean
+  - `internal` — boolean
+- `insights` — array
+  - _array of_ `ListConversationsFilterInsight`
+    - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `match` — string
+    - `matchAny` — array
+      - _array of_ `string`
+- `channel` — ListConversationsFilterChannel
+  - `sms` — boolean
+  - `whatsapp` — boolean
+  - `kite` — boolean
+- `date` — union
+  - _oneOf_ — exactly one of:
+    - **`absolute`**
+      - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+        - `from` — string
+        - `to` — string
+        - `timeZone` — string
+    - **`predefined`**
+      - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+        - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+        - `timeZone` — string
+- `dayOfWeek` — ListConversationsFilterDateIndex
+  - `index` — number
+  - `timeZone` — string
+- `hourOfDay` — ListConversationsFilterDateIndex
+  - `index` — number
+  - `timeZone` — string
+- `present` — array
+  - _array of_ `ListConversationsFilterField`
+    - _oneOf_ — exactly one of:
+      - **`direction`**
+        - `direction` — boolean **(required)**
+      - **`service`**
+        - `service` — boolean **(required)**
+      - **`group`**
+        - `group` — boolean **(required)**
+      - **`department`**
+        - `department` — boolean **(required)**
+      - **`chatbot`**
+        - `chatbot` — boolean **(required)**
+      - **`voicebot`**
+        - `voicebot` — boolean **(required)**
+      - **`tag`**
+        - `tag` — boolean **(required)**
+      - **`pbx`**
+        - `pbx` — boolean **(required)**
+      - **`trunk`**
+        - `trunk` — boolean **(required)**
+      - **`queue`**
+        - `queue` — boolean **(required)**
+      - **`country`**
+        - `country` — boolean **(required)**
+      - **`location`**
+        - `location` — boolean **(required)**
+      - **`language`**
+        - `language` — boolean **(required)**
+      - **`projection`**
+        - `projection` — ListConversationsFilterProjectionField **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+- `absent` — array
+  - _array of_ `ListConversationsFilterField`
+    - _oneOf_ — exactly one of:
+      - **`direction`**
+        - `direction` — boolean **(required)**
+      - **`service`**
+        - `service` — boolean **(required)**
+      - **`group`**
+        - `group` — boolean **(required)**
+      - **`department`**
+        - `department` — boolean **(required)**
+      - **`chatbot`**
+        - `chatbot` — boolean **(required)**
+      - **`voicebot`**
+        - `voicebot` — boolean **(required)**
+      - **`tag`**
+        - `tag` — boolean **(required)**
+      - **`pbx`**
+        - `pbx` — boolean **(required)**
+      - **`trunk`**
+        - `trunk` — boolean **(required)**
+      - **`queue`**
+        - `queue` — boolean **(required)**
+      - **`country`**
+        - `country` — boolean **(required)**
+      - **`location`**
+        - `location` — boolean **(required)**
+      - **`language`**
+        - `language` — boolean **(required)**
+      - **`projection`**
+        - `projection` — ListConversationsFilterProjectionField **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterProjectionField` in the Schemas appendix)_
+
+**`ListConversationsFilterAbsoluteDate`**
+
+- `from` — string
+- `to` — string
+- `timeZone` — string
+
+**`ListConversationsFilterChannel`**
+
+- `sms` — boolean
+- `whatsapp` — boolean
+- `kite` — boolean
+
+**`ListConversationsFilterDate`**
+
+- _oneOf_ — exactly one of:
+  - **`absolute`**
+    - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+      - `from` — string
+      - `to` — string
+      - `timeZone` — string
+  - **`predefined`**
+    - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+      - `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+      - `timeZone` — string
+
+**`ListConversationsFilterDateIndex`**
+
+- `index` — number
+- `timeZone` — string
+
+**`ListConversationsFilterDirection`**
+
+- `inbound` — boolean
+- `outbound` — boolean
+- `internal` — boolean
+
+**`ListConversationsFilterEntity`**
+
+- `call` — boolean
+- `conference` — boolean
+- `chat` — boolean
+
+**`ListConversationsFilterField`**
+
+- _oneOf_ — exactly one of:
+  - **`direction`**
+    - `direction` — boolean **(required)**
+  - **`service`**
+    - `service` — boolean **(required)**
+  - **`group`**
+    - `group` — boolean **(required)**
+  - **`department`**
+    - `department` — boolean **(required)**
+  - **`chatbot`**
+    - `chatbot` — boolean **(required)**
+  - **`voicebot`**
+    - `voicebot` — boolean **(required)**
+  - **`tag`**
+    - `tag` — boolean **(required)**
+  - **`pbx`**
+    - `pbx` — boolean **(required)**
+  - **`trunk`**
+    - `trunk` — boolean **(required)**
+  - **`queue`**
+    - `queue` — boolean **(required)**
+  - **`country`**
+    - `country` — boolean **(required)**
+  - **`location`**
+    - `location` — boolean **(required)**
+  - **`language`**
+    - `language` — boolean **(required)**
+  - **`projection`**
+    - `projection` — ListConversationsFilterProjectionField **(required)**
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+
+**`ListConversationsFilterFloat`**
+
+- `from` — number _(format=float)_
+- `to` — number _(format=float)_
+
+**`ListConversationsFilterInsight`**
+
+- `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+- `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+- `match` — string
+- `matchAny` — array
+  - _array of_ `string`
+
+**`ListConversationsFilterInteraction`**
+
+- `talkRatio` — ListConversationsFilterNumber
+  - `from` — number
+  - `to` — number
+- `wordsPerMinute` — ListConversationsFilterNumber
+  - `from` — number
+  - `to` — number
+- `interruptions` — ListConversationsFilterNumber
+  - `from` — number
+  - `to` — number
+- `patience` — ListConversationsFilterFloat
+  - `from` — number _(format=float)_
+  - `to` — number _(format=float)_
+- `longestMonologue` — ListConversationsFilterNumber
+  - `from` — number
+  - `to` — number
+- `longestCustomerStory` — ListConversationsFilterNumber
+  - `from` — number
+  - `to` — number
+
+**`ListConversationsFilterNumber`**
+
+- `from` — number
+- `to` — number
+
+**`ListConversationsFilterParticipant`**
+
+- _oneOf_ — exactly one of:
+  - **`email`**
+    - `email` — string **(required)**
+  - **`phone`**
+    - `phone` — string **(required)**
+  - **`extension`**
+    - `extension` — string **(required)**
+
+**`ListConversationsFilterPredefinedDate`**
+
+- `type` — string **(required)** _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+- `timeZone` — string
+
+**`ListConversationsFilterPredefinedDateType`**
+
+- string _(enum: `THIS_QUARTER`, `THIS_MONTH`, `THIS_WEEK`, `TODAY`, `YESTERDAY`, `PREVIOUS_WEEK`, `PREVIOUS_MONTH`, `LAST_30_DAYS`)_
+
+**`ListConversationsFilterProjectionField`**
+
+- `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+- `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+
+**`ListConversationsInsightsAggregationsRequestContent`**
+
+- `aggregations` — array **(required)** _(minItems=1; maxItems=4)_
+  - _array of_ `AggregationDefinition`
+    - _oneOf_ — exactly one of:
+      - **`projection`**
+        - `projection` — AggregationProjectionDefinition **(required)**
+          - _(nesting depth limit — see `AggregationProjectionDefinition` in the Schemas appendix)_
+      - **`direction`**
+        - `direction` — AggregationNoConfigurationDefinition **(required)**
+      - **`duration`**
+        - `duration` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`connectTime`**
+        - `connectTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`talkTime`**
+        - `talkTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`waitTime`**
+        - `waitTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`queueTime`**
+        - `queueTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`holdTime`**
+        - `holdTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`service`**
+        - `service` — AggregationNoConfigurationDefinition **(required)**
+      - **`extension`**
+        - `extension` — AggregationNoConfigurationDefinition **(required)**
+      - **`chatbot`**
+        - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+      - **`voicebot`**
+        - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+      - **`group`**
+        - `group` — AggregationNoConfigurationDefinition **(required)**
+      - **`department`**
+        - `department` — AggregationNoConfigurationDefinition **(required)**
+      - **`tag`**
+        - `tag` — AggregationNoConfigurationDefinition **(required)**
+      - **`pbx`**
+        - `pbx` — AggregationNoConfigurationDefinition **(required)**
+      - **`trunk`**
+        - `trunk` — AggregationNoConfigurationDefinition **(required)**
+      - **`queue`**
+        - `queue` — AggregationNoConfigurationDefinition **(required)**
+      - **`country`**
+        - `country` — AggregationNoConfigurationDefinition **(required)**
+      - **`location`**
+        - `location` — AggregationNoConfigurationDefinition **(required)**
+      - **`language`**
+        - `language` — AggregationNoConfigurationDefinition **(required)**
+      - **`entity`**
+        - `entity` — AggregationNoConfigurationDefinition **(required)**
+      - **`channel`**
+        - `channel` — AggregationNoConfigurationDefinition **(required)**
+      - **`recorded`**
+        - `recorded` — AggregationNoConfigurationDefinition **(required)**
+      - **`date`**
+        - `date` — AggregationDateDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDateDefinition` in the Schemas appendix)_
+      - **`dayOfWeek`**
+        - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDayOfWeekDefinition` in the Schemas appendix)_
+      - **`hourOfDay`**
+        - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+          - _(nesting depth limit — see `AggregationHourOfDayDefinition` in the Schemas appendix)_
+- `filter` — ListConversationsFilter
+  - `id` — array
+    - _array of_ `ConversationTarget`
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `entity` — ListConversationsFilterEntity
+    - `call` — boolean
+    - `conference` — boolean
+    - `chat` — boolean
+  - `participants` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToInclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToExclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `chatbots` — array
+    - _array of_ `string`
+  - `voicebots` — array
+    - _array of_ `string`
+  - `service` — array
+    - _array of_ `string`
+  - `group` — array
+    - _array of_ `string`
+  - `department` — array
+    - _array of_ `string`
+  - `tag` — array
+    - _array of_ `string`
+  - `pbx` — array
+    - _array of_ `string`
+  - `trunk` — array
+    - _array of_ `string`
+  - `queue` — array
+    - _array of_ `string`
+  - `country` — array
+    - _array of_ `string`
+  - `location` — array
+    - _array of_ `string`
+  - `phases` — array
+    - _array of_ `string`
+  - `language` — array
+    - _array of_ `string`
+  - `duration` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `connectTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `talkTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `waitTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `queueTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `holdTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interaction` — ListConversationsFilterInteraction
+    - `talkRatio` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `wordsPerMinute` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interruptions` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `patience` — ListConversationsFilterFloat
+      - `from` — number _(format=float)_
+      - `to` — number _(format=float)_
+    - `longestMonologue` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `longestCustomerStory` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+  - `recorded` — boolean
+  - `transcribed` — boolean
+  - `direction` — ListConversationsFilterDirection
+    - `inbound` — boolean
+    - `outbound` — boolean
+    - `internal` — boolean
+  - `insights` — array
+    - _array of_ `ListConversationsFilterInsight`
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `match` — string
+      - `matchAny` — array
+        - _array of_ `string`
+  - `channel` — ListConversationsFilterChannel
+    - `sms` — boolean
+    - `whatsapp` — boolean
+    - `kite` — boolean
+  - `date` — union
+    - _oneOf_ — exactly one of:
+      - **`absolute`**
+        - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+      - **`predefined`**
+        - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+  - `dayOfWeek` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `hourOfDay` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `present` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `absent` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+
+**`ListConversationsInsightsAggregationsResponseContent`**
+
+- `count` — number **(required)** — Total number of conversations matching the filter (before breakdown into buckets).
+- `result` — AggregationResult
+  - `aggregation` — union **(required)**
+    - _oneOf_ — exactly one of:
+      - **`projection`**
+        - `projection` — AggregationProjectionDefinition **(required)**
+          - _(nesting depth limit — see `AggregationProjectionDefinition` in the Schemas appendix)_
+      - **`direction`**
+        - `direction` — AggregationNoConfigurationDefinition **(required)**
+      - **`duration`**
+        - `duration` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`connectTime`**
+        - `connectTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`talkTime`**
+        - `talkTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`waitTime`**
+        - `waitTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`queueTime`**
+        - `queueTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`holdTime`**
+        - `holdTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`service`**
+        - `service` — AggregationNoConfigurationDefinition **(required)**
+      - **`extension`**
+        - `extension` — AggregationNoConfigurationDefinition **(required)**
+      - **`chatbot`**
+        - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+      - **`voicebot`**
+        - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+      - **`group`**
+        - `group` — AggregationNoConfigurationDefinition **(required)**
+      - **`department`**
+        - `department` — AggregationNoConfigurationDefinition **(required)**
+      - **`tag`**
+        - `tag` — AggregationNoConfigurationDefinition **(required)**
+      - **`pbx`**
+        - `pbx` — AggregationNoConfigurationDefinition **(required)**
+      - **`trunk`**
+        - `trunk` — AggregationNoConfigurationDefinition **(required)**
+      - **`queue`**
+        - `queue` — AggregationNoConfigurationDefinition **(required)**
+      - **`country`**
+        - `country` — AggregationNoConfigurationDefinition **(required)**
+      - **`location`**
+        - `location` — AggregationNoConfigurationDefinition **(required)**
+      - **`language`**
+        - `language` — AggregationNoConfigurationDefinition **(required)**
+      - **`entity`**
+        - `entity` — AggregationNoConfigurationDefinition **(required)**
+      - **`channel`**
+        - `channel` — AggregationNoConfigurationDefinition **(required)**
+      - **`recorded`**
+        - `recorded` — AggregationNoConfigurationDefinition **(required)**
+      - **`date`**
+        - `date` — AggregationDateDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDateDefinition` in the Schemas appendix)_
+      - **`dayOfWeek`**
+        - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDayOfWeekDefinition` in the Schemas appendix)_
+      - **`hourOfDay`**
+        - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+          - _(nesting depth limit — see `AggregationHourOfDayDefinition` in the Schemas appendix)_
+  - `buckets` — array **(required)** — The list of buckets generated for this aggregation level.
+    - _array of_ `AggregationBucket`
+      - `key` — string **(required)** — The value for this bucket. For example, 'INBOUND' if grouping by direction, or '0-5min' if grouping by duration.
+      - `count` — number **(required)** — Number of conversations falling into this bucket.
+      - `interval` — string _(enum: `month`, `week`, `day`, `hour`, `minute`)_
+      - `filter` — ListConversationsFilter
+        - _(nesting depth limit — see `ListConversationsFilter` in the Schemas appendix)_
+      - `aggregation` — AggregationResult
+        - _(nesting depth limit — see `AggregationResult` in the Schemas appendix)_
+
+**`ListConversationsInsightsRequestContent`**
+
+- `insights` — array — A list of insights to select. Default - all projections, direction, duration, connectTime, talkTime, waitTime, queueTime, and holdTime.
+  - _array of_ `AggregationDefinition`
+    - _oneOf_ — exactly one of:
+      - **`projection`**
+        - `projection` — AggregationProjectionDefinition **(required)**
+          - _(nesting depth limit — see `AggregationProjectionDefinition` in the Schemas appendix)_
+      - **`direction`**
+        - `direction` — AggregationNoConfigurationDefinition **(required)**
+      - **`duration`**
+        - `duration` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`connectTime`**
+        - `connectTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`talkTime`**
+        - `talkTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`waitTime`**
+        - `waitTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`queueTime`**
+        - `queueTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`holdTime`**
+        - `holdTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`service`**
+        - `service` — AggregationNoConfigurationDefinition **(required)**
+      - **`extension`**
+        - `extension` — AggregationNoConfigurationDefinition **(required)**
+      - **`chatbot`**
+        - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+      - **`voicebot`**
+        - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+      - **`group`**
+        - `group` — AggregationNoConfigurationDefinition **(required)**
+      - **`department`**
+        - `department` — AggregationNoConfigurationDefinition **(required)**
+      - **`tag`**
+        - `tag` — AggregationNoConfigurationDefinition **(required)**
+      - **`pbx`**
+        - `pbx` — AggregationNoConfigurationDefinition **(required)**
+      - **`trunk`**
+        - `trunk` — AggregationNoConfigurationDefinition **(required)**
+      - **`queue`**
+        - `queue` — AggregationNoConfigurationDefinition **(required)**
+      - **`country`**
+        - `country` — AggregationNoConfigurationDefinition **(required)**
+      - **`location`**
+        - `location` — AggregationNoConfigurationDefinition **(required)**
+      - **`language`**
+        - `language` — AggregationNoConfigurationDefinition **(required)**
+      - **`entity`**
+        - `entity` — AggregationNoConfigurationDefinition **(required)**
+      - **`channel`**
+        - `channel` — AggregationNoConfigurationDefinition **(required)**
+      - **`recorded`**
+        - `recorded` — AggregationNoConfigurationDefinition **(required)**
+      - **`date`**
+        - `date` — AggregationDateDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDateDefinition` in the Schemas appendix)_
+      - **`dayOfWeek`**
+        - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDayOfWeekDefinition` in the Schemas appendix)_
+      - **`hourOfDay`**
+        - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+          - _(nesting depth limit — see `AggregationHourOfDayDefinition` in the Schemas appendix)_
+- `filter` — ListConversationsFilter
+  - `id` — array
+    - _array of_ `ConversationTarget`
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `entity` — ListConversationsFilterEntity
+    - `call` — boolean
+    - `conference` — boolean
+    - `chat` — boolean
+  - `participants` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToInclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToExclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `chatbots` — array
+    - _array of_ `string`
+  - `voicebots` — array
+    - _array of_ `string`
+  - `service` — array
+    - _array of_ `string`
+  - `group` — array
+    - _array of_ `string`
+  - `department` — array
+    - _array of_ `string`
+  - `tag` — array
+    - _array of_ `string`
+  - `pbx` — array
+    - _array of_ `string`
+  - `trunk` — array
+    - _array of_ `string`
+  - `queue` — array
+    - _array of_ `string`
+  - `country` — array
+    - _array of_ `string`
+  - `location` — array
+    - _array of_ `string`
+  - `phases` — array
+    - _array of_ `string`
+  - `language` — array
+    - _array of_ `string`
+  - `duration` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `connectTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `talkTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `waitTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `queueTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `holdTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interaction` — ListConversationsFilterInteraction
+    - `talkRatio` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `wordsPerMinute` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interruptions` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `patience` — ListConversationsFilterFloat
+      - `from` — number _(format=float)_
+      - `to` — number _(format=float)_
+    - `longestMonologue` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `longestCustomerStory` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+  - `recorded` — boolean
+  - `transcribed` — boolean
+  - `direction` — ListConversationsFilterDirection
+    - `inbound` — boolean
+    - `outbound` — boolean
+    - `internal` — boolean
+  - `insights` — array
+    - _array of_ `ListConversationsFilterInsight`
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `match` — string
+      - `matchAny` — array
+        - _array of_ `string`
+  - `channel` — ListConversationsFilterChannel
+    - `sms` — boolean
+    - `whatsapp` — boolean
+    - `kite` — boolean
+  - `date` — union
+    - _oneOf_ — exactly one of:
+      - **`absolute`**
+        - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+      - **`predefined`**
+        - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+  - `dayOfWeek` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `hourOfDay` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `present` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `absent` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+
+**`ListConversationsInsightsResponseContent`**
+
+- `count` — number **(required)** — Total number of conversations matching the filter (before breakdown into buckets).
+- `result` — array — Top-level distribution buckets as per the first grouping. Each bucket can contain nested child buckets for subsequent groupings. _(deprecated)_
+  - _array of_ `InsightResult`
+    - `insight` — union **(required)**
+      - _oneOf_ — exactly one of:
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`duration`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`connectTime`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`talkTime`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`waitTime`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queueTime`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`holdTime`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`entity`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`channel`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`recorded`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`date`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`dayOfWeek`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`hourOfDay`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `buckets` — array **(required)** — The list of buckets generated for this insight. _(deprecated)_
+      - _array of_ `InsightsBucket`
+        - _(nesting depth limit — see `InsightsBucket` in the Schemas appendix)_
+
+**`ListConversationsItem`**
+
+- `event` — union **(required)**
+  - _oneOf_ — exactly one of:
+    - **`call`**
+      - `call` — CallRecord **(required)**
+        - `flowIndex` — number **(required)**
+        - `startTime` — number **(required)**
+        - `endTime` — number **(required)**
+        - `connectTime` — number — Duration when the called party's phone rang (Ring Time in UI)
+        - `talkTime` — number — Duration of conversation from the moment the call is answered until it ends, excluding hold time
+        - `waitTime` — number — Duration spent on IVR, dialplan applications, playback, etc. before the call is answered
+        - `queueTime` — number — Duration of call waiting in queue
+        - `holdTime` — number — Duration the call was on hold after being answered
+        - `duration` — number **(required)** — Total duration = connectTime + waitTime + queueTime + talkTime + holdTime
+        - `caller` — CallParticipant
+          - _(nesting depth limit — see `CallParticipant` in the Schemas appendix)_
+        - `callee` — CallParticipant
+          - _(nesting depth limit — see `CallParticipant` in the Schemas appendix)_
+        - `service` — string
+        - `serviceNumber` — string
+        - `destination` — string
+        - `direction` — string _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`, `UNDEFINED`)_
+        - `trunkName` — string
+        - `trunkDirection` — string
+        - `queueName` — string
+        - `queueId` — string
+        - `queuePosition` — number — Position of the call in the queue (1-based). Updated from consume events and emitted on live progress and record flows.
+        - `tags` — array
+          - _array of_ `string`
+        - `flags` — array
+          - _array of_ `string`
+        - `callerMos` — string
+        - `calleeMos` — string
+        - `xhoppersConfId` — string
+        - `recordings` — array — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+          - _array of_ `string`
+        - `recordingsData` — array — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+          - _(nesting depth limit — see `CallFlowRecording` in the Schemas appendix)_
+        - `mergeWith` — string
+        - `splitReason` — string
+        - `splitTransferType` — string
+        - `remotePhone` — string
+        - `remotePhoneCountryCode` — number
+        - `remotePhoneCountryCodeStr` — string
+        - `remotePhoneLocation` — string
+        - `callStatus` — string _(enum: `COMPLETED`, `MISSED`)_
+        - `transcriptionStatus` — string _(enum: `AVAILABLE`, `POST_TRANSCRIPTION`, `UNAVAILABLE`)_
+        - `transcriptionLanguage` — string
+        - `transcriptionSeconds` — number
+        - `annotationsStatus` — string _(enum: `AVAILABLE`, `UNAVAILABLE`)_
+        - `annotationsByKey` — AnnotationsMap — The newest annotation per `AnnotationKey`: the current value of everything the conversation tracks, without reading the history. Keyed annotations only — a one-off annotation appears solely in `annotations`.
+          - _(nesting depth limit — see `AnnotationsMap` in the Schemas appendix)_
+        - `attachment` — string — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+        - `attachmentType` — string _(enum: `VOICEMAIL`, `FAX`)_
+        - `attachmentDestinations` — array — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+          - _(nesting depth limit — see `CallFlowAttachmentDestination` in the Schemas appendix)_
+        - `attachments` — array
+          - _(nesting depth limit — see `CallFlowAttachment` in the Schemas appendix)_
+        - `notifications` — CallFlowNotifications
+          - _(nesting depth limit — see `CallFlowNotifications` in the Schemas appendix)_
+        - `id` — string **(required)**
+        - `pbx` — string **(required)**
+        - `time` — number **(required)**
+        - `company` — string **(required)** _(minLen=3; maxLen=30)_
+        - `licenses` — array **(required)**
+          - _(nesting depth limit — see `License` in the Schemas appendix)_
+        - `type` — object **(required)**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - **`conference`**
+      - `conference` — ConferenceRecord **(required)**
+        - `id` — string **(required)**
+        - `time` — number **(required)**
+        - `company` — string **(required)** _(minLen=3; maxLen=30)_
+        - `pbx` — string
+        - `startTime` — number **(required)**
+        - `endTime` — number **(required)**
+        - `duration` — number **(required)**
+        - `waitTime` — number
+        - `subject` — string
+        - `direction` — string **(required)** _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`)_
+        - `service` — string
+        - `status` — string _(enum: `COMPLETED`, `MISSED`)_
+        - `participants` — array **(required)**
+          - _(nesting depth limit — see `ConferenceAnalyticsRecordParticipant` in the Schemas appendix)_
+        - `recordings` — array
+          - _(nesting depth limit — see `ConferenceRecording` in the Schemas appendix)_
+        - `transcriptionStatus` — string **(required)** _(enum: `AVAILABLE`, `POST_TRANSCRIPTION`, `UNAVAILABLE`)_
+        - `transcriptionLanguage` — string
+        - `transcriptionSeconds` — number
+        - `annotationsStatus` — string _(enum: `AVAILABLE`, `UNAVAILABLE`)_
+        - `annotationsByKey` — AnnotationsMap — The newest annotation per `AnnotationKey`: the current value of everything the conversation tracks, without reading the history. Keyed annotations only — a one-off annotation appears solely in `annotations`.
+          - _(nesting depth limit — see `AnnotationsMap` in the Schemas appendix)_
+        - `type` — object **(required)**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - **`chat`**
+      - `chat` — ChatRecord **(required)**
+        - `id` — string — A unique chat channel identifier, distinguish each chat channel across different types.
+        - `chatId` — string — A unique identifier that distinguishes each chat session within a channel.
+        - `time` — number **(required)**
+        - `company` — string **(required)** _(minLen=3; maxLen=30)_
+        - `pbx` — string
+        - `startTime` — number **(required)**
+        - `endTime` — number **(required)**
+        - `waitTime` — number
+        - `duration` — number **(required)**
+        - `direction` — string **(required)** _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`)_
+        - `subject` — string
+        - `service` — string
+        - `serviceTitle` — string
+        - `tags` — array
+          - _(nesting depth limit — see `ChatTag` in the Schemas appendix)_
+        - `channel` — Channel **(required)**
+          - _(nesting depth limit — see `Channel` in the Schemas appendix)_
+        - `status` — string _(enum: `WAITFIRSTREPLY`, `WAITREPLYFROMGUEST`, `WAITREPLYFROMAGENT`, `COMPLETED`, `MISSED`)_
+        - `participants` — array **(required)**
+          - _(nesting depth limit — see `ChatParticipant` in the Schemas appendix)_
+        - `annotationsStatus` — string _(enum: `AVAILABLE`, `UNAVAILABLE`)_
+        - `annotationsByKey` — AnnotationsMap — The newest annotation per `AnnotationKey`: the current value of everything the conversation tracks, without reading the history. Keyed annotations only — a one-off annotation appears solely in `annotations`.
+          - _(nesting depth limit — see `AnnotationsMap` in the Schemas appendix)_
+        - `type` — object **(required)**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+- `interaction` — ListConversationsItemInteraction
+  - `talkRatio` — number — Percentage of the call duration during which the agent was speaking.
+  - `wordsPerMinute` — number — Average words per minute spoken by the agent during their speaking time.
+  - `interruptions` — number — Number of times the agent interrupted another participant during the conversation.
+  - `patience` — number — Average time in seconds the agent waited after another participant finished speaking before responding. _(format=float)_
+  - `longestMonologue` — number — Duration in seconds of the agent's longest uninterrupted monologue.
+  - `longestCustomerStory` — number — Duration in seconds of another participant’s longest uninterrupted story or response.
+- `summary` — ListConversationsItemSummary
+  - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+  - `title` — string
+  - `brief` — string
+  - `insights` — array
+    - _array of_ `ListConversationsItemInsight`
+      - `field` — string **(required)**
+      - `value` — string **(required)**
+  - `language` — string
+- `highlight` — ListConversationsItemHighlight
+  - `transcription` — array
+    - _array of_ `ListConversationsItemHighlightTranscriptionItem`
+      - `id` — string **(required)**
+      - `user` — string **(required)**
+      - `start` — number **(required)**
+      - `text` — string **(required)**
+  - `summary` — ListConversationsItemHighlightSummary
+    - `title` — string
+    - `brief` — string
+  - `subject` — string
+
+**`ListConversationsItemEvent`**
+
+- _oneOf_ — exactly one of:
+  - **`call`**
+    - `call` — CallRecord **(required)**
+      - `flowIndex` — number **(required)**
+      - `startTime` — number **(required)**
+      - `endTime` — number **(required)**
+      - `connectTime` — number — Duration when the called party's phone rang (Ring Time in UI)
+      - `talkTime` — number — Duration of conversation from the moment the call is answered until it ends, excluding hold time
+      - `waitTime` — number — Duration spent on IVR, dialplan applications, playback, etc. before the call is answered
+      - `queueTime` — number — Duration of call waiting in queue
+      - `holdTime` — number — Duration the call was on hold after being answered
+      - `duration` — number **(required)** — Total duration = connectTime + waitTime + queueTime + talkTime + holdTime
+      - `caller` — CallParticipant
+        - `type` — string **(required)** _(enum: `REMOTE`, `LOCAL`)_
+        - `phone` — string
+        - `name` — string
+        - `company` — string _(minLen=3; maxLen=30)_
+        - `email` — string
+        - `userId` — string
+        - `userExtension` — string
+        - `userDepartment` — string
+        - `groupId` — string
+        - `groupName` — string
+        - `userAgent` — string
+        - `userDevice` — string _(enum: `COLLABORATION_WEB`, `COLLABORATION_IOS`, `COLLABORATION_ANDROID`, `XBEES_WEB`, `XBEES_IOS`, `XBEES_ANDROID`, `WILDIX_PHONE`, `WILDIX_DEVICE`, `VOICEBOT`, `UNKNOWN`, `COLLABORATION7_WEB`, `COLLABORATION7_IOS`, … (+5))_
+        - `role` — string **(required)** _(enum: `CLIENT`, `AGENT`)_
+        - `license` — string
+        - `sipCallId` — string — A unique identifier for the SIP call session used to control the call e.g., answer, hold, transfer, hang up.
+        - `publicAddress` — string — Represents a network endpoint consisting of a public IP address and a port number. Example: '123.45.67.89:59317'
+        - `privateAddress` — string — Represents a network endpoint consisting of a private IP address and a port number. Example: '172.16.1.2:54003'
+        - `location` — string — The location specifies a geographic point using latitude and longitude coordinates. Example 'lat=29.3008&lon=1.7002'
+      - `callee` — CallParticipant
+        - `type` — string **(required)** _(enum: `REMOTE`, `LOCAL`)_
+        - `phone` — string
+        - `name` — string
+        - `company` — string _(minLen=3; maxLen=30)_
+        - `email` — string
+        - `userId` — string
+        - `userExtension` — string
+        - `userDepartment` — string
+        - `groupId` — string
+        - `groupName` — string
+        - `userAgent` — string
+        - `userDevice` — string _(enum: `COLLABORATION_WEB`, `COLLABORATION_IOS`, `COLLABORATION_ANDROID`, `XBEES_WEB`, `XBEES_IOS`, `XBEES_ANDROID`, `WILDIX_PHONE`, `WILDIX_DEVICE`, `VOICEBOT`, `UNKNOWN`, `COLLABORATION7_WEB`, `COLLABORATION7_IOS`, … (+5))_
+        - `role` — string **(required)** _(enum: `CLIENT`, `AGENT`)_
+        - `license` — string
+        - `sipCallId` — string — A unique identifier for the SIP call session used to control the call e.g., answer, hold, transfer, hang up.
+        - `publicAddress` — string — Represents a network endpoint consisting of a public IP address and a port number. Example: '123.45.67.89:59317'
+        - `privateAddress` — string — Represents a network endpoint consisting of a private IP address and a port number. Example: '172.16.1.2:54003'
+        - `location` — string — The location specifies a geographic point using latitude and longitude coordinates. Example 'lat=29.3008&lon=1.7002'
+      - `service` — string
+      - `serviceNumber` — string
+      - `destination` — string
+      - `direction` — string _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`, `UNDEFINED`)_
+      - `trunkName` — string
+      - `trunkDirection` — string
+      - `queueName` — string
+      - `queueId` — string
+      - `queuePosition` — number — Position of the call in the queue (1-based). Updated from consume events and emitted on live progress and record flows.
+      - `tags` — array
+        - _array of_ `string`
+      - `flags` — array
+        - _array of_ `string`
+      - `callerMos` — string
+      - `calleeMos` — string
+      - `xhoppersConfId` — string
+      - `recordings` — array — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+        - _array of_ `string`
+      - `recordingsData` — array — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+        - _array of_ `CallFlowRecording`
+          - _(nesting depth limit — see `CallFlowRecording` in the Schemas appendix)_
+      - `mergeWith` — string
+      - `splitReason` — string
+      - `splitTransferType` — string
+      - `remotePhone` — string
+      - `remotePhoneCountryCode` — number
+      - `remotePhoneCountryCodeStr` — string
+      - `remotePhoneLocation` — string
+      - `callStatus` — string _(enum: `COMPLETED`, `MISSED`)_
+      - `transcriptionStatus` — string _(enum: `AVAILABLE`, `POST_TRANSCRIPTION`, `UNAVAILABLE`)_
+      - `transcriptionLanguage` — string
+      - `transcriptionSeconds` — number
+      - `annotationsStatus` — string _(enum: `AVAILABLE`, `UNAVAILABLE`)_
+      - `annotationsByKey` — AnnotationsMap — The newest annotation per `AnnotationKey`: the current value of everything the conversation tracks, without reading the history. Keyed annotations only — a one-off annotation appears solely in `annotations`.
+        - _map of_ `Annotation`
+          - _(nesting depth limit — see `Annotation` in the Schemas appendix)_
+      - `attachment` — string — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+      - `attachmentType` — string _(enum: `VOICEMAIL`, `FAX`)_
+      - `attachmentDestinations` — array — Consider to use `attachments` instead. This shape is deprecated. _(deprecated)_
+        - _array of_ `CallFlowAttachmentDestination`
+          - _(nesting depth limit — see `CallFlowAttachmentDestination` in the Schemas appendix)_
+      - `attachments` — array
+        - _array of_ `CallFlowAttachment`
+          - _(nesting depth limit — see `CallFlowAttachment` in the Schemas appendix)_
+      - `notifications` — CallFlowNotifications
+        - `destinations` — array
+          - _(nesting depth limit — see `CallFlowAttachmentDestination` in the Schemas appendix)_
+        - `type` — array
+          - _array of_ `string`
+      - `id` — string **(required)**
+      - `pbx` — string **(required)**
+      - `time` — number **(required)**
+      - `company` — string **(required)** _(minLen=3; maxLen=30)_
+      - `licenses` — array **(required)**
+        - _array of_ `License`
+      - `type` — object **(required)**
+  - **`conference`**
+    - `conference` — ConferenceRecord **(required)**
+      - `id` — string **(required)**
+      - `time` — number **(required)**
+      - `company` — string **(required)** _(minLen=3; maxLen=30)_
+      - `pbx` — string
+      - `startTime` — number **(required)**
+      - `endTime` — number **(required)**
+      - `duration` — number **(required)**
+      - `waitTime` — number
+      - `subject` — string
+      - `direction` — string **(required)** _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`)_
+      - `service` — string
+      - `status` — string _(enum: `COMPLETED`, `MISSED`)_
+      - `participants` — array **(required)**
+        - _array of_ `ConferenceAnalyticsRecordParticipant`
+          - _(nesting depth limit — see `ConferenceAnalyticsRecordParticipant` in the Schemas appendix)_
+      - `recordings` — array
+        - _array of_ `ConferenceRecording`
+          - _(nesting depth limit — see `ConferenceRecording` in the Schemas appendix)_
+      - `transcriptionStatus` — string **(required)** _(enum: `AVAILABLE`, `POST_TRANSCRIPTION`, `UNAVAILABLE`)_
+      - `transcriptionLanguage` — string
+      - `transcriptionSeconds` — number
+      - `annotationsStatus` — string _(enum: `AVAILABLE`, `UNAVAILABLE`)_
+      - `annotationsByKey` — AnnotationsMap — The newest annotation per `AnnotationKey`: the current value of everything the conversation tracks, without reading the history. Keyed annotations only — a one-off annotation appears solely in `annotations`.
+        - _map of_ `Annotation`
+          - _(nesting depth limit — see `Annotation` in the Schemas appendix)_
+      - `type` — object **(required)**
+  - **`chat`**
+    - `chat` — ChatRecord **(required)**
+      - `id` — string — A unique chat channel identifier, distinguish each chat channel across different types.
+      - `chatId` — string — A unique identifier that distinguishes each chat session within a channel.
+      - `time` — number **(required)**
+      - `company` — string **(required)** _(minLen=3; maxLen=30)_
+      - `pbx` — string
+      - `startTime` — number **(required)**
+      - `endTime` — number **(required)**
+      - `waitTime` — number
+      - `duration` — number **(required)**
+      - `direction` — string **(required)** _(enum: `INTERNAL`, `INBOUND`, `OUTBOUND`)_
+      - `subject` — string
+      - `service` — string
+      - `serviceTitle` — string
+      - `tags` — array
+        - _array of_ `ChatTag`
+      - `channel` — Channel **(required)**
+        - `subject` — string
+        - `description` — string
+        - `picture` — string — Picture URL
+        - `pictureColor` — string — Picture dominant color represented by a hex value.
+        - `access` — string _(enum: `private`, `public`)_
+        - `company` — string
+        - `context` — ChannelContext
+          - _(nesting depth limit — see `ChannelContext` in the Schemas appendix)_
+        - `kite` — boolean
+        - `kiteTarget` — string
+        - `kiteVariant` — string
+        - `kiteAssign` — string
+        - `kiteServiceName` — string
+        - `kiteDefaultSubject` — string
+        - `service` — string
+        - `serviceTitle` — string
+        - `serviceRecipient` — string
+        - `assignee` — User
+          - _(nesting depth limit — see `User` in the Schemas appendix)_
+        - `telephony` — boolean
+        - `sms` — boolean
+        - `mms` — boolean
+        - `whatsapp` — boolean
+        - `whatsappStatus` — string _(enum: `24h_channel_closed`)_
+        - `messagingChannel` — string — A customer messaging channel that reaches x-bees through classound and is not SMS or WhatsApp. One discriminator instead of a boolean per channel, so a new channel adds a member here and not a set of channel fields. An RCS conversation is not a telephony channel, and its customer id is the person's phone number. _(enum: `messenger`, `instagram`, `rcs`)_
+        - `messagingStatus` — string — Set when classound refused a reply because the person's messaging window is closed (a 409 on the send). Unset by the next inbound message, which is the only thing that reopens the window. _(enum: `window_closed`)_
+        - `messagingSenderId` — string
+        - `messagingReplyUntil` — number
+        - `broadcast` — boolean
+        - `external` — boolean
+        - `autoRecord` — boolean
+        - `autoTranscribe` — boolean — Indicates if a conference in the channel starts transcription automatically. When absent, clients follow autoRecord, which used to start both recording and transcription.
+        - `transcriptionLanguage` — string
+        - `wizyGuestViewOnly` — boolean
+        - `channelId` — string **(required)** — Direct-channel ids are the 8-4-4-4-8 slices of the two member ids. An `a_` member id puts `_` in a slice, so the pattern allows it. _(pattern=^[0-9a-z_]{8}\b-[0-9a-z_]{4}\b-[0-9a-z_]{4}\b-[0-9a-z_]{4}\b-[0-9a-z_]{8}$; minLen=32; maxLen=32)_
+        - `channelType` — string **(required)** _(enum: `direct`, `group`)_
+        - `memberCount` — number **(required)**
+        - `createdAt` — string **(required)**
+        - `createdBy` — string **(required)**
+        - `updatedAt` — string
+      - `status` — string _(enum: `WAITFIRSTREPLY`, `WAITREPLYFROMGUEST`, `WAITREPLYFROMAGENT`, `COMPLETED`, `MISSED`)_
+      - `participants` — array **(required)**
+        - _array of_ `ChatParticipant`
+          - _(nesting depth limit — see `ChatParticipant` in the Schemas appendix)_
+      - `annotationsStatus` — string _(enum: `AVAILABLE`, `UNAVAILABLE`)_
+      - `annotationsByKey` — AnnotationsMap — The newest annotation per `AnnotationKey`: the current value of everything the conversation tracks, without reading the history. Keyed annotations only — a one-off annotation appears solely in `annotations`.
+        - _map of_ `Annotation`
+          - _(nesting depth limit — see `Annotation` in the Schemas appendix)_
+      - `type` — object **(required)**
+
+**`ListConversationsItemHighlight`**
+
+- `transcription` — array
+  - _array of_ `ListConversationsItemHighlightTranscriptionItem`
+    - `id` — string **(required)**
+    - `user` — string **(required)**
+    - `start` — number **(required)**
+    - `text` — string **(required)**
+- `summary` — ListConversationsItemHighlightSummary
+  - `title` — string
+  - `brief` — string
+- `subject` — string
+
+**`ListConversationsItemHighlightSummary`**
+
+- `title` — string
+- `brief` — string
+
+**`ListConversationsItemHighlightTranscriptionItem`**
+
+- `id` — string **(required)**
+- `user` — string **(required)**
+- `start` — number **(required)**
+- `text` — string **(required)**
+
+**`ListConversationsItemInsight`**
+
+- `field` — string **(required)**
+- `value` — string **(required)**
+
+**`ListConversationsItemInteraction`**
+
+- `talkRatio` — number — Percentage of the call duration during which the agent was speaking.
+- `wordsPerMinute` — number — Average words per minute spoken by the agent during their speaking time.
+- `interruptions` — number — Number of times the agent interrupted another participant during the conversation.
+- `patience` — number — Average time in seconds the agent waited after another participant finished speaking before responding. _(format=float)_
+- `longestMonologue` — number — Duration in seconds of the agent's longest uninterrupted monologue.
+- `longestCustomerStory` — number — Duration in seconds of another participant’s longest uninterrupted story or response.
+
+**`ListConversationsItemSummary`**
+
+- `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+- `title` — string
+- `brief` — string
+- `insights` — array
+  - _array of_ `ListConversationsItemInsight`
+    - `field` — string **(required)**
+    - `value` — string **(required)**
+- `language` — string
+
+**`ListConversationsNestedAggregationsRequestContent`**
+
+- `aggregations` — array **(required)** _(minItems=1; maxItems=4)_
+  - _array of_ `AggregationDefinition`
+    - _oneOf_ — exactly one of:
+      - **`projection`**
+        - `projection` — AggregationProjectionDefinition **(required)**
+          - _(nesting depth limit — see `AggregationProjectionDefinition` in the Schemas appendix)_
+      - **`direction`**
+        - `direction` — AggregationNoConfigurationDefinition **(required)**
+      - **`duration`**
+        - `duration` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`connectTime`**
+        - `connectTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`talkTime`**
+        - `talkTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`waitTime`**
+        - `waitTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`queueTime`**
+        - `queueTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`holdTime`**
+        - `holdTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`service`**
+        - `service` — AggregationNoConfigurationDefinition **(required)**
+      - **`extension`**
+        - `extension` — AggregationNoConfigurationDefinition **(required)**
+      - **`chatbot`**
+        - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+      - **`voicebot`**
+        - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+      - **`group`**
+        - `group` — AggregationNoConfigurationDefinition **(required)**
+      - **`department`**
+        - `department` — AggregationNoConfigurationDefinition **(required)**
+      - **`tag`**
+        - `tag` — AggregationNoConfigurationDefinition **(required)**
+      - **`pbx`**
+        - `pbx` — AggregationNoConfigurationDefinition **(required)**
+      - **`trunk`**
+        - `trunk` — AggregationNoConfigurationDefinition **(required)**
+      - **`queue`**
+        - `queue` — AggregationNoConfigurationDefinition **(required)**
+      - **`country`**
+        - `country` — AggregationNoConfigurationDefinition **(required)**
+      - **`location`**
+        - `location` — AggregationNoConfigurationDefinition **(required)**
+      - **`language`**
+        - `language` — AggregationNoConfigurationDefinition **(required)**
+      - **`entity`**
+        - `entity` — AggregationNoConfigurationDefinition **(required)**
+      - **`channel`**
+        - `channel` — AggregationNoConfigurationDefinition **(required)**
+      - **`recorded`**
+        - `recorded` — AggregationNoConfigurationDefinition **(required)**
+      - **`date`**
+        - `date` — AggregationDateDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDateDefinition` in the Schemas appendix)_
+      - **`dayOfWeek`**
+        - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDayOfWeekDefinition` in the Schemas appendix)_
+      - **`hourOfDay`**
+        - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+          - _(nesting depth limit — see `AggregationHourOfDayDefinition` in the Schemas appendix)_
+- `filter` — ListConversationsFilter
+  - `id` — array
+    - _array of_ `ConversationTarget`
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `entity` — ListConversationsFilterEntity
+    - `call` — boolean
+    - `conference` — boolean
+    - `chat` — boolean
+  - `participants` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToInclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToExclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `chatbots` — array
+    - _array of_ `string`
+  - `voicebots` — array
+    - _array of_ `string`
+  - `service` — array
+    - _array of_ `string`
+  - `group` — array
+    - _array of_ `string`
+  - `department` — array
+    - _array of_ `string`
+  - `tag` — array
+    - _array of_ `string`
+  - `pbx` — array
+    - _array of_ `string`
+  - `trunk` — array
+    - _array of_ `string`
+  - `queue` — array
+    - _array of_ `string`
+  - `country` — array
+    - _array of_ `string`
+  - `location` — array
+    - _array of_ `string`
+  - `phases` — array
+    - _array of_ `string`
+  - `language` — array
+    - _array of_ `string`
+  - `duration` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `connectTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `talkTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `waitTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `queueTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `holdTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interaction` — ListConversationsFilterInteraction
+    - `talkRatio` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `wordsPerMinute` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interruptions` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `patience` — ListConversationsFilterFloat
+      - `from` — number _(format=float)_
+      - `to` — number _(format=float)_
+    - `longestMonologue` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `longestCustomerStory` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+  - `recorded` — boolean
+  - `transcribed` — boolean
+  - `direction` — ListConversationsFilterDirection
+    - `inbound` — boolean
+    - `outbound` — boolean
+    - `internal` — boolean
+  - `insights` — array
+    - _array of_ `ListConversationsFilterInsight`
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `match` — string
+      - `matchAny` — array
+        - _array of_ `string`
+  - `channel` — ListConversationsFilterChannel
+    - `sms` — boolean
+    - `whatsapp` — boolean
+    - `kite` — boolean
+  - `date` — union
+    - _oneOf_ — exactly one of:
+      - **`absolute`**
+        - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+      - **`predefined`**
+        - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+  - `dayOfWeek` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `hourOfDay` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `present` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `absent` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+
+**`ListConversationsNestedAggregationsResponseContent`**
+
+- `count` — number **(required)** — Total number of conversations matching the filter (before breakdown into buckets).
+- `result` — AggregationResult
+  - `aggregation` — union **(required)**
+    - _oneOf_ — exactly one of:
+      - **`projection`**
+        - `projection` — AggregationProjectionDefinition **(required)**
+          - _(nesting depth limit — see `AggregationProjectionDefinition` in the Schemas appendix)_
+      - **`direction`**
+        - `direction` — AggregationNoConfigurationDefinition **(required)**
+      - **`duration`**
+        - `duration` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`connectTime`**
+        - `connectTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`talkTime`**
+        - `talkTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`waitTime`**
+        - `waitTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`queueTime`**
+        - `queueTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`holdTime`**
+        - `holdTime` — AggregationDurationDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDurationDefinition` in the Schemas appendix)_
+      - **`service`**
+        - `service` — AggregationNoConfigurationDefinition **(required)**
+      - **`extension`**
+        - `extension` — AggregationNoConfigurationDefinition **(required)**
+      - **`chatbot`**
+        - `chatbot` — AggregationNoConfigurationDefinition **(required)**
+      - **`voicebot`**
+        - `voicebot` — AggregationNoConfigurationDefinition **(required)**
+      - **`group`**
+        - `group` — AggregationNoConfigurationDefinition **(required)**
+      - **`department`**
+        - `department` — AggregationNoConfigurationDefinition **(required)**
+      - **`tag`**
+        - `tag` — AggregationNoConfigurationDefinition **(required)**
+      - **`pbx`**
+        - `pbx` — AggregationNoConfigurationDefinition **(required)**
+      - **`trunk`**
+        - `trunk` — AggregationNoConfigurationDefinition **(required)**
+      - **`queue`**
+        - `queue` — AggregationNoConfigurationDefinition **(required)**
+      - **`country`**
+        - `country` — AggregationNoConfigurationDefinition **(required)**
+      - **`location`**
+        - `location` — AggregationNoConfigurationDefinition **(required)**
+      - **`language`**
+        - `language` — AggregationNoConfigurationDefinition **(required)**
+      - **`entity`**
+        - `entity` — AggregationNoConfigurationDefinition **(required)**
+      - **`channel`**
+        - `channel` — AggregationNoConfigurationDefinition **(required)**
+      - **`recorded`**
+        - `recorded` — AggregationNoConfigurationDefinition **(required)**
+      - **`date`**
+        - `date` — AggregationDateDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDateDefinition` in the Schemas appendix)_
+      - **`dayOfWeek`**
+        - `dayOfWeek` — AggregationDayOfWeekDefinition **(required)**
+          - _(nesting depth limit — see `AggregationDayOfWeekDefinition` in the Schemas appendix)_
+      - **`hourOfDay`**
+        - `hourOfDay` — AggregationHourOfDayDefinition **(required)**
+          - _(nesting depth limit — see `AggregationHourOfDayDefinition` in the Schemas appendix)_
+  - `buckets` — array **(required)** — The list of buckets generated for this aggregation level.
+    - _array of_ `AggregationBucket`
+      - `key` — string **(required)** — The value for this bucket. For example, 'INBOUND' if grouping by direction, or '0-5min' if grouping by duration.
+      - `count` — number **(required)** — Number of conversations falling into this bucket.
+      - `interval` — string _(enum: `month`, `week`, `day`, `hour`, `minute`)_
+      - `filter` — ListConversationsFilter
+        - _(nesting depth limit — see `ListConversationsFilter` in the Schemas appendix)_
+      - `aggregation` — AggregationResult
+        - _(nesting depth limit — see `AggregationResult` in the Schemas appendix)_
+
+**`ListConversationsRequestContent`**
+
+- `filter` — ListConversationsFilter
+  - `id` — array
+    - _array of_ `ConversationTarget`
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `entity` — ListConversationsFilterEntity
+    - `call` — boolean
+    - `conference` — boolean
+    - `chat` — boolean
+  - `participants` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToInclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToExclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `chatbots` — array
+    - _array of_ `string`
+  - `voicebots` — array
+    - _array of_ `string`
+  - `service` — array
+    - _array of_ `string`
+  - `group` — array
+    - _array of_ `string`
+  - `department` — array
+    - _array of_ `string`
+  - `tag` — array
+    - _array of_ `string`
+  - `pbx` — array
+    - _array of_ `string`
+  - `trunk` — array
+    - _array of_ `string`
+  - `queue` — array
+    - _array of_ `string`
+  - `country` — array
+    - _array of_ `string`
+  - `location` — array
+    - _array of_ `string`
+  - `phases` — array
+    - _array of_ `string`
+  - `language` — array
+    - _array of_ `string`
+  - `duration` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `connectTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `talkTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `waitTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `queueTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `holdTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interaction` — ListConversationsFilterInteraction
+    - `talkRatio` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `wordsPerMinute` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interruptions` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `patience` — ListConversationsFilterFloat
+      - `from` — number _(format=float)_
+      - `to` — number _(format=float)_
+    - `longestMonologue` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `longestCustomerStory` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+  - `recorded` — boolean
+  - `transcribed` — boolean
+  - `direction` — ListConversationsFilterDirection
+    - `inbound` — boolean
+    - `outbound` — boolean
+    - `internal` — boolean
+  - `insights` — array
+    - _array of_ `ListConversationsFilterInsight`
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `match` — string
+      - `matchAny` — array
+        - _array of_ `string`
+  - `channel` — ListConversationsFilterChannel
+    - `sms` — boolean
+    - `whatsapp` — boolean
+    - `kite` — boolean
+  - `date` — union
+    - _oneOf_ — exactly one of:
+      - **`absolute`**
+        - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+      - **`predefined`**
+        - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+  - `dayOfWeek` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `hourOfDay` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `present` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `absent` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+- `exclusiveStartKey` — string — A temporary parameter which would be removed in next updates.
+
+**`ListConversationsResponseContent`**
+
+- `items` — array **(required)**
+  - _array of_ `ListConversationsItem`
+    - `event` — union **(required)**
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `interaction` — ListConversationsItemInteraction
+      - `talkRatio` — number — Percentage of the call duration during which the agent was speaking.
+      - `wordsPerMinute` — number — Average words per minute spoken by the agent during their speaking time.
+      - `interruptions` — number — Number of times the agent interrupted another participant during the conversation.
+      - `patience` — number — Average time in seconds the agent waited after another participant finished speaking before responding. _(format=float)_
+      - `longestMonologue` — number — Duration in seconds of the agent's longest uninterrupted monologue.
+      - `longestCustomerStory` — number — Duration in seconds of another participant’s longest uninterrupted story or response.
+    - `summary` — ListConversationsItemSummary
+      - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+      - `title` — string
+      - `brief` — string
+      - `insights` — array
+        - _(nesting depth limit — see `ListConversationsItemInsight` in the Schemas appendix)_
+      - `language` — string
+    - `highlight` — ListConversationsItemHighlight
+      - `transcription` — array
+        - _(nesting depth limit — see `ListConversationsItemHighlightTranscriptionItem` in the Schemas appendix)_
+      - `summary` — ListConversationsItemHighlightSummary
+        - _(nesting depth limit — see `ListConversationsItemHighlightSummary` in the Schemas appendix)_
+      - `subject` — string
+- `lastEvaluatedKey` — string — A temporary parameter which would be removed in next updates.
+
+**`ListConversationsTagsResponseContent`**
+
+- `tags` — array **(required)**
+  - _array of_ `string`
+
+**`ListDashboardsResponseContent`**
+
+- `dashboards` — array **(required)**
+  - _array of_ `Dashboard`
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `id` — string **(required)** _(minLen=1; maxLen=32)_
+    - `createdAt` — string **(required)**
+    - `createdBy` — string **(required)**
+    - `createdByName` — string **(required)**
+    - `updatedAt` — string
+    - `metadata` — DashboardMetadata
+      - `predefined` — boolean
+      - `removable` — boolean
+      - `sortable` — boolean
+    - `access` — DashboardAccess
+      - `visibility` — string _(enum: `explicit`, `organization`)_
+      - `grants` — array
+        - _(nesting depth limit — see `DashboardGrant` in the Schemas appendix)_
+    - `definition` — DashboardDefinition **(required)**
+      - `sheets` — array
+        - _(nesting depth limit — see `DashboardSheet` in the Schemas appendix)_
+      - `filter` — ListConversationsFilter
+        - _(nesting depth limit — see `ListConversationsFilter` in the Schemas appendix)_
+
+**`ListFiltersItem`**
+
+- `id` — string **(required)** — A unique identifier for the filter. _(minLen=12; maxLen=12)_
+- `name` — string **(required)** — The user-defined name of the filter. _(minLen=1; maxLen=512)_
+- `body` — string **(required)** — A JSON payload that represents the filter's configuration. _(minLen=2; maxLen=38400)_
+- `createdAt` — string **(required)**
+- `updatedAt` — string **(required)**
+
+**`ListFiltersResponseContent`**
+
+- `filters` — array **(required)**
+  - _array of_ `ListFiltersItem`
+    - `id` — string **(required)** — A unique identifier for the filter. _(minLen=12; maxLen=12)_
+    - `name` — string **(required)** — The user-defined name of the filter. _(minLen=1; maxLen=512)_
+    - `body` — string **(required)** — A JSON payload that represents the filter's configuration. _(minLen=2; maxLen=38400)_
+    - `createdAt` — string **(required)**
+    - `updatedAt` — string **(required)**
+
+**`ListPinnedDashboardsResponseContent`**
+
+- `pinnedDashboardsIds` — array **(required)**
+  - _array of_ `string`
+- `pinnedDashboards` — array **(required)**
+  - _array of_ `Dashboard`
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `id` — string **(required)** _(minLen=1; maxLen=32)_
+    - `createdAt` — string **(required)**
+    - `createdBy` — string **(required)**
+    - `createdByName` — string **(required)**
+    - `updatedAt` — string
+    - `metadata` — DashboardMetadata
+      - `predefined` — boolean
+      - `removable` — boolean
+      - `sortable` — boolean
+    - `access` — DashboardAccess
+      - `visibility` — string _(enum: `explicit`, `organization`)_
+      - `grants` — array
+        - _(nesting depth limit — see `DashboardGrant` in the Schemas appendix)_
+    - `definition` — DashboardDefinition **(required)**
+      - `sheets` — array
+        - _(nesting depth limit — see `DashboardSheet` in the Schemas appendix)_
+      - `filter` — ListConversationsFilter
+        - _(nesting depth limit — see `ListConversationsFilter` in the Schemas appendix)_
+
+**`ListPlaylistItemsResponseContent`**
+
+- `items` — array **(required)**
+  - _array of_ `PlaylistItem`
+    - `item` — ListConversationsItem
+      - `event` — union **(required)**
+        - _(nesting depth limit — see `ListConversationsItemEvent` in the Schemas appendix)_
+      - `interaction` — ListConversationsItemInteraction
+        - _(nesting depth limit — see `ListConversationsItemInteraction` in the Schemas appendix)_
+      - `summary` — ListConversationsItemSummary
+        - _(nesting depth limit — see `ListConversationsItemSummary` in the Schemas appendix)_
+      - `highlight` — ListConversationsItemHighlight
+        - _(nesting depth limit — see `ListConversationsItemHighlight` in the Schemas appendix)_
+    - `note` — string
+    - `status` — string **(required)** _(enum: `AVAILABLE`, `UNAVAILABLE`, `NO_ACCESS`)_
+    - `addedAt` — string **(required)**
+    - `addedBy` — string **(required)**
+    - `addedByName` — string **(required)**
+    - `updatedAt` — string
+- `lastEvaluatedKey` — string
+
+**`ListPlaylistsResponseContent`**
+
+- `playlists` — array **(required)**
+  - _array of_ `Playlist`
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `id` — string **(required)** _(minLen=1; maxLen=32)_
+    - `createdAt` — string **(required)**
+    - `createdBy` — string **(required)**
+    - `createdByName` — string **(required)**
+    - `updatedAt` — string
+    - `access` — PlaylistAccess
+      - `visibility` — string _(enum: `explicit`, `organization`)_
+      - `grants` — array
+        - _(nesting depth limit — see `PlaylistGrant` in the Schemas appendix)_
+    - `itemsCount` — number **(required)**
+
+**`ListProjectionsResponseContent`**
+
+- `projections` — array **(required)**
+  - _array of_ `Projection`
+    - `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+    - `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `instructions` — string _(minLen=1; maxLen=16384)_
+    - `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+      - _array of_ `ProjectionCondition`
+        - _(nesting depth limit — see `ProjectionCondition` in the Schemas appendix)_
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - _(nesting depth limit — see `ListConversationsFilterEntity` in the Schemas appendix)_
+      - `participants` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToInclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToExclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `connectTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `talkTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `waitTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `queueTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `holdTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interaction` — ListConversationsFilterInteraction
+        - _(nesting depth limit — see `ListConversationsFilterInteraction` in the Schemas appendix)_
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - _(nesting depth limit — see `ListConversationsFilterDirection` in the Schemas appendix)_
+      - `insights` — array
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+      - `channel` — ListConversationsFilterChannel
+        - _(nesting depth limit — see `ListConversationsFilterChannel` in the Schemas appendix)_
+      - `date` — union
+        - _(nesting depth limit — see `ListConversationsFilterDate` in the Schemas appendix)_
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `present` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+      - `absent` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+    - `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+    - `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+    - `fields` — array **(required)** _(minItems=1; maxItems=64)_
+      - _array of_ `ProjectionField`
+        - _(nesting depth limit — see `ProjectionField` in the Schemas appendix)_
+    - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `status` — string **(required)** _(enum: `ENABLED`, `PAUSED`, `DISABLED`)_
+    - `version` — number **(required)**
+    - `createdAt` — string **(required)**
+    - `updatedAt` — string
+    - `metadata` — ProjectionMetadata
+      - `predefined` — boolean
+      - `customized` — boolean — True when a predefined projection has tenant-specific overrides applied.
+- `categories` — array — Compatibility field for legacy clients. Categories are simulated from projection `category`/`categoryId` values.
+  - _array of_ `ProjectionsCategory`
+    - `id` — string **(required)** _(minLen=1; maxLen=32)_
+    - `name` — string **(required)** _(minLen=1; maxLen=128)_
+
+**`ListWatchHistoryResponseContent`**
+
+- `items` — array **(required)**
+  - _array of_ `ListConversationsItem`
+    - `event` — union **(required)**
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `interaction` — ListConversationsItemInteraction
+      - `talkRatio` — number — Percentage of the call duration during which the agent was speaking.
+      - `wordsPerMinute` — number — Average words per minute spoken by the agent during their speaking time.
+      - `interruptions` — number — Number of times the agent interrupted another participant during the conversation.
+      - `patience` — number — Average time in seconds the agent waited after another participant finished speaking before responding. _(format=float)_
+      - `longestMonologue` — number — Duration in seconds of the agent's longest uninterrupted monologue.
+      - `longestCustomerStory` — number — Duration in seconds of another participant’s longest uninterrupted story or response.
+    - `summary` — ListConversationsItemSummary
+      - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+      - `title` — string
+      - `brief` — string
+      - `insights` — array
+        - _(nesting depth limit — see `ListConversationsItemInsight` in the Schemas appendix)_
+      - `language` — string
+    - `highlight` — ListConversationsItemHighlight
+      - `transcription` — array
+        - _(nesting depth limit — see `ListConversationsItemHighlightTranscriptionItem` in the Schemas appendix)_
+      - `summary` — ListConversationsItemHighlightSummary
+        - _(nesting depth limit — see `ListConversationsItemHighlightSummary` in the Schemas appendix)_
+      - `subject` — string
+- `itemsState` — array **(required)**
+  - _array of_ `WatchItem`
+    - `target` — union **(required)**
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `playback` — ConversationPlaybackState
+      - `position` — number
+      - `duration` — number
+    - `firstWatchedAt` — string **(required)**
+    - `lastWatchedAt` — string **(required)**
+- `lastEvaluatedKey` — string
+
+**`MessagingChannel`**
+
+_A customer messaging channel that reaches x-bees through classound and is not SMS or WhatsApp. One discriminator instead of a boolean per channel, so a new channel adds a member here and not a set of channel fields. An RCS conversation is not a telephony channel, and its customer id is the person's phone number._
+
+- string _(enum: `messenger`, `instagram`, `rcs`)_
+
+**`NotFoundExceptionResponseContent`**
+
+- `message` — string **(required)** _(default=Not found)_
+
+**`PauseProjectionResponseContent`**
+
+- `projection` — Projection **(required)**
+  - `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+  - `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `instructions` — string _(minLen=1; maxLen=16384)_
+  - `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+    - _array of_ `ProjectionCondition`
+      - _oneOf_ — exactly one of:
+        - **`entity`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`participants`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`duration`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interruptions` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `patience` — ListConversationsFilterFloat
+        - _(nesting depth limit — see `ListConversationsFilterFloat` in the Schemas appendix)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`predefined`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+  - `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+  - `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+  - `fields` — array **(required)** _(minItems=1; maxItems=64)_
+    - _array of_ `ProjectionField`
+      - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `name` — string **(required)** _(minLen=1; maxLen=256)_
+      - `description` — string _(minLen=1; maxLen=4096)_
+      - `optional` — boolean
+      - `parameter` — union **(required)**
+        - _(nesting depth limit — see `ProjectionParameter` in the Schemas appendix)_
+  - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+  - `status` — string **(required)** _(enum: `ENABLED`, `PAUSED`, `DISABLED`)_
+  - `version` — number **(required)**
+  - `createdAt` — string **(required)**
+  - `updatedAt` — string
+  - `metadata` — ProjectionMetadata
+    - `predefined` — boolean
+    - `customized` — boolean — True when a predefined projection has tenant-specific overrides applied.
+
+**`PbxLicenseType`**
+
+- string _(enum: `basic`, `essential`, `business`, `premium`, `wizyconf`)_
+
+**`Playlist`**
+
+- `name` — string **(required)** _(minLen=1; maxLen=128)_
+- `description` — string _(minLen=1; maxLen=4096)_
+- `id` — string **(required)** _(minLen=1; maxLen=32)_
+- `createdAt` — string **(required)**
+- `createdBy` — string **(required)**
+- `createdByName` — string **(required)**
+- `updatedAt` — string
+- `access` — PlaylistAccess
+  - `visibility` — string _(enum: `explicit`, `organization`)_
+  - `grants` — array
+    - _array of_ `PlaylistGrant`
+      - `permission` — string **(required)** _(enum: `view`, `edit`)_
+      - `principal` — union **(required)**
+        - _(nesting depth limit — see `PlaylistPrincipal` in the Schemas appendix)_
+- `itemsCount` — number **(required)**
+
+**`PlaylistAccess`**
+
+- `visibility` — string _(enum: `explicit`, `organization`)_
+- `grants` — array
+  - _array of_ `PlaylistGrant`
+    - `permission` — string **(required)** _(enum: `view`, `edit`)_
+    - `principal` — union **(required)**
+      - _oneOf_ — exactly one of:
+        - **`userId`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`groupId`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+
+**`PlaylistAccessNotify`**
+
+- `emails` — array **(required)**
+  - _array of_ `string`
+- `message` — string
+
+**`PlaylistGrant`**
+
+- `permission` — string **(required)** _(enum: `view`, `edit`)_
+- `principal` — union **(required)**
+  - _oneOf_ — exactly one of:
+    - **`userId`**
+      - `userId` — string **(required)** _(minLen=12; maxLen=12)_
+    - **`groupId`**
+      - `groupId` — string **(required)**
+
+**`PlaylistItem`**
+
+- `item` — ListConversationsItem
+  - `event` — union **(required)**
+    - _oneOf_ — exactly one of:
+      - **`call`**
+        - `call` — CallRecord **(required)**
+          - _(nesting depth limit — see `CallRecord` in the Schemas appendix)_
+      - **`conference`**
+        - `conference` — ConferenceRecord **(required)**
+          - _(nesting depth limit — see `ConferenceRecord` in the Schemas appendix)_
+      - **`chat`**
+        - `chat` — ChatRecord **(required)**
+          - _(nesting depth limit — see `ChatRecord` in the Schemas appendix)_
+  - `interaction` — ListConversationsItemInteraction
+    - `talkRatio` — number — Percentage of the call duration during which the agent was speaking.
+    - `wordsPerMinute` — number — Average words per minute spoken by the agent during their speaking time.
+    - `interruptions` — number — Number of times the agent interrupted another participant during the conversation.
+    - `patience` — number — Average time in seconds the agent waited after another participant finished speaking before responding. _(format=float)_
+    - `longestMonologue` — number — Duration in seconds of the agent's longest uninterrupted monologue.
+    - `longestCustomerStory` — number — Duration in seconds of another participant’s longest uninterrupted story or response.
+  - `summary` — ListConversationsItemSummary
+    - `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+    - `title` — string
+    - `brief` — string
+    - `insights` — array
+      - _array of_ `ListConversationsItemInsight`
+        - _(nesting depth limit — see `ListConversationsItemInsight` in the Schemas appendix)_
+    - `language` — string
+  - `highlight` — ListConversationsItemHighlight
+    - `transcription` — array
+      - _array of_ `ListConversationsItemHighlightTranscriptionItem`
+        - _(nesting depth limit — see `ListConversationsItemHighlightTranscriptionItem` in the Schemas appendix)_
+    - `summary` — ListConversationsItemHighlightSummary
+      - `title` — string
+      - `brief` — string
+    - `subject` — string
+- `note` — string
+- `status` — string **(required)** _(enum: `AVAILABLE`, `UNAVAILABLE`, `NO_ACCESS`)_
+- `addedAt` — string **(required)**
+- `addedBy` — string **(required)**
+- `addedByName` — string **(required)**
+- `updatedAt` — string
+
+**`PlaylistItemStatus`**
+
+- string _(enum: `AVAILABLE`, `UNAVAILABLE`, `NO_ACCESS`)_
+
+**`PlaylistPermission`**
+
+- string _(enum: `view`, `edit`)_
+
+**`PlaylistPrincipal`**
+
+- _oneOf_ — exactly one of:
+  - **`userId`**
+    - `userId` — string **(required)** _(minLen=12; maxLen=12)_
+  - **`groupId`**
+    - `groupId` — string **(required)**
+
+**`PlaylistVisibility`**
+
+- string _(enum: `explicit`, `organization`)_
+
+**`Projection`**
+
+- `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+- `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+- `name` — string **(required)** _(minLen=1; maxLen=128)_
+- `description` — string _(minLen=1; maxLen=4096)_
+- `instructions` — string _(minLen=1; maxLen=16384)_
+- `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+  - _array of_ `ProjectionCondition`
+    - _oneOf_ — exactly one of:
+      - **`entity`**
+        - `entity` — ProjectionEntityCondition **(required)**
+          - _(nesting depth limit — see `ProjectionEntityCondition` in the Schemas appendix)_
+      - **`direction`**
+        - `direction` — ProjectionDirectionCondition **(required)**
+          - _(nesting depth limit — see `ProjectionDirectionCondition` in the Schemas appendix)_
+      - **`participants`**
+        - `participants` — ProjectionParticipantsCondition **(required)**
+          - _(nesting depth limit — see `ProjectionParticipantsCondition` in the Schemas appendix)_
+      - **`duration`**
+        - `duration` — ProjectionDurationCondition **(required)**
+          - _(nesting depth limit — see `ProjectionDurationCondition` in the Schemas appendix)_
+- `filter` — ListConversationsFilter
+  - `id` — array
+    - _array of_ `ConversationTarget`
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `entity` — ListConversationsFilterEntity
+    - `call` — boolean
+    - `conference` — boolean
+    - `chat` — boolean
+  - `participants` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToInclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToExclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `chatbots` — array
+    - _array of_ `string`
+  - `voicebots` — array
+    - _array of_ `string`
+  - `service` — array
+    - _array of_ `string`
+  - `group` — array
+    - _array of_ `string`
+  - `department` — array
+    - _array of_ `string`
+  - `tag` — array
+    - _array of_ `string`
+  - `pbx` — array
+    - _array of_ `string`
+  - `trunk` — array
+    - _array of_ `string`
+  - `queue` — array
+    - _array of_ `string`
+  - `country` — array
+    - _array of_ `string`
+  - `location` — array
+    - _array of_ `string`
+  - `phases` — array
+    - _array of_ `string`
+  - `language` — array
+    - _array of_ `string`
+  - `duration` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `connectTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `talkTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `waitTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `queueTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `holdTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interaction` — ListConversationsFilterInteraction
+    - `talkRatio` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `wordsPerMinute` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interruptions` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `patience` — ListConversationsFilterFloat
+      - `from` — number _(format=float)_
+      - `to` — number _(format=float)_
+    - `longestMonologue` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `longestCustomerStory` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+  - `recorded` — boolean
+  - `transcribed` — boolean
+  - `direction` — ListConversationsFilterDirection
+    - `inbound` — boolean
+    - `outbound` — boolean
+    - `internal` — boolean
+  - `insights` — array
+    - _array of_ `ListConversationsFilterInsight`
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `match` — string
+      - `matchAny` — array
+        - _array of_ `string`
+  - `channel` — ListConversationsFilterChannel
+    - `sms` — boolean
+    - `whatsapp` — boolean
+    - `kite` — boolean
+  - `date` — union
+    - _oneOf_ — exactly one of:
+      - **`absolute`**
+        - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+      - **`predefined`**
+        - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+  - `dayOfWeek` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `hourOfDay` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `present` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `absent` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+- `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+- `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+- `fields` — array **(required)** _(minItems=1; maxItems=64)_
+  - _array of_ `ProjectionField`
+    - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `name` — string **(required)** _(minLen=1; maxLen=256)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `optional` — boolean
+    - `parameter` — union **(required)**
+      - _oneOf_ — exactly one of:
+        - **`text`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`multiline`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`selection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+- `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+- `status` — string **(required)** _(enum: `ENABLED`, `PAUSED`, `DISABLED`)_
+- `version` — number **(required)**
+- `createdAt` — string **(required)**
+- `updatedAt` — string
+- `metadata` — ProjectionMetadata
+  - `predefined` — boolean
+  - `customized` — boolean — True when a predefined projection has tenant-specific overrides applied.
+
+**`ProjectionCondition`**
+
+- _oneOf_ — exactly one of:
+  - **`entity`**
+    - `entity` — ProjectionEntityCondition **(required)**
+      - `equals` — array **(required)**
+        - _array of_ `ProjectionEntityConditionValue`
+  - **`direction`**
+    - `direction` — ProjectionDirectionCondition **(required)**
+      - `equals` — array **(required)**
+        - _array of_ `CallDirection`
+  - **`participants`**
+    - `participants` — ProjectionParticipantsCondition **(required)**
+      - `emails` — array
+        - _array of_ `string`
+      - `extensions` — array
+        - _array of_ `string`
+      - `groups` — array
+        - _array of_ `string`
+  - **`duration`**
+    - `duration` — ProjectionDurationCondition **(required)**
+      - `minimum` — number **(required)**
+      - `maximum` — number **(required)**
+
+**`ProjectionDirectionCondition`**
+
+- `equals` — array **(required)**
+  - _array of_ `CallDirection`
+
+**`ProjectionDurationCondition`**
+
+- `minimum` — number **(required)**
+- `maximum` — number **(required)**
+
+**`ProjectionEntityCondition`**
+
+- `equals` — array **(required)**
+  - _array of_ `ProjectionEntityConditionValue`
+
+**`ProjectionEntityConditionValue`**
+
+- string _(enum: `call`, `conference`, `chat`)_
+
+**`ProjectionField`**
+
+- `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+- `name` — string **(required)** _(minLen=1; maxLen=256)_
+- `description` — string _(minLen=1; maxLen=4096)_
+- `optional` — boolean
+- `parameter` — union **(required)**
+  - _oneOf_ — exactly one of:
+    - **`text`**
+      - `text` — ProjectionTextParameter **(required)**
+    - **`multiline`**
+      - `multiline` — ProjectionMultilineParameter **(required)**
+    - **`selection`**
+      - `selection` — ProjectionSelectionParameter **(required)**
+        - `options` — array **(required)** _(maxItems=100)_
+          - _array of_ `string`
+        - `multi` — boolean
+        - `adaptive` — boolean
+        - `adaptiveOptions` — array — Options generated by AI when adaptive mode was enabled. _(maxItems=100)_
+          - _array of_ `string`
+
+**`ProjectionInsights`**
+
+- `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+- `version` — number **(required)** — A version of projection that was used to generate the insights.
+- `name` — string **(required)** _(minLen=1; maxLen=128)_
+- `status` — string **(required)** _(enum: `NONE`, `UNAVAILABLE`, `SCHEDULED`, `STARTED`, `SUCCEEDED`, `FAILED`)_
+- `reason` — string _(enum: `TRANSCRIPTION_TOO_SMALL`, `CONDITIONS_NOT_MATCH`, `INTERNAL_ERROR`)_
+- `fields` — array **(required)**
+  - _array of_ `ProjectionInsightsField`
+    - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `name` — string **(required)** _(minLen=1; maxLen=256)_
+    - `value` — any **(required)**
+
+**`ProjectionInsightsField`**
+
+- `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+- `name` — string **(required)** _(minLen=1; maxLen=256)_
+- `value` — any **(required)**
+
+**`ProjectionMetadata`**
+
+- `predefined` — boolean
+- `customized` — boolean — True when a predefined projection has tenant-specific overrides applied.
+
+**`ProjectionMultilineParameter`**
+
+- ProjectionMultilineParameter
+
+**`ProjectionParameter`**
+
+- _oneOf_ — exactly one of:
+  - **`text`**
+    - `text` — ProjectionTextParameter **(required)**
+  - **`multiline`**
+    - `multiline` — ProjectionMultilineParameter **(required)**
+  - **`selection`**
+    - `selection` — ProjectionSelectionParameter **(required)**
+      - `options` — array **(required)** _(maxItems=100)_
+        - _array of_ `string`
+      - `multi` — boolean
+      - `adaptive` — boolean
+      - `adaptiveOptions` — array — Options generated by AI when adaptive mode was enabled. _(maxItems=100)_
+        - _array of_ `string`
+
+**`ProjectionParticipantsCondition`**
+
+- `emails` — array
+  - _array of_ `string`
+- `extensions` — array
+  - _array of_ `string`
+- `groups` — array
+  - _array of_ `string`
+
+**`ProjectionSelectionParameter`**
+
+- `options` — array **(required)** _(maxItems=100)_
+  - _array of_ `string`
+- `multi` — boolean
+- `adaptive` — boolean
+- `adaptiveOptions` — array — Options generated by AI when adaptive mode was enabled. _(maxItems=100)_
+  - _array of_ `string`
+
+**`ProjectionStatus`**
+
+- string _(enum: `ENABLED`, `PAUSED`, `DISABLED`)_
+
+**`ProjectionTextParameter`**
+
+- ProjectionTextParameter
+
+**`ProjectionsCategory`**
+
+- `id` — string **(required)** _(minLen=1; maxLen=32)_
+- `name` — string **(required)** _(minLen=1; maxLen=128)_
+
+**`PutAnalysisSettingsRequestContent`**
+
+- `defaultModel` — string — Default provider and model identifier for projections that do not define a custom model. Example: 'openai://gpt-5'.
+- `disabled` — boolean — True to disable analysis completely for the organization.
+- `filter` — ListConversationsFilter
+  - `id` — array
+    - _array of_ `ConversationTarget`
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `entity` — ListConversationsFilterEntity
+    - `call` — boolean
+    - `conference` — boolean
+    - `chat` — boolean
+  - `participants` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToInclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToExclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `chatbots` — array
+    - _array of_ `string`
+  - `voicebots` — array
+    - _array of_ `string`
+  - `service` — array
+    - _array of_ `string`
+  - `group` — array
+    - _array of_ `string`
+  - `department` — array
+    - _array of_ `string`
+  - `tag` — array
+    - _array of_ `string`
+  - `pbx` — array
+    - _array of_ `string`
+  - `trunk` — array
+    - _array of_ `string`
+  - `queue` — array
+    - _array of_ `string`
+  - `country` — array
+    - _array of_ `string`
+  - `location` — array
+    - _array of_ `string`
+  - `phases` — array
+    - _array of_ `string`
+  - `language` — array
+    - _array of_ `string`
+  - `duration` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `connectTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `talkTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `waitTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `queueTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `holdTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interaction` — ListConversationsFilterInteraction
+    - `talkRatio` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `wordsPerMinute` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interruptions` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `patience` — ListConversationsFilterFloat
+      - `from` — number _(format=float)_
+      - `to` — number _(format=float)_
+    - `longestMonologue` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `longestCustomerStory` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+  - `recorded` — boolean
+  - `transcribed` — boolean
+  - `direction` — ListConversationsFilterDirection
+    - `inbound` — boolean
+    - `outbound` — boolean
+    - `internal` — boolean
+  - `insights` — array
+    - _array of_ `ListConversationsFilterInsight`
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `match` — string
+      - `matchAny` — array
+        - _array of_ `string`
+  - `channel` — ListConversationsFilterChannel
+    - `sms` — boolean
+    - `whatsapp` — boolean
+    - `kite` — boolean
+  - `date` — union
+    - _oneOf_ — exactly one of:
+      - **`absolute`**
+        - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+      - **`predefined`**
+        - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+  - `dayOfWeek` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `hourOfDay` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `present` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `absent` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+- `deleteAssetsAfterSuccess` — boolean — True to delete raw transcript and recording assets after a successful initial analysis run.
+
+**`PutAnalysisSettingsResponseContent`**
+
+- `settings` — AnalysisSettings **(required)**
+  - `defaultModel` — string — Default provider and model identifier for projections that do not define a custom model. Example: 'openai://gpt-5'.
+  - `disabled` — boolean — True to disable analysis completely for the organization.
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interruptions` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `patience` — ListConversationsFilterFloat
+        - _(nesting depth limit — see `ListConversationsFilterFloat` in the Schemas appendix)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`predefined`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+  - `deleteAssetsAfterSuccess` — boolean — True to delete raw transcript and recording assets after a successful initial analysis run.
+
+**`PutPlaylistItemRequestContent`**
+
+- `target` — union **(required)**
+  - _oneOf_ — exactly one of:
+    - **`call`**
+      - `call` — CallConversationTarget **(required)**
+        - `callId` — string **(required)**
+        - `flowIndex` — number **(required)**
+    - **`conference`**
+      - `conference` — ConferenceConversationTarget **(required)**
+        - `conferenceId` — string **(required)**
+    - **`chat`**
+      - `chat` — ChatConversationTarget **(required)**
+        - `chatId` — string **(required)**
+- `note` — string
+
+**`QueryConversationsCountRequestContent`**
+
+- `filter` — ListConversationsFilter
+  - `id` — array
+    - _array of_ `ConversationTarget`
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `entity` — ListConversationsFilterEntity
+    - `call` — boolean
+    - `conference` — boolean
+    - `chat` — boolean
+  - `participants` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToInclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToExclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `chatbots` — array
+    - _array of_ `string`
+  - `voicebots` — array
+    - _array of_ `string`
+  - `service` — array
+    - _array of_ `string`
+  - `group` — array
+    - _array of_ `string`
+  - `department` — array
+    - _array of_ `string`
+  - `tag` — array
+    - _array of_ `string`
+  - `pbx` — array
+    - _array of_ `string`
+  - `trunk` — array
+    - _array of_ `string`
+  - `queue` — array
+    - _array of_ `string`
+  - `country` — array
+    - _array of_ `string`
+  - `location` — array
+    - _array of_ `string`
+  - `phases` — array
+    - _array of_ `string`
+  - `language` — array
+    - _array of_ `string`
+  - `duration` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `connectTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `talkTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `waitTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `queueTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `holdTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interaction` — ListConversationsFilterInteraction
+    - `talkRatio` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `wordsPerMinute` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interruptions` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `patience` — ListConversationsFilterFloat
+      - `from` — number _(format=float)_
+      - `to` — number _(format=float)_
+    - `longestMonologue` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `longestCustomerStory` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+  - `recorded` — boolean
+  - `transcribed` — boolean
+  - `direction` — ListConversationsFilterDirection
+    - `inbound` — boolean
+    - `outbound` — boolean
+    - `internal` — boolean
+  - `insights` — array
+    - _array of_ `ListConversationsFilterInsight`
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `match` — string
+      - `matchAny` — array
+        - _array of_ `string`
+  - `channel` — ListConversationsFilterChannel
+    - `sms` — boolean
+    - `whatsapp` — boolean
+    - `kite` — boolean
+  - `date` — union
+    - _oneOf_ — exactly one of:
+      - **`absolute`**
+        - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+      - **`predefined`**
+        - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+  - `dayOfWeek` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `hourOfDay` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `present` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `absent` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+
+**`QueryConversationsCountResponseContent`**
+
+- `count` — number **(required)** — Total number of conversations matching the filter.
+
+**`RecordType`**
+
+- string _(enum: `call`, `call_transcription`, `call_annotations`, `conference`, `conference_transcription`, `conference_annotations`, `chat`, `chat_transcription`, `chat_annotations`)_
+
+**`TranscriptionSummary`**
+
+- `title` — string
+- `brief` — string
+- `json` — TranscriptionSummaryJson
+  - `callBriefVeryShortTitle` — string
+  - `callBrief` — string
+  - `customerInsights` — array
+    - _array of_ `string`
+  - `keyPoints` — array
+    - _array of_ `string`
+  - `competitiveInformation` — array
+    - _array of_ `string`
+  - `implementationTimeline` — array
+    - _array of_ `string`
+  - `budget` — array
+    - _array of_ `string`
+  - `customerResponse` — array
+    - _array of_ `string`
+  - `salesProposals` — array
+    - _array of_ `string`
+  - `actionItems` — array
+    - _array of_ `string`
+  - `nextSteps` — array
+    - _array of_ `string`
+  - `csat` — TranscriptionSummaryCsat
+    - `score` — string
+    - `reason` — string
+  - `topics` — array
+    - _array of_ `string`
+  - `review` — array
+    - _array of_ `string`
+  - `progress` — array
+    - _array of_ `string`
+  - `issues` — array
+    - _array of_ `string`
+  - `decisions` — array
+    - _array of_ `string`
+  - `tags` — array
+    - _array of_ `string`
+
+**`TranscriptionSummaryCsat`**
+
+- `score` — string
+- `reason` — string
+
+**`TranscriptionSummaryJson`**
+
+- `callBriefVeryShortTitle` — string
+- `callBrief` — string
+- `customerInsights` — array
+  - _array of_ `string`
+- `keyPoints` — array
+  - _array of_ `string`
+- `competitiveInformation` — array
+  - _array of_ `string`
+- `implementationTimeline` — array
+  - _array of_ `string`
+- `budget` — array
+  - _array of_ `string`
+- `customerResponse` — array
+  - _array of_ `string`
+- `salesProposals` — array
+  - _array of_ `string`
+- `actionItems` — array
+  - _array of_ `string`
+- `nextSteps` — array
+  - _array of_ `string`
+- `csat` — TranscriptionSummaryCsat
+  - `score` — string
+  - `reason` — string
+- `topics` — array
+  - _array of_ `string`
+- `review` — array
+  - _array of_ `string`
+- `progress` — array
+  - _array of_ `string`
+- `issues` — array
+  - _array of_ `string`
+- `decisions` — array
+  - _array of_ `string`
+- `tags` — array
+  - _array of_ `string`
+
+**`UpdateDashboardAccessRequestContent`**
+
+- `access` — DashboardAccess **(required)**
+  - `visibility` — string _(enum: `explicit`, `organization`)_
+  - `grants` — array
+    - _array of_ `DashboardGrant`
+      - `permission` — string **(required)** _(enum: `view`, `edit`)_
+      - `principal` — union **(required)**
+        - _(nesting depth limit — see `DashboardPrincipal` in the Schemas appendix)_
+- `notify` — DashboardAccessNotify
+  - `emails` — array **(required)**
+    - _array of_ `string`
+  - `message` — string
+
+**`UpdateDashboardAccessResponseContent`**
+
+- `dashboard` — Dashboard **(required)**
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `id` — string **(required)** _(minLen=1; maxLen=32)_
+  - `createdAt` — string **(required)**
+  - `createdBy` — string **(required)**
+  - `createdByName` — string **(required)**
+  - `updatedAt` — string
+  - `metadata` — DashboardMetadata
+    - `predefined` — boolean
+    - `removable` — boolean
+    - `sortable` — boolean
+  - `access` — DashboardAccess
+    - `visibility` — string _(enum: `explicit`, `organization`)_
+    - `grants` — array
+      - _array of_ `DashboardGrant`
+        - _(nesting depth limit — see `DashboardGrant` in the Schemas appendix)_
+  - `definition` — DashboardDefinition **(required)**
+    - `sheets` — array
+      - _array of_ `DashboardSheet`
+        - _(nesting depth limit — see `DashboardSheet` in the Schemas appendix)_
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - _(nesting depth limit — see `ListConversationsFilterEntity` in the Schemas appendix)_
+      - `participants` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToInclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToExclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `connectTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `talkTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `waitTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `queueTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `holdTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interaction` — ListConversationsFilterInteraction
+        - _(nesting depth limit — see `ListConversationsFilterInteraction` in the Schemas appendix)_
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - _(nesting depth limit — see `ListConversationsFilterDirection` in the Schemas appendix)_
+      - `insights` — array
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+      - `channel` — ListConversationsFilterChannel
+        - _(nesting depth limit — see `ListConversationsFilterChannel` in the Schemas appendix)_
+      - `date` — union
+        - _(nesting depth limit — see `ListConversationsFilterDate` in the Schemas appendix)_
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `present` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+      - `absent` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+
+**`UpdateDashboardRequestContent`**
+
+- `name` — string **(required)** _(minLen=1; maxLen=128)_
+- `description` — string _(minLen=1; maxLen=4096)_
+- `definition` — DashboardDefinition **(required)**
+  - `sheets` — array
+    - _array of_ `DashboardSheet`
+      - `id` — string **(required)** _(minLen=8; maxLen=8)_
+      - `name` — string **(required)** _(minLen=1; maxLen=128)_
+      - `visuals` — array **(required)**
+        - _(nesting depth limit — see `DashboardVisual` in the Schemas appendix)_
+      - `filter` — ListConversationsFilter
+        - _(nesting depth limit — see `ListConversationsFilter` in the Schemas appendix)_
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interruptions` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `patience` — ListConversationsFilterFloat
+        - _(nesting depth limit — see `ListConversationsFilterFloat` in the Schemas appendix)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`predefined`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+
+**`UpdateDashboardResponseContent`**
+
+- `dashboard` — Dashboard **(required)**
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `id` — string **(required)** _(minLen=1; maxLen=32)_
+  - `createdAt` — string **(required)**
+  - `createdBy` — string **(required)**
+  - `createdByName` — string **(required)**
+  - `updatedAt` — string
+  - `metadata` — DashboardMetadata
+    - `predefined` — boolean
+    - `removable` — boolean
+    - `sortable` — boolean
+  - `access` — DashboardAccess
+    - `visibility` — string _(enum: `explicit`, `organization`)_
+    - `grants` — array
+      - _array of_ `DashboardGrant`
+        - _(nesting depth limit — see `DashboardGrant` in the Schemas appendix)_
+  - `definition` — DashboardDefinition **(required)**
+    - `sheets` — array
+      - _array of_ `DashboardSheet`
+        - _(nesting depth limit — see `DashboardSheet` in the Schemas appendix)_
+    - `filter` — ListConversationsFilter
+      - `id` — array
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+      - `entity` — ListConversationsFilterEntity
+        - _(nesting depth limit — see `ListConversationsFilterEntity` in the Schemas appendix)_
+      - `participants` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToInclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `participantsToExclude` — array
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+      - `chatbots` — array
+        - _array of_ `string`
+      - `voicebots` — array
+        - _array of_ `string`
+      - `service` — array
+        - _array of_ `string`
+      - `group` — array
+        - _array of_ `string`
+      - `department` — array
+        - _array of_ `string`
+      - `tag` — array
+        - _array of_ `string`
+      - `pbx` — array
+        - _array of_ `string`
+      - `trunk` — array
+        - _array of_ `string`
+      - `queue` — array
+        - _array of_ `string`
+      - `country` — array
+        - _array of_ `string`
+      - `location` — array
+        - _array of_ `string`
+      - `phases` — array
+        - _array of_ `string`
+      - `language` — array
+        - _array of_ `string`
+      - `duration` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `connectTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `talkTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `waitTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `queueTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `holdTime` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interaction` — ListConversationsFilterInteraction
+        - _(nesting depth limit — see `ListConversationsFilterInteraction` in the Schemas appendix)_
+      - `recorded` — boolean
+      - `transcribed` — boolean
+      - `direction` — ListConversationsFilterDirection
+        - _(nesting depth limit — see `ListConversationsFilterDirection` in the Schemas appendix)_
+      - `insights` — array
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+      - `channel` — ListConversationsFilterChannel
+        - _(nesting depth limit — see `ListConversationsFilterChannel` in the Schemas appendix)_
+      - `date` — union
+        - _(nesting depth limit — see `ListConversationsFilterDate` in the Schemas appendix)_
+      - `dayOfWeek` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `hourOfDay` — ListConversationsFilterDateIndex
+        - _(nesting depth limit — see `ListConversationsFilterDateIndex` in the Schemas appendix)_
+      - `present` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+      - `absent` — array
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+
+**`UpdateFilterRequestContent`**
+
+- `name` — string **(required)** — The user-defined name of the filter. _(minLen=1; maxLen=512)_
+- `body` — string **(required)** — A JSON payload that represents the filter's configuration. _(minLen=2; maxLen=38400)_
+
+**`UpdateFilterResponseContent`**
+
+- `item` — ListFiltersItem **(required)**
+  - `id` — string **(required)** — A unique identifier for the filter. _(minLen=12; maxLen=12)_
+  - `name` — string **(required)** — The user-defined name of the filter. _(minLen=1; maxLen=512)_
+  - `body` — string **(required)** — A JSON payload that represents the filter's configuration. _(minLen=2; maxLen=38400)_
+  - `createdAt` — string **(required)**
+  - `updatedAt` — string **(required)**
+
+**`UpdatePinnedDashboardsRequestContent`**
+
+- `pinned` — array **(required)**
+  - _array of_ `string`
+
+**`UpdatePlaylistAccessRequestContent`**
+
+- `access` — PlaylistAccess **(required)**
+  - `visibility` — string _(enum: `explicit`, `organization`)_
+  - `grants` — array
+    - _array of_ `PlaylistGrant`
+      - `permission` — string **(required)** _(enum: `view`, `edit`)_
+      - `principal` — union **(required)**
+        - _(nesting depth limit — see `PlaylistPrincipal` in the Schemas appendix)_
+- `notify` — PlaylistAccessNotify
+  - `emails` — array **(required)**
+    - _array of_ `string`
+  - `message` — string
+
+**`UpdatePlaylistAccessResponseContent`**
+
+- `playlist` — Playlist **(required)**
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `id` — string **(required)** _(minLen=1; maxLen=32)_
+  - `createdAt` — string **(required)**
+  - `createdBy` — string **(required)**
+  - `createdByName` — string **(required)**
+  - `updatedAt` — string
+  - `access` — PlaylistAccess
+    - `visibility` — string _(enum: `explicit`, `organization`)_
+    - `grants` — array
+      - _array of_ `PlaylistGrant`
+        - _(nesting depth limit — see `PlaylistGrant` in the Schemas appendix)_
+  - `itemsCount` — number **(required)**
+
+**`UpdatePlaylistRequestContent`**
+
+- `name` — string **(required)** _(minLen=1; maxLen=128)_
+- `description` — string _(minLen=1; maxLen=4096)_
+
+**`UpdatePlaylistResponseContent`**
+
+- `playlist` — Playlist **(required)**
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `id` — string **(required)** _(minLen=1; maxLen=32)_
+  - `createdAt` — string **(required)**
+  - `createdBy` — string **(required)**
+  - `createdByName` — string **(required)**
+  - `updatedAt` — string
+  - `access` — PlaylistAccess
+    - `visibility` — string _(enum: `explicit`, `organization`)_
+    - `grants` — array
+      - _array of_ `PlaylistGrant`
+        - _(nesting depth limit — see `PlaylistGrant` in the Schemas appendix)_
+  - `itemsCount` — number **(required)**
+
+**`UpdateProjectionRequestContent`**
+
+- `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+- `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+- `name` — string **(required)** _(minLen=1; maxLen=128)_
+- `description` — string _(minLen=1; maxLen=4096)_
+- `instructions` — string _(minLen=1; maxLen=16384)_
+- `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+  - _array of_ `ProjectionCondition`
+    - _oneOf_ — exactly one of:
+      - **`entity`**
+        - `entity` — ProjectionEntityCondition **(required)**
+          - _(nesting depth limit — see `ProjectionEntityCondition` in the Schemas appendix)_
+      - **`direction`**
+        - `direction` — ProjectionDirectionCondition **(required)**
+          - _(nesting depth limit — see `ProjectionDirectionCondition` in the Schemas appendix)_
+      - **`participants`**
+        - `participants` — ProjectionParticipantsCondition **(required)**
+          - _(nesting depth limit — see `ProjectionParticipantsCondition` in the Schemas appendix)_
+      - **`duration`**
+        - `duration` — ProjectionDurationCondition **(required)**
+          - _(nesting depth limit — see `ProjectionDurationCondition` in the Schemas appendix)_
+- `filter` — ListConversationsFilter
+  - `id` — array
+    - _array of_ `ConversationTarget`
+      - _oneOf_ — exactly one of:
+        - **`call`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`conference`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chat`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `entity` — ListConversationsFilterEntity
+    - `call` — boolean
+    - `conference` — boolean
+    - `chat` — boolean
+  - `participants` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToInclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `participantsToExclude` — array
+    - _array of_ `ListConversationsFilterParticipant`
+      - _oneOf_ — exactly one of:
+        - **`email`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`phone`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`extension`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `chatbots` — array
+    - _array of_ `string`
+  - `voicebots` — array
+    - _array of_ `string`
+  - `service` — array
+    - _array of_ `string`
+  - `group` — array
+    - _array of_ `string`
+  - `department` — array
+    - _array of_ `string`
+  - `tag` — array
+    - _array of_ `string`
+  - `pbx` — array
+    - _array of_ `string`
+  - `trunk` — array
+    - _array of_ `string`
+  - `queue` — array
+    - _array of_ `string`
+  - `country` — array
+    - _array of_ `string`
+  - `location` — array
+    - _array of_ `string`
+  - `phases` — array
+    - _array of_ `string`
+  - `language` — array
+    - _array of_ `string`
+  - `duration` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `connectTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `talkTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `waitTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `queueTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `holdTime` — ListConversationsFilterNumber
+    - `from` — number
+    - `to` — number
+  - `interaction` — ListConversationsFilterInteraction
+    - `talkRatio` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `wordsPerMinute` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interruptions` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `patience` — ListConversationsFilterFloat
+      - `from` — number _(format=float)_
+      - `to` — number _(format=float)_
+    - `longestMonologue` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `longestCustomerStory` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+  - `recorded` — boolean
+  - `transcribed` — boolean
+  - `direction` — ListConversationsFilterDirection
+    - `inbound` — boolean
+    - `outbound` — boolean
+    - `internal` — boolean
+  - `insights` — array
+    - _array of_ `ListConversationsFilterInsight`
+      - `projectionId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `fieldId` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `match` — string
+      - `matchAny` — array
+        - _array of_ `string`
+  - `channel` — ListConversationsFilterChannel
+    - `sms` — boolean
+    - `whatsapp` — boolean
+    - `kite` — boolean
+  - `date` — union
+    - _oneOf_ — exactly one of:
+      - **`absolute`**
+        - `absolute` — ListConversationsFilterAbsoluteDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterAbsoluteDate` in the Schemas appendix)_
+      - **`predefined`**
+        - `predefined` — ListConversationsFilterPredefinedDate **(required)**
+          - _(nesting depth limit — see `ListConversationsFilterPredefinedDate` in the Schemas appendix)_
+  - `dayOfWeek` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `hourOfDay` — ListConversationsFilterDateIndex
+    - `index` — number
+    - `timeZone` — string
+  - `present` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `absent` — array
+    - _array of_ `ListConversationsFilterField`
+      - _oneOf_ — exactly one of:
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`service`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`group`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`department`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`chatbot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`voicebot`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`tag`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`pbx`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`trunk`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`queue`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`country`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`location`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`language`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`projection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+- `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+- `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+- `fields` — array **(required)** _(minItems=1; maxItems=64)_
+  - _array of_ `ProjectionField`
+    - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+    - `name` — string **(required)** _(minLen=1; maxLen=256)_
+    - `description` — string _(minLen=1; maxLen=4096)_
+    - `optional` — boolean
+    - `parameter` — union **(required)**
+      - _oneOf_ — exactly one of:
+        - **`text`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`multiline`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`selection`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+
+**`UpdateProjectionResponseContent`**
+
+- `projection` — Projection **(required)**
+  - `category` — string — Free-form category label for projection grouping. _(minLen=1; maxLen=128)_
+  - `categoryId` — string — Compatibility field for legacy clients. Use `category` instead. This shape is deprecated. _(minLen=1; maxLen=32; deprecated)_
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+  - `description` — string _(minLen=1; maxLen=4096)_
+  - `instructions` — string _(minLen=1; maxLen=16384)_
+  - `conditions` — array — Deprecated in favor to filter options. Conditions is automatically converted to the filter. This shape is deprecated. _(deprecated)_
+    - _array of_ `ProjectionCondition`
+      - _oneOf_ — exactly one of:
+        - **`entity`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`direction`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`participants`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`duration`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+  - `filter` — ListConversationsFilter
+    - `id` — array
+      - _array of_ `ConversationTarget`
+        - _(nesting depth limit — see `ConversationTarget` in the Schemas appendix)_
+    - `entity` — ListConversationsFilterEntity
+      - `call` — boolean
+      - `conference` — boolean
+      - `chat` — boolean
+    - `participants` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToInclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `participantsToExclude` — array
+      - _array of_ `ListConversationsFilterParticipant`
+        - _(nesting depth limit — see `ListConversationsFilterParticipant` in the Schemas appendix)_
+    - `chatbots` — array
+      - _array of_ `string`
+    - `voicebots` — array
+      - _array of_ `string`
+    - `service` — array
+      - _array of_ `string`
+    - `group` — array
+      - _array of_ `string`
+    - `department` — array
+      - _array of_ `string`
+    - `tag` — array
+      - _array of_ `string`
+    - `pbx` — array
+      - _array of_ `string`
+    - `trunk` — array
+      - _array of_ `string`
+    - `queue` — array
+      - _array of_ `string`
+    - `country` — array
+      - _array of_ `string`
+    - `location` — array
+      - _array of_ `string`
+    - `phases` — array
+      - _array of_ `string`
+    - `language` — array
+      - _array of_ `string`
+    - `duration` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `connectTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `talkTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `waitTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `queueTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `holdTime` — ListConversationsFilterNumber
+      - `from` — number
+      - `to` — number
+    - `interaction` — ListConversationsFilterInteraction
+      - `talkRatio` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `wordsPerMinute` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `interruptions` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `patience` — ListConversationsFilterFloat
+        - _(nesting depth limit — see `ListConversationsFilterFloat` in the Schemas appendix)_
+      - `longestMonologue` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+      - `longestCustomerStory` — ListConversationsFilterNumber
+        - _(nesting depth limit — see `ListConversationsFilterNumber` in the Schemas appendix)_
+    - `recorded` — boolean
+    - `transcribed` — boolean
+    - `direction` — ListConversationsFilterDirection
+      - `inbound` — boolean
+      - `outbound` — boolean
+      - `internal` — boolean
+    - `insights` — array
+      - _array of_ `ListConversationsFilterInsight`
+        - _(nesting depth limit — see `ListConversationsFilterInsight` in the Schemas appendix)_
+    - `channel` — ListConversationsFilterChannel
+      - `sms` — boolean
+      - `whatsapp` — boolean
+      - `kite` — boolean
+    - `date` — union
+      - _oneOf_ — exactly one of:
+        - **`absolute`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+        - **`predefined`**
+          - _(nesting depth limit — inline object, see the parent schema in the Schemas appendix)_
+    - `dayOfWeek` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `hourOfDay` — ListConversationsFilterDateIndex
+      - `index` — number
+      - `timeZone` — string
+    - `present` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+    - `absent` — array
+      - _array of_ `ListConversationsFilterField`
+        - _(nesting depth limit — see `ListConversationsFilterField` in the Schemas appendix)_
+  - `model` — string — Provider and model identifier to be used for the projection. Examples: 'openai://gpt-5' or 'google://gemini-3-pro'. This allows a specific projection to use the specified model.
+  - `group` — string — An execution group for the projection. If specified, only projections from the same group will be combined into a single LLM request.
+  - `fields` — array **(required)** _(minItems=1; maxItems=64)_
+    - _array of_ `ProjectionField`
+      - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+      - `name` — string **(required)** _(minLen=1; maxLen=256)_
+      - `description` — string _(minLen=1; maxLen=4096)_
+      - `optional` — boolean
+      - `parameter` — union **(required)**
+        - _(nesting depth limit — see `ProjectionParameter` in the Schemas appendix)_
+  - `id` — string **(required)** _(pattern=^[a-zA-Z0-9_]+$; minLen=1; maxLen=32)_
+  - `status` — string **(required)** _(enum: `ENABLED`, `PAUSED`, `DISABLED`)_
+  - `version` — number **(required)**
+  - `createdAt` — string **(required)**
+  - `updatedAt` — string
+  - `metadata` — ProjectionMetadata
+    - `predefined` — boolean
+    - `customized` — boolean — True when a predefined projection has tenant-specific overrides applied.
+
+**`UpdateProjectionsCategoryRequestContent`**
+
+- `name` — string **(required)** _(minLen=1; maxLen=128)_
+
+**`UpdateProjectionsCategoryResponseContent`**
+
+- `category` — ProjectionsCategory **(required)**
+  - `id` — string **(required)** _(minLen=1; maxLen=32)_
+  - `name` — string **(required)** _(minLen=1; maxLen=128)_
+
+**`User`**
+
+- `id` — string **(required)** _(minLen=12; maxLen=12)_
+- `name` — string
+- `email` — string _(pattern=^(^[\w+-]+(\.[\w+-]+)*)@(([\w-]+\.)+\w{2,}$)$)_
+- `phone` — string
+- `picture` — string
+- `locale` — string
+- `timeZone` — string
+- `company` — string
+- `bot` — boolean
+- `pbxDomain` — string
+- `pbxPort` — string
+- `pbxExtension` — string
+- `pbxSerial` — string
+- `pbxUserId` — string
+- `pbxGroupId` — string
+- `createdAt` — string
+- `updatedAt` — string
+
+**`ValidationExceptionResponseContent`**
+
+- `message` — string **(required)**
+
+**`WatchItem`**
+
+- `target` — union **(required)**
+  - _oneOf_ — exactly one of:
+    - **`call`**
+      - `call` — CallConversationTarget **(required)**
+        - `callId` — string **(required)**
+        - `flowIndex` — number **(required)**
+    - **`conference`**
+      - `conference` — ConferenceConversationTarget **(required)**
+        - `conferenceId` — string **(required)**
+    - **`chat`**
+      - `chat` — ChatConversationTarget **(required)**
+        - `chatId` — string **(required)**
+- `playback` — ConversationPlaybackState
+  - `position` — number
+  - `duration` — number
+- `firstWatchedAt` — string **(required)**
+- `lastWatchedAt` — string **(required)**
+
+**`WatchRequestContent`**
+
+- `target` — union **(required)**
+  - _oneOf_ — exactly one of:
+    - **`call`**
+      - `call` — CallConversationTarget **(required)**
+        - `callId` — string **(required)**
+        - `flowIndex` — number **(required)**
+    - **`conference`**
+      - `conference` — ConferenceConversationTarget **(required)**
+        - `conferenceId` — string **(required)**
+    - **`chat`**
+      - `chat` — ChatConversationTarget **(required)**
+        - `chatId` — string **(required)**
+- `playback` — ConversationPlaybackState
+  - `position` — number
+  - `duration` — number
+
+</details>

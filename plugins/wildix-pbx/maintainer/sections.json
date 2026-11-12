@@ -1,0 +1,252 @@
+[
+ {
+  "title": "PBX API",
+  "spec": "pbx-openapi.yaml",
+  "page": "/api-reference/rest/wms/pbx"
+ },
+ {
+  "title": "Cloud PBX API (Permissions)",
+  "spec": "wms-permissions-client.json",
+  "page": "/api-reference/rest/wms/permissions"
+ },
+ {
+  "title": "Cloud PBX Server API",
+  "spec": "wms-api-client.json",
+  "page": "/api-reference/rest/wms/server"
+ },
+ {
+  "title": "Conversations API",
+  "spec": "xbees-conversations-client.json",
+  "page": "/api-reference/rest/x-bees/conversations"
+ },
+ {
+  "title": "Assistant API",
+  "spec": "xbees-assistant-client.json",
+  "page": "/api-reference/rest/x-bees/assistant"
+ },
+ {
+  "title": "Kite API",
+  "spec": "xbees-kite-client.json",
+  "page": "/api-reference/rest/x-bees/kite"
+ },
+ {
+  "title": "Users & ChatBots API",
+  "spec": "xbees-users-client.json",
+  "page": "/api-reference/rest/x-bees/users"
+ },
+ {
+  "title": "Auth Service",
+  "spec": "auth-client.json",
+  "page": "/api-reference/rest/auth/auth"
+ },
+ {
+  "title": "Auth API Keys Service",
+  "spec": "auth-api-keys-client.json",
+  "page": "/api-reference/rest/auth/auth-api-keys"
+ },
+ {
+  "title": "CDS CA API",
+  "spec": "cds-ca-client.json",
+  "page": "/api-reference/rest/cds/ca"
+ },
+ {
+  "title": "CDS Console API",
+  "spec": "cds-console-api-client.json",
+  "page": "/api-reference/rest/cds/console-api"
+ },
+ {
+  "title": "CDS PBX API",
+  "spec": "cds-pbx-client.json",
+  "page": "/api-reference/rest/cds/pbx"
+ },
+ {
+  "title": "CDS Utils API",
+  "spec": "cds-utils-client.json",
+  "page": "/api-reference/rest/cds/utils"
+ },
+ {
+  "title": "WAM API",
+  "spec": "wam-client.json",
+  "page": "/api-reference/rest/wam/token"
+ },
+ {
+  "title": "Integrations API",
+  "spec": "wim-integrations-client.json",
+  "page": "/api-reference/rest/wim/integrations"
+ },
+ {
+  "title": "Calendar API",
+  "spec": "wim-calendar-client.json",
+  "page": "/api-reference/rest/wim/calendar"
+ },
+ {
+  "title": "Cache API",
+  "spec": "wim-cache-client.json",
+  "page": "/api-reference/rest/wim/cache"
+ },
+ {
+  "title": "Knowledge Base API",
+  "spec": "wim-knowledge-base-client.json",
+  "page": "/api-reference/rest/wim/knowledge-base"
+ },
+ {
+  "title": "Wim Tools API",
+  "spec": "wim-tools-client.json",
+  "page": "/api-reference/rest/wim/tools"
+ },
+ {
+  "title": "VoiceBots API",
+  "spec": "wim-voicebots-client.json",
+  "page": "/api-reference/rest/wim/voicebots"
+ },
+ {
+  "title": "WNS Email API",
+  "spec": "wns-email-client.json",
+  "page": "/api-reference/rest/wns/email"
+ },
+ {
+  "title": "WNS Push API",
+  "spec": "wns-push-collaboration-client.json",
+  "page": "/api-reference/rest/wns/push"
+ },
+ {
+  "title": "Broadcasts API (x-hoppers)",
+  "spec": "xhop-broadcasts-client.json",
+  "page": "/api-reference/rest/x-hoppers/broadcasts"
+ },
+ {
+  "title": "WMP Info API",
+  "spec": "wmp-api-client.json",
+  "page": "/api-reference/rest/wmp/info"
+ },
+ {
+  "title": "Filesharing Service",
+  "spec": "fs-main-client.json",
+  "page": "/api-reference/rest/collaboration-services/filesharing"
+ },
+ {
+  "title": "GEO Service",
+  "spec": "geo-main-client.json",
+  "page": "/api-reference/rest/collaboration-services/geo"
+ },
+ {
+  "title": "MFA Service",
+  "spec": "mfa-main-client.json",
+  "page": "/api-reference/rest/collaboration-services/mfa"
+ },
+ {
+  "title": "SSL Service",
+  "spec": "ssl-main-client.json",
+  "page": "/api-reference/rest/collaboration-services/ssl"
+ },
+ {
+  "title": "STT Service",
+  "spec": "stt-main-client.json",
+  "page": "/api-reference/rest/collaboration-services/stt"
+ },
+ {
+  "title": "TTS Service",
+  "spec": "tts-main-client.json",
+  "page": "/api-reference/rest/collaboration-services/tts"
+ },
+ {
+  "title": "URL-Preview Service",
+  "spec": "url-preview-main-client.json",
+  "page": "/api-reference/rest/collaboration-services/url_preview"
+ },
+ {
+  "title": "Classound API",
+  "spec": "classound-client.json",
+  "page": "/api-reference/rest/classound/api"
+ },
+ {
+  "title": "History API",
+  "spec": "wda-history-client.json",
+  "page": "/api-reference/rest/wda/history"
+ },
+ {
+  "title": "Insights API",
+  "spec": "wda-insights-client.json",
+  "page": "/api-reference/rest/wda/insights"
+ },
+ {
+  "title": "Stream API",
+  "spec": "wda-stream-client.json",
+  "page": "/api-reference/rest/wda/stream"
+ },
+ {
+  "title": "x-caracal API",
+  "spec": "wda-xcaracal-client.json",
+  "page": "/api-reference/rest/wda/xcaracal"
+ },
+ {
+  "title": "Wilma Agents API",
+  "spec": "wilma-agents-client.json",
+  "page": "/api-reference/rest/wilma/agents"
+ },
+ {
+  "title": "Wilma Artifacts API",
+  "spec": "wilma-artifacts-client.json",
+  "page": "/api-reference/rest/wilma/artifacts"
+ },
+ {
+  "title": "Wilma Assistant API",
+  "spec": "wilma-assistant-client.json",
+  "page": "/api-reference/rest/wilma/assistant"
+ },
+ {
+  "title": "Wilma Audit API",
+  "spec": "wilma-audit-client.json",
+  "page": "/api-reference/rest/wilma/audit"
+ },
+ {
+  "title": "Wilma Chat API",
+  "spec": "wilma-chat-client.json",
+  "page": "/api-reference/rest/wilma/chat"
+ },
+ {
+  "title": "Wilma Copilot API",
+  "spec": "wilma-copilot-client.json",
+  "page": "/api-reference/rest/wilma/copilot"
+ },
+ {
+  "title": "Wilma Copilot Sessions API",
+  "spec": "wilma-copilot-sessions-client.json",
+  "page": "/api-reference/rest/wilma/copilot-sessions"
+ },
+ {
+  "title": "Wilma Sandbox API",
+  "spec": "wilma-sandbox-client.json",
+  "page": "/api-reference/rest/wilma/sandbox"
+ },
+ {
+  "title": "Wilma Secrets API (Credential Broker)",
+  "spec": "wilma-secrets-client.json",
+  "page": "/api-reference/rest/wilma/secrets"
+ },
+ {
+  "title": "Wilma Skills API",
+  "spec": "wilma-skills-client.json",
+  "page": "/api-reference/rest/wilma/skills"
+ },
+ {
+  "title": "Wilma Tools API",
+  "spec": "wilma-tools-client.json",
+  "page": "/api-reference/rest/wilma/tools"
+ },
+ {
+  "title": "Wilma Traces API",
+  "spec": "wilma-traces-client.json",
+  "page": "/api-reference/rest/wilma/traces"
+ },
+ {
+  "title": "Wilma Voice API",
+  "spec": "wilma-voice-client.json",
+  "page": "/api-reference/rest/wilma/voice"
+ },
+ {
+  "title": "Wilma Workflows API",
+  "spec": "wilma-workflows-client.json",
+  "page": "/api-reference/rest/wilma/workflows"
+ }
+]
