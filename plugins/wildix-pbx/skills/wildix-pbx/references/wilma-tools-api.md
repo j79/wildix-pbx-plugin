@@ -1,4 +1,4 @@
-## Wilma Tools API 🆕
+## Wilma Tools API
 
 _OpenAPI: Wilma Tools Service — version v2_
 

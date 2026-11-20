@@ -1,4 +1,4 @@
-## Wilma Assistant API 🆕
+## Wilma Assistant API
 
 _OpenAPI: Wilma Assistant Service — version v2_
 
@@ -1234,9 +1234,157 @@ Updates AI assistant settings for the user. Only supplied fields are changed.
       - `reason` — string — Why Copilot is or is not available to the user. _(enum: `available`, `no_live_profile`, `not_in_audience`)_
 - Errors: `400`, `403`
 
+### Other
+
+#### `POST` `/v2/assistant/voice/describe` 🆕
+
+Describes the connect parameters and the frames of the assistant voice WebSocket `/v2/assistant/voice/ws`. Utility method: use the generated shapes to build a client or a server of the socket.
+
+- operationId: `DescribeAssistantVoiceProtocol`
+- **Scopes**: `wilma-assistant:DescribeAssistantVoiceProtocol`, `wilma-assistant:read`
+- **Response 200** (`DescribeAssistantVoiceProtocolResponseContent`)
+  - `connectParams` — AssistantVoiceConnectParams — Query parameters of the upgrade request. The server refuses a bad value with HTTP 400 and ignores a query parameter that is not in this list. An end-user token may not send `agentDraft` or `agentVersion`: the server refuses them with HTTP 401. For an end-user token the server ignores `callerName` and `callerEmail`.
+    - `agentId` — string **(required)** — Agent to run. _(minLen=12; maxLen=12)_
+    - `sessionId` — string — Session to join, for example the chat session of the conversation. Absent: the server starts a new session. _(minLen=1; maxLen=128)_
+    - `inputMode` — string — How the user input reaches the service. _(enum: `transcription`, `audio`)_
+    - `audio` — string — Format of the caller audio, as `<codec>/<rate>`. _(enum: `pcm16/16000`)_
+    - `activity` — boolean — True to get activity events: `thinking` when a caller utterance goes to the agent, and `tool` with the tool name and phase of each tool call, without arguments or results. Absent: false.
+    - `resume` — boolean — True: attach the running voice session `sessionId` again, with no greeting. Requires `sessionId`.
+    - `agentVersion` — number — Published agent version to run. Not valid with `agentDraft`. Absent: the agent configuration selects the version. Refused for an end-user token. _(min=1)_
+    - `agentDraft` — boolean — True to run the agent draft. Refused for an end-user token.
+    - `language` — string — BCP-47 language of the conversation, for example `en-US`.
+    - `callerName` — string — Name of the caller. Ignored for an end-user token.
+    - `callerEmail` — string — Email of the caller. Ignored for an end-user token.
+    - `user` — string — Owner user of the session, for a token that is not an end-user token. Absent: no user. An end-user token is its own user: another value gets HTTP 401. _(minLen=12; maxLen=12)_
+  - `client` — AssistantVoiceClientFrames — One example of each message that the client sends.
+    - `healthcheck` — VoiceHealthcheckCommand — Liveness check of the service by the client: `{"type": "healthcheck"}`, with no envelope. The service sends no answer.
+      - `type` — string **(required)** _(default=healthcheck)_
+    - `mute` — AssistantVoiceMuteCommand — Mute or unmute the caller audio. While muted, the server drops the caller audio. Only with `inputMode=audio`; otherwise the server sends the error `PROTOCOL_ERROR`.
+      - `type` — string **(required)** _(default=mute)_
+      - `muted` — boolean **(required)** — True to mute.
+    - `hangup` — VoiceHangupCommand — End the session and hang up the call.
+      - `reason` — string — Why the session ended.
+      - `type` — object **(required)**
+    - `transcription` — VoiceTranscriptionEvent — A transcription chunk of caller speech. A client that does its own speech-to-text sends it. When the service does the speech-to-text, the service sends it to the client.
+      - `type` — object **(required)**
+      - `id` — string — Id of the utterance. The interim chunks and the final chunk of one utterance have the same id. Absent: the service makes a new id.
+      - `text` — string **(required)** — Text of the chunk. Must not be empty. _(minLen=1)_
+      - `confidence` — number — Confidence of the recogniser. The service ignores a value outside 0 to 1. _(format=double)_
+      - `final` — boolean — True when the chunk is the final transcript of the utterance. False for an interim result. Absent: true.
+      - `language` — string — Language that the recogniser identified for the chunk. The service records it and does not change the conversation language. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+      - `time` — number — Time of the chunk, in epoch ms. Absent: the time when the service received it.
+    - `agentTranscription` — VoiceAgentTranscriptionEvent — A transcription chunk of the agent speech, as the caller hears it. It does not start a turn.
+      - `type` — object **(required)**
+      - `id` — string — Id of the utterance. Absent: the service makes a new id.
+      - `text` — string **(required)** — Text of the chunk. Must not be empty. _(minLen=1)_
+      - `confidence` — number — Confidence of the recogniser. The service does not record it. _(format=double)_
+      - `final` — boolean — True when the chunk is the final transcript of the utterance. False for an interim result. Absent: true.
+      - `language` — string — Language that the recogniser identified for the chunk. The service records it and does not change the conversation language. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+      - `time` — number — Time of the chunk, in epoch ms. Absent: the time when the service received it.
+    - `reply` — VoiceReplyEvent — A final caller utterance. It starts an agent turn.
+      - `type` — object **(required)**
+      - `id` — string — Id of the utterance. Absent: the service makes a new id.
+      - `text` — string **(required)** — Text of the utterance. Must not be empty. _(minLen=1)_
+      - `time` — number — Time of the utterance, in epoch ms. Absent: the time when the service received it.
+      - `language` — string — Language that the recogniser identified for the utterance. A value that is different from the conversation language changes the conversation language. When the utterance has segments in more than one language, send the language of the last segment. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+      - `confidence` — number — Confidence of the recogniser for the utterance. The service ignores a value outside 0 to 1. _(format=double)_
+      - `startTime` — number — Start of the speech, in epoch ms on the client clock. The service ignores 0.
+      - `endTime` — number — End of the speech, in epoch ms on the client clock. The service ignores 0.
+    - `playback` — VoicePlaybackEvent — Progress of the playback of a reply on the client.
+      - `type` — object **(required)**
+      - `replyId` — string — Reply that the client plays.
+      - `text` — string — Text of the reply that the client played.
+      - `complete` — boolean **(required)** — True when the client played the reply to its end.
+      - `startTime` — number — Start of the playback, in epoch ms on the client clock. The service ignores 0.
+      - `endTime` — number — End of the playback, in epoch ms on the client clock. The service ignores 0.
+    - `interruption` — VoiceInterruptionEvent — The caller spoke over a reply while the client played it.
+      - `type` — object **(required)**
+      - `replyId` — string — Reply that the caller interrupted.
+      - `playedText` — string — Part of the reply that the client played before the interruption.
+      - `originalText` — string — Full text of the reply.
+      - `time` — number — Time of the interruption, in epoch ms on the client clock. The service ignores 0.
+    - `complete` — VoiceCompleteEvent — The call or the conversation is complete, for example because the caller hung up. The service ends the session. The service also accepts `type` `ended` with the same meaning.
+      - `type` — object **(required)**
+      - `reason` — string — Why the call is complete. Absent: the value of `type`.
+      - `time` — number — Time of the completion, in epoch ms. The service ignores it.
+  - `server` — AssistantVoiceServerFrames — One example of each message that the server sends.
+    - `started` — VoiceSessionStartedEvent — The session is ready. Sent once after the handshake, on the PBX voice socket only when the client sends protocol version 1 or more.
+      - `type` — object **(required)**
+      - `time` — number **(required)** — Time of the event, in epoch ms.
+      - `sessionId` — string **(required)** — Id of the session. _(minLen=1; maxLen=128)_
+      - `agentId` — string **(required)** — Agent of the session. _(minLen=12; maxLen=12)_
+      - `agentVersion` — number — Published agent version of the session. Absent when the session runs the agent draft. _(min=1)_
+      - `traceId` — string — Trace of the session. It does not change during the session. _(minLen=1; maxLen=128)_
+      - `agentName` — string — Display name of the agent.
+      - `category` — string — Category of the agent.
+      - `groupId` — string — PBX group of the agent, for data access control. Empty when the agent has no group.
+      - `speech` — VoiceSpeechPayload — Speech recognition settings of the call. The client applies them to its recogniser.
+        - `engine` — string **(required)** — Recogniser URI. Always present. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
+        - `languages` — array **(required)** — All configured languages. These are the candidates for language identification.
+          - _array of_ `string`
+        - `preferredLanguage` — string **(required)** — Language at the start of the call. Always a member of `languages`. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+        - `autoDetect` — boolean **(required)** — True to identify the spoken language of each utterance. False when `languages` has fewer languages than the recogniser needs, or when the recogniser cannot identify languages.
+      - `backgroundSound` — string — Music-on-hold class to play as background sound of the call. Absent: no background sound. _(pattern=^[^\r\n]+$; minLen=1; maxLen=64)_
+    - `ended` — VoiceSessionEndedEvent — The session ended. This is the last event of the session.
+      - `type` — object **(required)**
+      - `reason` — string — Why the session ended.
+      - `error` — string — Present when the session ended because of an error.
+      - `time` — number **(required)** — Time of the event, in epoch ms.
+    - `error` — VoiceErrorEvent — An error on the connection. The session continues, unless a `ended` event follows.
+      - `type` — object **(required)**
+      - `code` — string **(required)** — Error code. The value is stable.
+      - `message` — string **(required)** — Description of the error.
+      - `time` — number **(required)** — Time of the event, in epoch ms.
+    - `transcription` — VoiceTranscriptionEvent — A transcription chunk of caller speech. A client that does its own speech-to-text sends it. When the service does the speech-to-text, the service sends it to the client.
+      - `type` — object **(required)**
+      - `id` — string — Id of the utterance. The interim chunks and the final chunk of one utterance have the same id. Absent: the service makes a new id.
+      - `text` — string **(required)** — Text of the chunk. Must not be empty. _(minLen=1)_
+      - `confidence` — number — Confidence of the recogniser. The service ignores a value outside 0 to 1. _(format=double)_
+      - `final` — boolean — True when the chunk is the final transcript of the utterance. False for an interim result. Absent: true.
+      - `language` — string — Language that the recogniser identified for the chunk. The service records it and does not change the conversation language. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+      - `time` — number — Time of the chunk, in epoch ms. Absent: the time when the service received it.
+    - `interruption` — VoiceInterruptionEvent — The caller spoke over a reply while the client played it.
+      - `type` — object **(required)**
+      - `replyId` — string — Reply that the caller interrupted.
+      - `playedText` — string — Part of the reply that the client played before the interruption.
+      - `originalText` — string — Full text of the reply.
+      - `time` — number — Time of the interruption, in epoch ms on the client clock. The service ignores 0.
+    - `thinking` — VoiceThinkingEvent — A caller utterance went to the agent. Sent only with the connect parameter `activity=true`.
+      - `type` — object **(required)**
+      - `time` — number **(required)** — Time of the event, in epoch ms.
+    - `tool` — VoiceToolEvent — A tool call of the agent started or finished. The event has the name and the phase only, and no arguments and no results. Sent only with the connect parameter `activity=true`.
+      - `type` — object **(required)**
+      - `toolCallId` — string **(required)** — Id of the tool call. The `started` event and the `finished` event of one call have the same id.
+      - `toolName` — string **(required)** — Name of the tool.
+      - `phase` — string **(required)** — Phase of a tool call of the agent. _(enum: `started`, `finished`)_
+      - `time` — number **(required)** — Time of the event, in epoch ms.
+    - `say` — VoiceSayCommand — Play a reply to the caller. When `audio` is present, the service sends the audio of the reply in `play` commands. When `audio` is absent, the client shows `text` or synthesizes it itself.
+      - `text` — string **(required)** — Text of the reply.
+      - `replyId` — string **(required)** — Id of the reply.
+      - `interruptible` — boolean — True when the caller can interrupt the reply.
+      - `audio` — VoiceSayCommandAudioOptions — Audio of a reply that the service synthesizes. `play` commands with this stream id follow the `say` command.
+        - `streamId` — string **(required)**
+        - `sampleRate` — number **(required)** — Sample rate of the `pcm_s16le` mono audio of the `play` commands, in Hz: 8000, 12000, 16000, 24000, 32000, 44100 or 48000.
+      - `type` — object **(required)**
+    - `play` — VoicePlayCommand — A chunk of synthesized audio of a reply. `data` is base64 of PCM audio at the sample rate of the `say` command. An empty `data` marks the end of the stream.
+      - `replyId` — string **(required)**
+      - `streamId` — string **(required)**
+      - `data` — string **(required)**
+      - `type` — object **(required)**
+    - `stop` — VoiceStopCommand — Stop the audio of the agent.
+      - `type` — object **(required)**
+    - `hangup` — VoiceHangupCommand — End the session and hang up the call.
+      - `reason` — string — Why the session ended.
+      - `type` — object **(required)**
+    - `transfer` — VoiceTransferCommand — Transfer the call to a PBX destination and end the session. Only a PBX client does the transfer.
+      - `context` — string **(required)** — Dialplan context of the destination. _(minLen=1)_
+      - `extension` — string **(required)** — Extension of the destination. _(minLen=1)_
+      - `type` — object **(required)**
+- Errors: `400`
+
 ### Schemas appendix — Wilma Assistant API
 
-<details><summary>132 component schemas</summary>
+<details><summary>161 component schemas</summary>
 
 **`Actor`**
 
@@ -1791,6 +1939,174 @@ _How the agent presents itself in the assistant UI: what the user reads before t
     - `prompt` — string **(required)** — The message actually sent when the card is picked. Usually longer and more explicit than the label, since it is what the model reads. _(minLen=1; maxLen=2000)_
 - `placeholder` — string — Placeholder text in the composer, e.g. 'Ask about an account…'. Defaults to the client's own placeholder when omitted. _(minLen=1; maxLen=100)_
 
+**`AssistantVoiceAudioParam`**
+
+_Format of the caller audio, as `<codec>/<rate>`._
+
+- string _(enum: `pcm16/16000`)_
+
+**`AssistantVoiceClientFrames`**
+
+_One example of each message that the client sends._
+
+- `healthcheck` — VoiceHealthcheckCommand — Liveness check of the service by the client: `{"type": "healthcheck"}`, with no envelope. The service sends no answer.
+  - `type` — string **(required)** _(default=healthcheck)_
+- `mute` — AssistantVoiceMuteCommand — Mute or unmute the caller audio. While muted, the server drops the caller audio. Only with `inputMode=audio`; otherwise the server sends the error `PROTOCOL_ERROR`.
+  - `type` — string **(required)** _(default=mute)_
+  - `muted` — boolean **(required)** — True to mute.
+- `hangup` — VoiceHangupCommand — End the session and hang up the call.
+  - `reason` — string — Why the session ended.
+  - `type` — object **(required)**
+- `transcription` — VoiceTranscriptionEvent — A transcription chunk of caller speech. A client that does its own speech-to-text sends it. When the service does the speech-to-text, the service sends it to the client.
+  - `type` — object **(required)**
+  - `id` — string — Id of the utterance. The interim chunks and the final chunk of one utterance have the same id. Absent: the service makes a new id.
+  - `text` — string **(required)** — Text of the chunk. Must not be empty. _(minLen=1)_
+  - `confidence` — number — Confidence of the recogniser. The service ignores a value outside 0 to 1. _(format=double)_
+  - `final` — boolean — True when the chunk is the final transcript of the utterance. False for an interim result. Absent: true.
+  - `language` — string — Language that the recogniser identified for the chunk. The service records it and does not change the conversation language. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+  - `time` — number — Time of the chunk, in epoch ms. Absent: the time when the service received it.
+- `agentTranscription` — VoiceAgentTranscriptionEvent — A transcription chunk of the agent speech, as the caller hears it. It does not start a turn.
+  - `type` — object **(required)**
+  - `id` — string — Id of the utterance. Absent: the service makes a new id.
+  - `text` — string **(required)** — Text of the chunk. Must not be empty. _(minLen=1)_
+  - `confidence` — number — Confidence of the recogniser. The service does not record it. _(format=double)_
+  - `final` — boolean — True when the chunk is the final transcript of the utterance. False for an interim result. Absent: true.
+  - `language` — string — Language that the recogniser identified for the chunk. The service records it and does not change the conversation language. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+  - `time` — number — Time of the chunk, in epoch ms. Absent: the time when the service received it.
+- `reply` — VoiceReplyEvent — A final caller utterance. It starts an agent turn.
+  - `type` — object **(required)**
+  - `id` — string — Id of the utterance. Absent: the service makes a new id.
+  - `text` — string **(required)** — Text of the utterance. Must not be empty. _(minLen=1)_
+  - `time` — number — Time of the utterance, in epoch ms. Absent: the time when the service received it.
+  - `language` — string — Language that the recogniser identified for the utterance. A value that is different from the conversation language changes the conversation language. When the utterance has segments in more than one language, send the language of the last segment. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+  - `confidence` — number — Confidence of the recogniser for the utterance. The service ignores a value outside 0 to 1. _(format=double)_
+  - `startTime` — number — Start of the speech, in epoch ms on the client clock. The service ignores 0.
+  - `endTime` — number — End of the speech, in epoch ms on the client clock. The service ignores 0.
+- `playback` — VoicePlaybackEvent — Progress of the playback of a reply on the client.
+  - `type` — object **(required)**
+  - `replyId` — string — Reply that the client plays.
+  - `text` — string — Text of the reply that the client played.
+  - `complete` — boolean **(required)** — True when the client played the reply to its end.
+  - `startTime` — number — Start of the playback, in epoch ms on the client clock. The service ignores 0.
+  - `endTime` — number — End of the playback, in epoch ms on the client clock. The service ignores 0.
+- `interruption` — VoiceInterruptionEvent — The caller spoke over a reply while the client played it.
+  - `type` — object **(required)**
+  - `replyId` — string — Reply that the caller interrupted.
+  - `playedText` — string — Part of the reply that the client played before the interruption.
+  - `originalText` — string — Full text of the reply.
+  - `time` — number — Time of the interruption, in epoch ms on the client clock. The service ignores 0.
+- `complete` — VoiceCompleteEvent — The call or the conversation is complete, for example because the caller hung up. The service ends the session. The service also accepts `type` `ended` with the same meaning.
+  - `type` — object **(required)**
+  - `reason` — string — Why the call is complete. Absent: the value of `type`.
+  - `time` — number — Time of the completion, in epoch ms. The service ignores it.
+
+**`AssistantVoiceConnectParams`**
+
+_Query parameters of the upgrade request. The server refuses a bad value with HTTP 400 and ignores a query parameter that is not in this list. An end-user token may not send `agentDraft` or `agentVersion`: the server refuses them with HTTP 401. For an end-user token the server ignores `callerName` and `callerEmail`._
+
+- `agentId` — string **(required)** — Agent to run. _(minLen=12; maxLen=12)_
+- `sessionId` — string — Session to join, for example the chat session of the conversation. Absent: the server starts a new session. _(minLen=1; maxLen=128)_
+- `inputMode` — string — How the user input reaches the service. _(enum: `transcription`, `audio`)_
+- `audio` — string — Format of the caller audio, as `<codec>/<rate>`. _(enum: `pcm16/16000`)_
+- `activity` — boolean — True to get activity events: `thinking` when a caller utterance goes to the agent, and `tool` with the tool name and phase of each tool call, without arguments or results. Absent: false.
+- `resume` — boolean — True: attach the running voice session `sessionId` again, with no greeting. Requires `sessionId`.
+- `agentVersion` — number — Published agent version to run. Not valid with `agentDraft`. Absent: the agent configuration selects the version. Refused for an end-user token. _(min=1)_
+- `agentDraft` — boolean — True to run the agent draft. Refused for an end-user token.
+- `language` — string — BCP-47 language of the conversation, for example `en-US`.
+- `callerName` — string — Name of the caller. Ignored for an end-user token.
+- `callerEmail` — string — Email of the caller. Ignored for an end-user token.
+- `user` — string — Owner user of the session, for a token that is not an end-user token. Absent: no user. An end-user token is its own user: another value gets HTTP 401. _(minLen=12; maxLen=12)_
+
+**`AssistantVoiceInputMode`**
+
+_How the user input reaches the service._
+
+- string _(enum: `transcription`, `audio`)_
+
+**`AssistantVoiceMuteCommand`**
+
+_Mute or unmute the caller audio. While muted, the server drops the caller audio. Only with `inputMode=audio`; otherwise the server sends the error `PROTOCOL_ERROR`._
+
+- `type` — string **(required)** _(default=mute)_
+- `muted` — boolean **(required)** — True to mute.
+
+**`AssistantVoiceServerFrames`**
+
+_One example of each message that the server sends._
+
+- `started` — VoiceSessionStartedEvent — The session is ready. Sent once after the handshake, on the PBX voice socket only when the client sends protocol version 1 or more.
+  - `type` — object **(required)**
+  - `time` — number **(required)** — Time of the event, in epoch ms.
+  - `sessionId` — string **(required)** — Id of the session. _(minLen=1; maxLen=128)_
+  - `agentId` — string **(required)** — Agent of the session. _(minLen=12; maxLen=12)_
+  - `agentVersion` — number — Published agent version of the session. Absent when the session runs the agent draft. _(min=1)_
+  - `traceId` — string — Trace of the session. It does not change during the session. _(minLen=1; maxLen=128)_
+  - `agentName` — string — Display name of the agent.
+  - `category` — string — Category of the agent.
+  - `groupId` — string — PBX group of the agent, for data access control. Empty when the agent has no group.
+  - `speech` — VoiceSpeechPayload — Speech recognition settings of the call. The client applies them to its recogniser.
+    - `engine` — string **(required)** — Recogniser URI. Always present. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
+    - `languages` — array **(required)** — All configured languages. These are the candidates for language identification.
+      - _array of_ `string`
+    - `preferredLanguage` — string **(required)** — Language at the start of the call. Always a member of `languages`. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+    - `autoDetect` — boolean **(required)** — True to identify the spoken language of each utterance. False when `languages` has fewer languages than the recogniser needs, or when the recogniser cannot identify languages.
+  - `backgroundSound` — string — Music-on-hold class to play as background sound of the call. Absent: no background sound. _(pattern=^[^\r\n]+$; minLen=1; maxLen=64)_
+- `ended` — VoiceSessionEndedEvent — The session ended. This is the last event of the session.
+  - `type` — object **(required)**
+  - `reason` — string — Why the session ended.
+  - `error` — string — Present when the session ended because of an error.
+  - `time` — number **(required)** — Time of the event, in epoch ms.
+- `error` — VoiceErrorEvent — An error on the connection. The session continues, unless a `ended` event follows.
+  - `type` — object **(required)**
+  - `code` — string **(required)** — Error code. The value is stable.
+  - `message` — string **(required)** — Description of the error.
+  - `time` — number **(required)** — Time of the event, in epoch ms.
+- `transcription` — VoiceTranscriptionEvent — A transcription chunk of caller speech. A client that does its own speech-to-text sends it. When the service does the speech-to-text, the service sends it to the client.
+  - `type` — object **(required)**
+  - `id` — string — Id of the utterance. The interim chunks and the final chunk of one utterance have the same id. Absent: the service makes a new id.
+  - `text` — string **(required)** — Text of the chunk. Must not be empty. _(minLen=1)_
+  - `confidence` — number — Confidence of the recogniser. The service ignores a value outside 0 to 1. _(format=double)_
+  - `final` — boolean — True when the chunk is the final transcript of the utterance. False for an interim result. Absent: true.
+  - `language` — string — Language that the recogniser identified for the chunk. The service records it and does not change the conversation language. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+  - `time` — number — Time of the chunk, in epoch ms. Absent: the time when the service received it.
+- `interruption` — VoiceInterruptionEvent — The caller spoke over a reply while the client played it.
+  - `type` — object **(required)**
+  - `replyId` — string — Reply that the caller interrupted.
+  - `playedText` — string — Part of the reply that the client played before the interruption.
+  - `originalText` — string — Full text of the reply.
+  - `time` — number — Time of the interruption, in epoch ms on the client clock. The service ignores 0.
+- `thinking` — VoiceThinkingEvent — A caller utterance went to the agent. Sent only with the connect parameter `activity=true`.
+  - `type` — object **(required)**
+  - `time` — number **(required)** — Time of the event, in epoch ms.
+- `tool` — VoiceToolEvent — A tool call of the agent started or finished. The event has the name and the phase only, and no arguments and no results. Sent only with the connect parameter `activity=true`.
+  - `type` — object **(required)**
+  - `toolCallId` — string **(required)** — Id of the tool call. The `started` event and the `finished` event of one call have the same id.
+  - `toolName` — string **(required)** — Name of the tool.
+  - `phase` — string **(required)** — Phase of a tool call of the agent. _(enum: `started`, `finished`)_
+  - `time` — number **(required)** — Time of the event, in epoch ms.
+- `say` — VoiceSayCommand — Play a reply to the caller. When `audio` is present, the service sends the audio of the reply in `play` commands. When `audio` is absent, the client shows `text` or synthesizes it itself.
+  - `text` — string **(required)** — Text of the reply.
+  - `replyId` — string **(required)** — Id of the reply.
+  - `interruptible` — boolean — True when the caller can interrupt the reply.
+  - `audio` — VoiceSayCommandAudioOptions — Audio of a reply that the service synthesizes. `play` commands with this stream id follow the `say` command.
+    - `streamId` — string **(required)**
+    - `sampleRate` — number **(required)** — Sample rate of the `pcm_s16le` mono audio of the `play` commands, in Hz: 8000, 12000, 16000, 24000, 32000, 44100 or 48000.
+  - `type` — object **(required)**
+- `play` — VoicePlayCommand — A chunk of synthesized audio of a reply. `data` is base64 of PCM audio at the sample rate of the `say` command. An empty `data` marks the end of the stream.
+  - `replyId` — string **(required)**
+  - `streamId` — string **(required)**
+  - `data` — string **(required)**
+  - `type` — object **(required)**
+- `stop` — VoiceStopCommand — Stop the audio of the agent.
+  - `type` — object **(required)**
+- `hangup` — VoiceHangupCommand — End the session and hang up the call.
+  - `reason` — string — Why the session ended.
+  - `type` — object **(required)**
+- `transfer` — VoiceTransferCommand — Transfer the call to a PBX destination and end the session. Only a PBX client does the transfer.
+  - `context` — string **(required)** — Dialplan context of the destination. _(minLen=1)_
+  - `extension` — string **(required)** — Extension of the destination. _(minLen=1)_
+  - `type` — object **(required)**
+
 **`AssistantVoiceSettings`**
 
 _End-user view of an agent's assistant voice. New end-user voice parameters are added here rather than as AgentInfo members._
@@ -2038,6 +2354,146 @@ _The kind of conversation a copilot resource applies to. Singular members and no
 _Where in a conversation's life a copilot resource applies. `before` is the pre-conversation session copilot opens from a client lookup (`Open` in `wildix.wilma.copilot.sessions`): a customer is on screen and no call, conference or chat exists yet. `during` is a live conversation. `after` is everything from the conversation ending onwards - wrap-up, and the post-conversation summary that carries CSAT and topics. A conversation that has not started has no channel and no queue, which is the one rule the other two members of this triple follow from: see `CopilotChannelList` and `CopilotAudienceKind`._
 
 - string _(enum: `before`, `during`, `after`)_
+
+**`DescribeAssistantVoiceProtocolResponseContent`**
+
+- `connectParams` — AssistantVoiceConnectParams — Query parameters of the upgrade request. The server refuses a bad value with HTTP 400 and ignores a query parameter that is not in this list. An end-user token may not send `agentDraft` or `agentVersion`: the server refuses them with HTTP 401. For an end-user token the server ignores `callerName` and `callerEmail`.
+  - `agentId` — string **(required)** — Agent to run. _(minLen=12; maxLen=12)_
+  - `sessionId` — string — Session to join, for example the chat session of the conversation. Absent: the server starts a new session. _(minLen=1; maxLen=128)_
+  - `inputMode` — string — How the user input reaches the service. _(enum: `transcription`, `audio`)_
+  - `audio` — string — Format of the caller audio, as `<codec>/<rate>`. _(enum: `pcm16/16000`)_
+  - `activity` — boolean — True to get activity events: `thinking` when a caller utterance goes to the agent, and `tool` with the tool name and phase of each tool call, without arguments or results. Absent: false.
+  - `resume` — boolean — True: attach the running voice session `sessionId` again, with no greeting. Requires `sessionId`.
+  - `agentVersion` — number — Published agent version to run. Not valid with `agentDraft`. Absent: the agent configuration selects the version. Refused for an end-user token. _(min=1)_
+  - `agentDraft` — boolean — True to run the agent draft. Refused for an end-user token.
+  - `language` — string — BCP-47 language of the conversation, for example `en-US`.
+  - `callerName` — string — Name of the caller. Ignored for an end-user token.
+  - `callerEmail` — string — Email of the caller. Ignored for an end-user token.
+  - `user` — string — Owner user of the session, for a token that is not an end-user token. Absent: no user. An end-user token is its own user: another value gets HTTP 401. _(minLen=12; maxLen=12)_
+- `client` — AssistantVoiceClientFrames — One example of each message that the client sends.
+  - `healthcheck` — VoiceHealthcheckCommand — Liveness check of the service by the client: `{"type": "healthcheck"}`, with no envelope. The service sends no answer.
+    - `type` — string **(required)** _(default=healthcheck)_
+  - `mute` — AssistantVoiceMuteCommand — Mute or unmute the caller audio. While muted, the server drops the caller audio. Only with `inputMode=audio`; otherwise the server sends the error `PROTOCOL_ERROR`.
+    - `type` — string **(required)** _(default=mute)_
+    - `muted` — boolean **(required)** — True to mute.
+  - `hangup` — VoiceHangupCommand — End the session and hang up the call.
+    - `reason` — string — Why the session ended.
+    - `type` — object **(required)**
+  - `transcription` — VoiceTranscriptionEvent — A transcription chunk of caller speech. A client that does its own speech-to-text sends it. When the service does the speech-to-text, the service sends it to the client.
+    - `type` — object **(required)**
+    - `id` — string — Id of the utterance. The interim chunks and the final chunk of one utterance have the same id. Absent: the service makes a new id.
+    - `text` — string **(required)** — Text of the chunk. Must not be empty. _(minLen=1)_
+    - `confidence` — number — Confidence of the recogniser. The service ignores a value outside 0 to 1. _(format=double)_
+    - `final` — boolean — True when the chunk is the final transcript of the utterance. False for an interim result. Absent: true.
+    - `language` — string — Language that the recogniser identified for the chunk. The service records it and does not change the conversation language. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+    - `time` — number — Time of the chunk, in epoch ms. Absent: the time when the service received it.
+  - `agentTranscription` — VoiceAgentTranscriptionEvent — A transcription chunk of the agent speech, as the caller hears it. It does not start a turn.
+    - `type` — object **(required)**
+    - `id` — string — Id of the utterance. Absent: the service makes a new id.
+    - `text` — string **(required)** — Text of the chunk. Must not be empty. _(minLen=1)_
+    - `confidence` — number — Confidence of the recogniser. The service does not record it. _(format=double)_
+    - `final` — boolean — True when the chunk is the final transcript of the utterance. False for an interim result. Absent: true.
+    - `language` — string — Language that the recogniser identified for the chunk. The service records it and does not change the conversation language. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+    - `time` — number — Time of the chunk, in epoch ms. Absent: the time when the service received it.
+  - `reply` — VoiceReplyEvent — A final caller utterance. It starts an agent turn.
+    - `type` — object **(required)**
+    - `id` — string — Id of the utterance. Absent: the service makes a new id.
+    - `text` — string **(required)** — Text of the utterance. Must not be empty. _(minLen=1)_
+    - `time` — number — Time of the utterance, in epoch ms. Absent: the time when the service received it.
+    - `language` — string — Language that the recogniser identified for the utterance. A value that is different from the conversation language changes the conversation language. When the utterance has segments in more than one language, send the language of the last segment. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+    - `confidence` — number — Confidence of the recogniser for the utterance. The service ignores a value outside 0 to 1. _(format=double)_
+    - `startTime` — number — Start of the speech, in epoch ms on the client clock. The service ignores 0.
+    - `endTime` — number — End of the speech, in epoch ms on the client clock. The service ignores 0.
+  - `playback` — VoicePlaybackEvent — Progress of the playback of a reply on the client.
+    - `type` — object **(required)**
+    - `replyId` — string — Reply that the client plays.
+    - `text` — string — Text of the reply that the client played.
+    - `complete` — boolean **(required)** — True when the client played the reply to its end.
+    - `startTime` — number — Start of the playback, in epoch ms on the client clock. The service ignores 0.
+    - `endTime` — number — End of the playback, in epoch ms on the client clock. The service ignores 0.
+  - `interruption` — VoiceInterruptionEvent — The caller spoke over a reply while the client played it.
+    - `type` — object **(required)**
+    - `replyId` — string — Reply that the caller interrupted.
+    - `playedText` — string — Part of the reply that the client played before the interruption.
+    - `originalText` — string — Full text of the reply.
+    - `time` — number — Time of the interruption, in epoch ms on the client clock. The service ignores 0.
+  - `complete` — VoiceCompleteEvent — The call or the conversation is complete, for example because the caller hung up. The service ends the session. The service also accepts `type` `ended` with the same meaning.
+    - `type` — object **(required)**
+    - `reason` — string — Why the call is complete. Absent: the value of `type`.
+    - `time` — number — Time of the completion, in epoch ms. The service ignores it.
+- `server` — AssistantVoiceServerFrames — One example of each message that the server sends.
+  - `started` — VoiceSessionStartedEvent — The session is ready. Sent once after the handshake, on the PBX voice socket only when the client sends protocol version 1 or more.
+    - `type` — object **(required)**
+    - `time` — number **(required)** — Time of the event, in epoch ms.
+    - `sessionId` — string **(required)** — Id of the session. _(minLen=1; maxLen=128)_
+    - `agentId` — string **(required)** — Agent of the session. _(minLen=12; maxLen=12)_
+    - `agentVersion` — number — Published agent version of the session. Absent when the session runs the agent draft. _(min=1)_
+    - `traceId` — string — Trace of the session. It does not change during the session. _(minLen=1; maxLen=128)_
+    - `agentName` — string — Display name of the agent.
+    - `category` — string — Category of the agent.
+    - `groupId` — string — PBX group of the agent, for data access control. Empty when the agent has no group.
+    - `speech` — VoiceSpeechPayload — Speech recognition settings of the call. The client applies them to its recogniser.
+      - `engine` — string **(required)** — Recogniser URI. Always present. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
+      - `languages` — array **(required)** — All configured languages. These are the candidates for language identification.
+        - _array of_ `string`
+      - `preferredLanguage` — string **(required)** — Language at the start of the call. Always a member of `languages`. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+      - `autoDetect` — boolean **(required)** — True to identify the spoken language of each utterance. False when `languages` has fewer languages than the recogniser needs, or when the recogniser cannot identify languages.
+    - `backgroundSound` — string — Music-on-hold class to play as background sound of the call. Absent: no background sound. _(pattern=^[^\r\n]+$; minLen=1; maxLen=64)_
+  - `ended` — VoiceSessionEndedEvent — The session ended. This is the last event of the session.
+    - `type` — object **(required)**
+    - `reason` — string — Why the session ended.
+    - `error` — string — Present when the session ended because of an error.
+    - `time` — number **(required)** — Time of the event, in epoch ms.
+  - `error` — VoiceErrorEvent — An error on the connection. The session continues, unless a `ended` event follows.
+    - `type` — object **(required)**
+    - `code` — string **(required)** — Error code. The value is stable.
+    - `message` — string **(required)** — Description of the error.
+    - `time` — number **(required)** — Time of the event, in epoch ms.
+  - `transcription` — VoiceTranscriptionEvent — A transcription chunk of caller speech. A client that does its own speech-to-text sends it. When the service does the speech-to-text, the service sends it to the client.
+    - `type` — object **(required)**
+    - `id` — string — Id of the utterance. The interim chunks and the final chunk of one utterance have the same id. Absent: the service makes a new id.
+    - `text` — string **(required)** — Text of the chunk. Must not be empty. _(minLen=1)_
+    - `confidence` — number — Confidence of the recogniser. The service ignores a value outside 0 to 1. _(format=double)_
+    - `final` — boolean — True when the chunk is the final transcript of the utterance. False for an interim result. Absent: true.
+    - `language` — string — Language that the recogniser identified for the chunk. The service records it and does not change the conversation language. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+    - `time` — number — Time of the chunk, in epoch ms. Absent: the time when the service received it.
+  - `interruption` — VoiceInterruptionEvent — The caller spoke over a reply while the client played it.
+    - `type` — object **(required)**
+    - `replyId` — string — Reply that the caller interrupted.
+    - `playedText` — string — Part of the reply that the client played before the interruption.
+    - `originalText` — string — Full text of the reply.
+    - `time` — number — Time of the interruption, in epoch ms on the client clock. The service ignores 0.
+  - `thinking` — VoiceThinkingEvent — A caller utterance went to the agent. Sent only with the connect parameter `activity=true`.
+    - `type` — object **(required)**
+    - `time` — number **(required)** — Time of the event, in epoch ms.
+  - `tool` — VoiceToolEvent — A tool call of the agent started or finished. The event has the name and the phase only, and no arguments and no results. Sent only with the connect parameter `activity=true`.
+    - `type` — object **(required)**
+    - `toolCallId` — string **(required)** — Id of the tool call. The `started` event and the `finished` event of one call have the same id.
+    - `toolName` — string **(required)** — Name of the tool.
+    - `phase` — string **(required)** — Phase of a tool call of the agent. _(enum: `started`, `finished`)_
+    - `time` — number **(required)** — Time of the event, in epoch ms.
+  - `say` — VoiceSayCommand — Play a reply to the caller. When `audio` is present, the service sends the audio of the reply in `play` commands. When `audio` is absent, the client shows `text` or synthesizes it itself.
+    - `text` — string **(required)** — Text of the reply.
+    - `replyId` — string **(required)** — Id of the reply.
+    - `interruptible` — boolean — True when the caller can interrupt the reply.
+    - `audio` — VoiceSayCommandAudioOptions — Audio of a reply that the service synthesizes. `play` commands with this stream id follow the `say` command.
+      - `streamId` — string **(required)**
+      - `sampleRate` — number **(required)** — Sample rate of the `pcm_s16le` mono audio of the `play` commands, in Hz: 8000, 12000, 16000, 24000, 32000, 44100 or 48000.
+    - `type` — object **(required)**
+  - `play` — VoicePlayCommand — A chunk of synthesized audio of a reply. `data` is base64 of PCM audio at the sample rate of the `say` command. An empty `data` marks the end of the stream.
+    - `replyId` — string **(required)**
+    - `streamId` — string **(required)**
+    - `data` — string **(required)**
+    - `type` — object **(required)**
+  - `stop` — VoiceStopCommand — Stop the audio of the agent.
+    - `type` — object **(required)**
+  - `hangup` — VoiceHangupCommand — End the session and hang up the call.
+    - `reason` — string — Why the session ended.
+    - `type` — object **(required)**
+  - `transfer` — VoiceTransferCommand — Transfer the call to a PBX destination and end the session. Only a PBX client does the transfer.
+    - `context` — string **(required)** — Dialplan context of the destination. _(minLen=1)_
+    - `extension` — string **(required)** — Extension of the destination. _(minLen=1)_
+    - `type` — object **(required)**
 
 **`DownloadAttachmentResponseContent`**
 
@@ -3322,6 +3778,211 @@ _How the assistant should communicate with this user._
 **`ValidationExceptionResponseContent`**
 
 - `message` — string **(required)**
+
+**`VoiceAgentTranscriptionEvent`**
+
+_A transcription chunk of the agent speech, as the caller hears it. It does not start a turn._
+
+- `type` — object **(required)**
+- `id` — string — Id of the utterance. Absent: the service makes a new id.
+- `text` — string **(required)** — Text of the chunk. Must not be empty. _(minLen=1)_
+- `confidence` — number — Confidence of the recogniser. The service does not record it. _(format=double)_
+- `final` — boolean — True when the chunk is the final transcript of the utterance. False for an interim result. Absent: true.
+- `language` — string — Language that the recogniser identified for the chunk. The service records it and does not change the conversation language. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+- `time` — number — Time of the chunk, in epoch ms. Absent: the time when the service received it.
+
+**`VoiceCommandType`**
+
+_Value of `type` in the `command` of a command frame._
+
+- string _(enum: `say`, `play`, `stop`, `hangup`, `transfer`)_
+
+**`VoiceCompleteEvent`**
+
+_The call or the conversation is complete, for example because the caller hung up. The service ends the session. The service also accepts `type` `ended` with the same meaning._
+
+- `type` — object **(required)**
+- `reason` — string — Why the call is complete. Absent: the value of `type`.
+- `time` — number — Time of the completion, in epoch ms. The service ignores it.
+
+**`VoiceErrorEvent`**
+
+_An error on the connection. The session continues, unless a `ended` event follows._
+
+- `type` — object **(required)**
+- `code` — string **(required)** — Error code. The value is stable.
+- `message` — string **(required)** — Description of the error.
+- `time` — number **(required)** — Time of the event, in epoch ms.
+
+**`VoiceEventType`**
+
+_Value of `type` in the `event` of an event frame._
+
+- string _(enum: `started`, `ended`, `error`, `transcription`, `agentTranscription`, `reply`, `playback`, `interruption`, `complete`, `thinking`, `tool`)_
+
+**`VoiceHangupCommand`**
+
+_End the session and hang up the call._
+
+- `reason` — string — Why the session ended.
+- `type` — object **(required)**
+
+**`VoiceHealthcheckCommand`**
+
+_Liveness check of the service by the client: `{"type": "healthcheck"}`, with no envelope. The service sends no answer._
+
+- `type` — string **(required)** _(default=healthcheck)_
+
+**`VoiceInterruptionEvent`**
+
+_The caller spoke over a reply while the client played it._
+
+- `type` — object **(required)**
+- `replyId` — string — Reply that the caller interrupted.
+- `playedText` — string — Part of the reply that the client played before the interruption.
+- `originalText` — string — Full text of the reply.
+- `time` — number — Time of the interruption, in epoch ms on the client clock. The service ignores 0.
+
+**`VoicePlayCommand`**
+
+_A chunk of synthesized audio of a reply. `data` is base64 of PCM audio at the sample rate of the `say` command. An empty `data` marks the end of the stream._
+
+- `replyId` — string **(required)**
+- `streamId` — string **(required)**
+- `data` — string **(required)**
+- `type` — object **(required)**
+
+**`VoicePlaybackEvent`**
+
+_Progress of the playback of a reply on the client._
+
+- `type` — object **(required)**
+- `replyId` — string — Reply that the client plays.
+- `text` — string — Text of the reply that the client played.
+- `complete` — boolean **(required)** — True when the client played the reply to its end.
+- `startTime` — number — Start of the playback, in epoch ms on the client clock. The service ignores 0.
+- `endTime` — number — End of the playback, in epoch ms on the client clock. The service ignores 0.
+
+**`VoiceReplyEvent`**
+
+_A final caller utterance. It starts an agent turn._
+
+- `type` — object **(required)**
+- `id` — string — Id of the utterance. Absent: the service makes a new id.
+- `text` — string **(required)** — Text of the utterance. Must not be empty. _(minLen=1)_
+- `time` — number — Time of the utterance, in epoch ms. Absent: the time when the service received it.
+- `language` — string — Language that the recogniser identified for the utterance. A value that is different from the conversation language changes the conversation language. When the utterance has segments in more than one language, send the language of the last segment. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+- `confidence` — number — Confidence of the recogniser for the utterance. The service ignores a value outside 0 to 1. _(format=double)_
+- `startTime` — number — Start of the speech, in epoch ms on the client clock. The service ignores 0.
+- `endTime` — number — End of the speech, in epoch ms on the client clock. The service ignores 0.
+
+**`VoiceSayCommand`**
+
+_Play a reply to the caller. When `audio` is present, the service sends the audio of the reply in `play` commands. When `audio` is absent, the client shows `text` or synthesizes it itself._
+
+- `text` — string **(required)** — Text of the reply.
+- `replyId` — string **(required)** — Id of the reply.
+- `interruptible` — boolean — True when the caller can interrupt the reply.
+- `audio` — VoiceSayCommandAudioOptions — Audio of a reply that the service synthesizes. `play` commands with this stream id follow the `say` command.
+  - `streamId` — string **(required)**
+  - `sampleRate` — number **(required)** — Sample rate of the `pcm_s16le` mono audio of the `play` commands, in Hz: 8000, 12000, 16000, 24000, 32000, 44100 or 48000.
+- `type` — object **(required)**
+
+**`VoiceSayCommandAudioOptions`**
+
+_Audio of a reply that the service synthesizes. `play` commands with this stream id follow the `say` command._
+
+- `streamId` — string **(required)**
+- `sampleRate` — number **(required)** — Sample rate of the `pcm_s16le` mono audio of the `play` commands, in Hz: 8000, 12000, 16000, 24000, 32000, 44100 or 48000.
+
+**`VoiceSessionEndedEvent`**
+
+_The session ended. This is the last event of the session._
+
+- `type` — object **(required)**
+- `reason` — string — Why the session ended.
+- `error` — string — Present when the session ended because of an error.
+- `time` — number **(required)** — Time of the event, in epoch ms.
+
+**`VoiceSessionStartedEvent`**
+
+_The session is ready. Sent once after the handshake, on the PBX voice socket only when the client sends protocol version 1 or more._
+
+- `type` — object **(required)**
+- `time` — number **(required)** — Time of the event, in epoch ms.
+- `sessionId` — string **(required)** — Id of the session. _(minLen=1; maxLen=128)_
+- `agentId` — string **(required)** — Agent of the session. _(minLen=12; maxLen=12)_
+- `agentVersion` — number — Published agent version of the session. Absent when the session runs the agent draft. _(min=1)_
+- `traceId` — string — Trace of the session. It does not change during the session. _(minLen=1; maxLen=128)_
+- `agentName` — string — Display name of the agent.
+- `category` — string — Category of the agent.
+- `groupId` — string — PBX group of the agent, for data access control. Empty when the agent has no group.
+- `speech` — VoiceSpeechPayload — Speech recognition settings of the call. The client applies them to its recogniser.
+  - `engine` — string **(required)** — Recogniser URI. Always present. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
+  - `languages` — array **(required)** — All configured languages. These are the candidates for language identification.
+    - _array of_ `string`
+  - `preferredLanguage` — string **(required)** — Language at the start of the call. Always a member of `languages`. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+  - `autoDetect` — boolean **(required)** — True to identify the spoken language of each utterance. False when `languages` has fewer languages than the recogniser needs, or when the recogniser cannot identify languages.
+- `backgroundSound` — string — Music-on-hold class to play as background sound of the call. Absent: no background sound. _(pattern=^[^\r\n]+$; minLen=1; maxLen=64)_
+
+**`VoiceSpeechPayload`**
+
+_Speech recognition settings of the call. The client applies them to its recogniser._
+
+- `engine` — string **(required)** — Recogniser URI. Always present. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
+- `languages` — array **(required)** — All configured languages. These are the candidates for language identification.
+  - _array of_ `string`
+- `preferredLanguage` — string **(required)** — Language at the start of the call. Always a member of `languages`. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+- `autoDetect` — boolean **(required)** — True to identify the spoken language of each utterance. False when `languages` has fewer languages than the recogniser needs, or when the recogniser cannot identify languages.
+
+**`VoiceStopCommand`**
+
+_Stop the audio of the agent._
+
+- `type` — object **(required)**
+
+**`VoiceThinkingEvent`**
+
+_A caller utterance went to the agent. Sent only with the connect parameter `activity=true`._
+
+- `type` — object **(required)**
+- `time` — number **(required)** — Time of the event, in epoch ms.
+
+**`VoiceToolEvent`**
+
+_A tool call of the agent started or finished. The event has the name and the phase only, and no arguments and no results. Sent only with the connect parameter `activity=true`._
+
+- `type` — object **(required)**
+- `toolCallId` — string **(required)** — Id of the tool call. The `started` event and the `finished` event of one call have the same id.
+- `toolName` — string **(required)** — Name of the tool.
+- `phase` — string **(required)** — Phase of a tool call of the agent. _(enum: `started`, `finished`)_
+- `time` — number **(required)** — Time of the event, in epoch ms.
+
+**`VoiceToolPhase`**
+
+_Phase of a tool call of the agent._
+
+- string _(enum: `started`, `finished`)_
+
+**`VoiceTranscriptionEvent`**
+
+_A transcription chunk of caller speech. A client that does its own speech-to-text sends it. When the service does the speech-to-text, the service sends it to the client._
+
+- `type` — object **(required)**
+- `id` — string — Id of the utterance. The interim chunks and the final chunk of one utterance have the same id. Absent: the service makes a new id.
+- `text` — string **(required)** — Text of the chunk. Must not be empty. _(minLen=1)_
+- `confidence` — number — Confidence of the recogniser. The service ignores a value outside 0 to 1. _(format=double)_
+- `final` — boolean — True when the chunk is the final transcript of the utterance. False for an interim result. Absent: true.
+- `language` — string — Language that the recogniser identified for the chunk. The service records it and does not change the conversation language. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+- `time` — number — Time of the chunk, in epoch ms. Absent: the time when the service received it.
+
+**`VoiceTransferCommand`**
+
+_Transfer the call to a PBX destination and end the session. Only a PBX client does the transfer._
+
+- `context` — string **(required)** — Dialplan context of the destination. _(minLen=1)_
+- `extension` — string **(required)** — Extension of the destination. _(minLen=1)_
+- `type` — object **(required)**
 
 **`WorkflowMoveRefusedEvent`**
 

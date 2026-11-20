@@ -662,7 +662,7 @@ Updates default analysis settings used for projections.
     - `deleteAssetsAfterSuccess` — boolean — True to delete raw transcript and recording assets after a successful initial analysis run.
 - Errors: `400`, `403`
 
-#### `DELETE` `/v2/insights/calls/{callId}/assets` 🆕
+#### `DELETE` `/v2/insights/calls/{callId}/assets`
 
 Irreversibly deletes a call from Revenue Intelligence: the recordings, the transcription and all insights of every flow of the call. The call stays in the call history without them. A user needs the `Can delete call recordings` ACL for at least one participant of the call; taking part in the call gives no right to delete it. A repeated request answers 404 once the call was completely deleted; a repeat after a deletion that failed part-way finishes it.
 
@@ -954,7 +954,7 @@ Retrieves a presigned URL for downloading a specific recording.
   - `presignedDownloadUrl` — string **(required)** — The presigned URL for downloading the recording.
 - Errors: `400`, `403`, `404`
 
-#### `DELETE` `/v2/insights/conferences/{conferenceId}/assets` 🆕
+#### `DELETE` `/v2/insights/conferences/{conferenceId}/assets`
 
 Irreversibly deletes a conference from Revenue Intelligence: the recordings, the transcription and all insights. The conference stays in the history without them. A user needs the `Can delete call recordings` ACL for at least one participant of the conference; taking part in the conference gives no right to delete it. A repeated request answers 404 once the conference was completely deleted; a repeat after a deletion that failed part-way finishes it.
 

@@ -1,4 +1,4 @@
-## Wilma Traces API 🆕
+## Wilma Traces API
 
 _OpenAPI: Wilma Traces Service — version v2_
 

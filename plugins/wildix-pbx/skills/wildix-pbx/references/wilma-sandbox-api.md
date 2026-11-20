@@ -1,4 +1,4 @@
-## Wilma Sandbox API 🆕
+## Wilma Sandbox API
 
 _OpenAPI: Wilma Sandbox Service — version v2_
 

@@ -7623,7 +7623,7 @@ Retrieves a list of active services of the company.
       - `aclGroup` — string — ACL group identifier associated with the service.
 - Errors: `400`, `403`
 
-#### `POST` `/v2/stream/services/stats` 🆕
+#### `POST` `/v2/stream/services/stats`
 
 Retrieves live snapshot plus statistics for the requested lookback window. Period counters are cached for a few seconds, so they can be up to about 5 seconds older than the latest snapshot; calls, agents and the open occupancy interval are always current. Performance: cost grows with the number of ids times the number of buckets the lookback overlaps (1 Redis read per bucket without agentStats, 2 with it, plus a few per service). Without agentStats a request of 20 ids costs about 80 to 160 commands for 15 minutes to 1 hour and up to about 560 for 24 hours; with agentStats about 280 for 1 hour and up to about 600 for 12 or 24 hours (the id limit above keeps it there). The oldest bucket is usually only partly inside the lookback and is counted whole.
 

@@ -1,4 +1,4 @@
-## Wilma Agents API 🆕
+## Wilma Agents API
 
 _OpenAPI: Wilma Agents Service — version v2_
 
@@ -45,6 +45,18 @@ Retrieves a paginated list of agents for the specified company.
           - `interruptions` — VoiceInterruptionSettings
             - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
             - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+            - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+            - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+            - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
+          - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+            - `silenceMs` — number — Silence in ms that ends the caller speech. Absent: 500. _(min=100; max=5000)_
+            - `silenceLevelDb` — number — Mean frame level in dBFS below which caller audio is silence. Absent: -36. _(min=-90; max=0)_
+            - `speechLevelDb` — number — Mean frame level in dBFS from which caller audio is speech. Absent: -30. _(min=-90; max=0)_
+          - `turnEnd` — VoiceTurnEndSettings
+            - `holdMs` — number — Time in ms that the agent waits after the caller's last recognised words before it answers. Speech in this time joins the same caller turn, so a longer wait lets the caller pause; a shorter one makes the agent answer sooner. Absent: 250. _(min=0; max=2000)_
+            - `maxWaitMs` — number — Longest time in ms that the agent waits for the end of a caller turn, from the first final phrase of the turn. When the caller keeps speaking, or noise keeps the turn open, the agent answers after this time to the words recognised until then. 0: no limit. A value from 1 to 1999 counts as 2000. Absent: 0. _(min=0; max=20000)_
+            - `minConfidence` — number — Minimum recognition confidence, from 0 to 1, of a caller turn. A turn below it is handled as `lowConfidence` says. While the agent speaks, caller words below it do not interrupt the agent. 0: off. Absent: 0. _(format=double; min=0; max=1)_
+            - `lowConfidence` — string _(enum: `answer`, `ask_to_repeat`, `skip`)_
           - `silenceTimeout` — VoiceSilenceTimeoutSettings
             - `seconds` — number **(required)** — Seconds of caller silence before the action is taken. _(min=1; max=600)_
             - `action` — union **(required)**
@@ -173,11 +185,23 @@ Creates a new mutable agent draft. The agent serves no traffic until the draft i
               - _(nesting depth limit — see `VoicePronunciation` in the Schemas appendix)_
         - `greetEveryLanguage` — boolean — Speak the first message of every configured language in turn when the call is answered, each in the voice, provider account and pronunciation rules of its own language, instead of only the language the call resolved to. Languages whose first message is empty, and languages the PBX synthesizes itself, are skipped. Absent means off. Requires at least two languages carrying a first message; below that the runtime speaks only the resolved language's phrase, and the console clamps the member on save.
         - `transcription` — VoiceTranscriptionSettings — Speech-to-text configuration: which recogniser listens to the caller, and whether it identifies the language while it does.
-          - `engine` — string — Recogniser to transcribe the caller with. Absent resolves to the platform default ('aws://transcribe' today), resolved by the server so exactly one component decides it. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
-          - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. HERE RATHER THAN ON `VoiceSpeechSettings`, because identifying a language is something the RECOGNISER does: it becomes identify-multiple-languages plus language-options on the recognition stream, and nothing about synthesis reads it. Requires at least two configured languages and a recogniser that can identify them; the server clamps it to false otherwise, because forwarding true with a single candidate makes Amazon reject the stream outright.
+          - `engine` — string — Recogniser to transcribe the caller with. Absent means the company recogniser, else Soniox; such a block is validated against the Amazon rules so that it stays valid on any recogniser. When the recogniser fails during a call, the call continues on the other recogniser. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
+          - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. Absent or `false`: off on every recogniser, so the call keeps its language. `true`: on. Soniox identifies any language, also with one configured language. Amazon identifies only among the configured languages: an agent that names Amazon needs at least two different languages to save `true`. On a recogniser the agent does not name, `true` with too few languages for Amazon is kept, and the call runs without identification.
       - `interruptions` — VoiceInterruptionSettings
         - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
         - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+        - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+        - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+        - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
+      - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+        - `silenceMs` — number — Silence in ms that ends the caller speech. Absent: 500. _(min=100; max=5000)_
+        - `silenceLevelDb` — number — Mean frame level in dBFS below which caller audio is silence. Absent: -36. _(min=-90; max=0)_
+        - `speechLevelDb` — number — Mean frame level in dBFS from which caller audio is speech. Absent: -30. _(min=-90; max=0)_
+      - `turnEnd` — VoiceTurnEndSettings
+        - `holdMs` — number — Time in ms that the agent waits after the caller's last recognised words before it answers. Speech in this time joins the same caller turn, so a longer wait lets the caller pause; a shorter one makes the agent answer sooner. Absent: 250. _(min=0; max=2000)_
+        - `maxWaitMs` — number — Longest time in ms that the agent waits for the end of a caller turn, from the first final phrase of the turn. When the caller keeps speaking, or noise keeps the turn open, the agent answers after this time to the words recognised until then. 0: no limit. A value from 1 to 1999 counts as 2000. Absent: 0. _(min=0; max=20000)_
+        - `minConfidence` — number — Minimum recognition confidence, from 0 to 1, of a caller turn. A turn below it is handled as `lowConfidence` says. While the agent speaks, caller words below it do not interrupt the agent. 0: off. Absent: 0. _(format=double; min=0; max=1)_
+        - `lowConfidence` — string _(enum: `answer`, `ask_to_repeat`, `skip`)_
       - `silenceTimeout` — VoiceSilenceTimeoutSettings
         - `seconds` — number **(required)** — Seconds of caller silence before the action is taken. _(min=1; max=600)_
         - `action` — union **(required)**
@@ -346,11 +370,23 @@ Creates a new mutable agent draft. The agent serves no traffic until the draft i
               - _(nesting depth limit — see `VoiceLanguage` in the Schemas appendix)_
           - `greetEveryLanguage` — boolean — Speak the first message of every configured language in turn when the call is answered, each in the voice, provider account and pronunciation rules of its own language, instead of only the language the call resolved to. Languages whose first message is empty, and languages the PBX synthesizes itself, are skipped. Absent means off. Requires at least two languages carrying a first message; below that the runtime speaks only the resolved language's phrase, and the console clamps the member on save.
           - `transcription` — VoiceTranscriptionSettings — Speech-to-text configuration: which recogniser listens to the caller, and whether it identifies the language while it does.
-            - `engine` — string — Recogniser to transcribe the caller with. Absent resolves to the platform default ('aws://transcribe' today), resolved by the server so exactly one component decides it. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
-            - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. HERE RATHER THAN ON `VoiceSpeechSettings`, because identifying a language is something the RECOGNISER does: it becomes identify-multiple-languages plus language-options on the recognition stream, and nothing about synthesis reads it. Requires at least two configured languages and a recogniser that can identify them; the server clamps it to false otherwise, because forwarding true with a single candidate makes Amazon reject the stream outright.
+            - `engine` — string — Recogniser to transcribe the caller with. Absent means the company recogniser, else Soniox; such a block is validated against the Amazon rules so that it stays valid on any recogniser. When the recogniser fails during a call, the call continues on the other recogniser. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
+            - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. Absent or `false`: off on every recogniser, so the call keeps its language. `true`: on. Soniox identifies any language, also with one configured language. Amazon identifies only among the configured languages: an agent that names Amazon needs at least two different languages to save `true`. On a recogniser the agent does not name, `true` with too few languages for Amazon is kept, and the call runs without identification.
         - `interruptions` — VoiceInterruptionSettings
           - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
           - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+          - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+          - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+          - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
+        - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+          - `silenceMs` — number — Silence in ms that ends the caller speech. Absent: 500. _(min=100; max=5000)_
+          - `silenceLevelDb` — number — Mean frame level in dBFS below which caller audio is silence. Absent: -36. _(min=-90; max=0)_
+          - `speechLevelDb` — number — Mean frame level in dBFS from which caller audio is speech. Absent: -30. _(min=-90; max=0)_
+        - `turnEnd` — VoiceTurnEndSettings
+          - `holdMs` — number — Time in ms that the agent waits after the caller's last recognised words before it answers. Speech in this time joins the same caller turn, so a longer wait lets the caller pause; a shorter one makes the agent answer sooner. Absent: 250. _(min=0; max=2000)_
+          - `maxWaitMs` — number — Longest time in ms that the agent waits for the end of a caller turn, from the first final phrase of the turn. When the caller keeps speaking, or noise keeps the turn open, the agent answers after this time to the words recognised until then. 0: no limit. A value from 1 to 1999 counts as 2000. Absent: 0. _(min=0; max=20000)_
+          - `minConfidence` — number — Minimum recognition confidence, from 0 to 1, of a caller turn. A turn below it is handled as `lowConfidence` says. While the agent speaks, caller words below it do not interrupt the agent. 0: off. Absent: 0. _(format=double; min=0; max=1)_
+          - `lowConfidence` — string _(enum: `answer`, `ask_to_repeat`, `skip`)_
         - `silenceTimeout` — VoiceSilenceTimeoutSettings
           - `seconds` — number **(required)** — Seconds of caller silence before the action is taken. _(min=1; max=600)_
           - `action` — union **(required)**
@@ -538,11 +574,23 @@ Retrieves an agent, including its draft definition and version/rollout state.
               - _(nesting depth limit — see `VoiceLanguage` in the Schemas appendix)_
           - `greetEveryLanguage` — boolean — Speak the first message of every configured language in turn when the call is answered, each in the voice, provider account and pronunciation rules of its own language, instead of only the language the call resolved to. Languages whose first message is empty, and languages the PBX synthesizes itself, are skipped. Absent means off. Requires at least two languages carrying a first message; below that the runtime speaks only the resolved language's phrase, and the console clamps the member on save.
           - `transcription` — VoiceTranscriptionSettings — Speech-to-text configuration: which recogniser listens to the caller, and whether it identifies the language while it does.
-            - `engine` — string — Recogniser to transcribe the caller with. Absent resolves to the platform default ('aws://transcribe' today), resolved by the server so exactly one component decides it. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
-            - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. HERE RATHER THAN ON `VoiceSpeechSettings`, because identifying a language is something the RECOGNISER does: it becomes identify-multiple-languages plus language-options on the recognition stream, and nothing about synthesis reads it. Requires at least two configured languages and a recogniser that can identify them; the server clamps it to false otherwise, because forwarding true with a single candidate makes Amazon reject the stream outright.
+            - `engine` — string — Recogniser to transcribe the caller with. Absent means the company recogniser, else Soniox; such a block is validated against the Amazon rules so that it stays valid on any recogniser. When the recogniser fails during a call, the call continues on the other recogniser. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
+            - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. Absent or `false`: off on every recogniser, so the call keeps its language. `true`: on. Soniox identifies any language, also with one configured language. Amazon identifies only among the configured languages: an agent that names Amazon needs at least two different languages to save `true`. On a recogniser the agent does not name, `true` with too few languages for Amazon is kept, and the call runs without identification.
         - `interruptions` — VoiceInterruptionSettings
           - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
           - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+          - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+          - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+          - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
+        - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+          - `silenceMs` — number — Silence in ms that ends the caller speech. Absent: 500. _(min=100; max=5000)_
+          - `silenceLevelDb` — number — Mean frame level in dBFS below which caller audio is silence. Absent: -36. _(min=-90; max=0)_
+          - `speechLevelDb` — number — Mean frame level in dBFS from which caller audio is speech. Absent: -30. _(min=-90; max=0)_
+        - `turnEnd` — VoiceTurnEndSettings
+          - `holdMs` — number — Time in ms that the agent waits after the caller's last recognised words before it answers. Speech in this time joins the same caller turn, so a longer wait lets the caller pause; a shorter one makes the agent answer sooner. Absent: 250. _(min=0; max=2000)_
+          - `maxWaitMs` — number — Longest time in ms that the agent waits for the end of a caller turn, from the first final phrase of the turn. When the caller keeps speaking, or noise keeps the turn open, the agent answers after this time to the words recognised until then. 0: no limit. A value from 1 to 1999 counts as 2000. Absent: 0. _(min=0; max=20000)_
+          - `minConfidence` — number — Minimum recognition confidence, from 0 to 1, of a caller turn. A turn below it is handled as `lowConfidence` says. While the agent speaks, caller words below it do not interrupt the agent. 0: off. Absent: 0. _(format=double; min=0; max=1)_
+          - `lowConfidence` — string _(enum: `answer`, `ask_to_repeat`, `skip`)_
         - `silenceTimeout` — VoiceSilenceTimeoutSettings
           - `seconds` — number **(required)** — Seconds of caller silence before the action is taken. _(min=1; max=600)_
           - `action` — union **(required)**
@@ -694,11 +742,23 @@ Updates the draft definition of an agent. Does not affect served traffic until t
               - _(nesting depth limit — see `VoicePronunciation` in the Schemas appendix)_
         - `greetEveryLanguage` — boolean — Speak the first message of every configured language in turn when the call is answered, each in the voice, provider account and pronunciation rules of its own language, instead of only the language the call resolved to. Languages whose first message is empty, and languages the PBX synthesizes itself, are skipped. Absent means off. Requires at least two languages carrying a first message; below that the runtime speaks only the resolved language's phrase, and the console clamps the member on save.
         - `transcription` — VoiceTranscriptionSettings — Speech-to-text configuration: which recogniser listens to the caller, and whether it identifies the language while it does.
-          - `engine` — string — Recogniser to transcribe the caller with. Absent resolves to the platform default ('aws://transcribe' today), resolved by the server so exactly one component decides it. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
-          - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. HERE RATHER THAN ON `VoiceSpeechSettings`, because identifying a language is something the RECOGNISER does: it becomes identify-multiple-languages plus language-options on the recognition stream, and nothing about synthesis reads it. Requires at least two configured languages and a recogniser that can identify them; the server clamps it to false otherwise, because forwarding true with a single candidate makes Amazon reject the stream outright.
+          - `engine` — string — Recogniser to transcribe the caller with. Absent means the company recogniser, else Soniox; such a block is validated against the Amazon rules so that it stays valid on any recogniser. When the recogniser fails during a call, the call continues on the other recogniser. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
+          - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. Absent or `false`: off on every recogniser, so the call keeps its language. `true`: on. Soniox identifies any language, also with one configured language. Amazon identifies only among the configured languages: an agent that names Amazon needs at least two different languages to save `true`. On a recogniser the agent does not name, `true` with too few languages for Amazon is kept, and the call runs without identification.
       - `interruptions` — VoiceInterruptionSettings
         - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
         - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+        - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+        - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+        - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
+      - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+        - `silenceMs` — number — Silence in ms that ends the caller speech. Absent: 500. _(min=100; max=5000)_
+        - `silenceLevelDb` — number — Mean frame level in dBFS below which caller audio is silence. Absent: -36. _(min=-90; max=0)_
+        - `speechLevelDb` — number — Mean frame level in dBFS from which caller audio is speech. Absent: -30. _(min=-90; max=0)_
+      - `turnEnd` — VoiceTurnEndSettings
+        - `holdMs` — number — Time in ms that the agent waits after the caller's last recognised words before it answers. Speech in this time joins the same caller turn, so a longer wait lets the caller pause; a shorter one makes the agent answer sooner. Absent: 250. _(min=0; max=2000)_
+        - `maxWaitMs` — number — Longest time in ms that the agent waits for the end of a caller turn, from the first final phrase of the turn. When the caller keeps speaking, or noise keeps the turn open, the agent answers after this time to the words recognised until then. 0: no limit. A value from 1 to 1999 counts as 2000. Absent: 0. _(min=0; max=20000)_
+        - `minConfidence` — number — Minimum recognition confidence, from 0 to 1, of a caller turn. A turn below it is handled as `lowConfidence` says. While the agent speaks, caller words below it do not interrupt the agent. 0: off. Absent: 0. _(format=double; min=0; max=1)_
+        - `lowConfidence` — string _(enum: `answer`, `ask_to_repeat`, `skip`)_
       - `silenceTimeout` — VoiceSilenceTimeoutSettings
         - `seconds` — number **(required)** — Seconds of caller silence before the action is taken. _(min=1; max=600)_
         - `action` — union **(required)**
@@ -868,11 +928,23 @@ Updates the draft definition of an agent. Does not affect served traffic until t
               - _(nesting depth limit — see `VoiceLanguage` in the Schemas appendix)_
           - `greetEveryLanguage` — boolean — Speak the first message of every configured language in turn when the call is answered, each in the voice, provider account and pronunciation rules of its own language, instead of only the language the call resolved to. Languages whose first message is empty, and languages the PBX synthesizes itself, are skipped. Absent means off. Requires at least two languages carrying a first message; below that the runtime speaks only the resolved language's phrase, and the console clamps the member on save.
           - `transcription` — VoiceTranscriptionSettings — Speech-to-text configuration: which recogniser listens to the caller, and whether it identifies the language while it does.
-            - `engine` — string — Recogniser to transcribe the caller with. Absent resolves to the platform default ('aws://transcribe' today), resolved by the server so exactly one component decides it. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
-            - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. HERE RATHER THAN ON `VoiceSpeechSettings`, because identifying a language is something the RECOGNISER does: it becomes identify-multiple-languages plus language-options on the recognition stream, and nothing about synthesis reads it. Requires at least two configured languages and a recogniser that can identify them; the server clamps it to false otherwise, because forwarding true with a single candidate makes Amazon reject the stream outright.
+            - `engine` — string — Recogniser to transcribe the caller with. Absent means the company recogniser, else Soniox; such a block is validated against the Amazon rules so that it stays valid on any recogniser. When the recogniser fails during a call, the call continues on the other recogniser. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
+            - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. Absent or `false`: off on every recogniser, so the call keeps its language. `true`: on. Soniox identifies any language, also with one configured language. Amazon identifies only among the configured languages: an agent that names Amazon needs at least two different languages to save `true`. On a recogniser the agent does not name, `true` with too few languages for Amazon is kept, and the call runs without identification.
         - `interruptions` — VoiceInterruptionSettings
           - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
           - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+          - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+          - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+          - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
+        - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+          - `silenceMs` — number — Silence in ms that ends the caller speech. Absent: 500. _(min=100; max=5000)_
+          - `silenceLevelDb` — number — Mean frame level in dBFS below which caller audio is silence. Absent: -36. _(min=-90; max=0)_
+          - `speechLevelDb` — number — Mean frame level in dBFS from which caller audio is speech. Absent: -30. _(min=-90; max=0)_
+        - `turnEnd` — VoiceTurnEndSettings
+          - `holdMs` — number — Time in ms that the agent waits after the caller's last recognised words before it answers. Speech in this time joins the same caller turn, so a longer wait lets the caller pause; a shorter one makes the agent answer sooner. Absent: 250. _(min=0; max=2000)_
+          - `maxWaitMs` — number — Longest time in ms that the agent waits for the end of a caller turn, from the first final phrase of the turn. When the caller keeps speaking, or noise keeps the turn open, the agent answers after this time to the words recognised until then. 0: no limit. A value from 1 to 1999 counts as 2000. Absent: 0. _(min=0; max=20000)_
+          - `minConfidence` — number — Minimum recognition confidence, from 0 to 1, of a caller turn. A turn below it is handled as `lowConfidence` says. While the agent speaks, caller words below it do not interrupt the agent. 0: off. Absent: 0. _(format=double; min=0; max=1)_
+          - `lowConfidence` — string _(enum: `answer`, `ask_to_repeat`, `skip`)_
         - `silenceTimeout` — VoiceSilenceTimeoutSettings
           - `seconds` — number **(required)** — Seconds of caller silence before the action is taken. _(min=1; max=600)_
           - `action` — union **(required)**
@@ -1094,6 +1166,18 @@ Publishes the current draft as a new immutable version. Publishing never changes
           - `interruptions` — VoiceInterruptionSettings
             - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
             - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+            - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+            - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+            - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
+          - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+            - `silenceMs` — number — Silence in ms that ends the caller speech. Absent: 500. _(min=100; max=5000)_
+            - `silenceLevelDb` — number — Mean frame level in dBFS below which caller audio is silence. Absent: -36. _(min=-90; max=0)_
+            - `speechLevelDb` — number — Mean frame level in dBFS from which caller audio is speech. Absent: -30. _(min=-90; max=0)_
+          - `turnEnd` — VoiceTurnEndSettings
+            - `holdMs` — number — Time in ms that the agent waits after the caller's last recognised words before it answers. Speech in this time joins the same caller turn, so a longer wait lets the caller pause; a shorter one makes the agent answer sooner. Absent: 250. _(min=0; max=2000)_
+            - `maxWaitMs` — number — Longest time in ms that the agent waits for the end of a caller turn, from the first final phrase of the turn. When the caller keeps speaking, or noise keeps the turn open, the agent answers after this time to the words recognised until then. 0: no limit. A value from 1 to 1999 counts as 2000. Absent: 0. _(min=0; max=20000)_
+            - `minConfidence` — number — Minimum recognition confidence, from 0 to 1, of a caller turn. A turn below it is handled as `lowConfidence` says. While the agent speaks, caller words below it do not interrupt the agent. 0: off. Absent: 0. _(format=double; min=0; max=1)_
+            - `lowConfidence` — string _(enum: `answer`, `ask_to_repeat`, `skip`)_
           - `silenceTimeout` — VoiceSilenceTimeoutSettings
             - `seconds` — number **(required)** — Seconds of caller silence before the action is taken. _(min=1; max=600)_
             - `action` — union **(required)**
@@ -1214,6 +1298,18 @@ Retrieves a published version, including its full immutable definition snapshot.
           - `interruptions` — VoiceInterruptionSettings
             - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
             - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+            - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+            - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+            - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
+          - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+            - `silenceMs` — number — Silence in ms that ends the caller speech. Absent: 500. _(min=100; max=5000)_
+            - `silenceLevelDb` — number — Mean frame level in dBFS below which caller audio is silence. Absent: -36. _(min=-90; max=0)_
+            - `speechLevelDb` — number — Mean frame level in dBFS from which caller audio is speech. Absent: -30. _(min=-90; max=0)_
+          - `turnEnd` — VoiceTurnEndSettings
+            - `holdMs` — number — Time in ms that the agent waits after the caller's last recognised words before it answers. Speech in this time joins the same caller turn, so a longer wait lets the caller pause; a shorter one makes the agent answer sooner. Absent: 250. _(min=0; max=2000)_
+            - `maxWaitMs` — number — Longest time in ms that the agent waits for the end of a caller turn, from the first final phrase of the turn. When the caller keeps speaking, or noise keeps the turn open, the agent answers after this time to the words recognised until then. 0: no limit. A value from 1 to 1999 counts as 2000. Absent: 0. _(min=0; max=20000)_
+            - `minConfidence` — number — Minimum recognition confidence, from 0 to 1, of a caller turn. A turn below it is handled as `lowConfidence` says. While the agent speaks, caller words below it do not interrupt the agent. 0: off. Absent: 0. _(format=double; min=0; max=1)_
+            - `lowConfidence` — string _(enum: `answer`, `ask_to_repeat`, `skip`)_
           - `silenceTimeout` — VoiceSilenceTimeoutSettings
             - `seconds` — number **(required)** — Seconds of caller silence before the action is taken. _(min=1; max=600)_
             - `action` — union **(required)**
@@ -1327,11 +1423,23 @@ Replaces the mutable draft with a published version's definition. The draft revi
               - _(nesting depth limit — see `VoiceLanguage` in the Schemas appendix)_
           - `greetEveryLanguage` — boolean — Speak the first message of every configured language in turn when the call is answered, each in the voice, provider account and pronunciation rules of its own language, instead of only the language the call resolved to. Languages whose first message is empty, and languages the PBX synthesizes itself, are skipped. Absent means off. Requires at least two languages carrying a first message; below that the runtime speaks only the resolved language's phrase, and the console clamps the member on save.
           - `transcription` — VoiceTranscriptionSettings — Speech-to-text configuration: which recogniser listens to the caller, and whether it identifies the language while it does.
-            - `engine` — string — Recogniser to transcribe the caller with. Absent resolves to the platform default ('aws://transcribe' today), resolved by the server so exactly one component decides it. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
-            - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. HERE RATHER THAN ON `VoiceSpeechSettings`, because identifying a language is something the RECOGNISER does: it becomes identify-multiple-languages plus language-options on the recognition stream, and nothing about synthesis reads it. Requires at least two configured languages and a recogniser that can identify them; the server clamps it to false otherwise, because forwarding true with a single candidate makes Amazon reject the stream outright.
+            - `engine` — string — Recogniser to transcribe the caller with. Absent means the company recogniser, else Soniox; such a block is validated against the Amazon rules so that it stays valid on any recogniser. When the recogniser fails during a call, the call continues on the other recogniser. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
+            - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. Absent or `false`: off on every recogniser, so the call keeps its language. `true`: on. Soniox identifies any language, also with one configured language. Amazon identifies only among the configured languages: an agent that names Amazon needs at least two different languages to save `true`. On a recogniser the agent does not name, `true` with too few languages for Amazon is kept, and the call runs without identification.
         - `interruptions` — VoiceInterruptionSettings
           - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
           - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+          - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+          - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+          - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
+        - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+          - `silenceMs` — number — Silence in ms that ends the caller speech. Absent: 500. _(min=100; max=5000)_
+          - `silenceLevelDb` — number — Mean frame level in dBFS below which caller audio is silence. Absent: -36. _(min=-90; max=0)_
+          - `speechLevelDb` — number — Mean frame level in dBFS from which caller audio is speech. Absent: -30. _(min=-90; max=0)_
+        - `turnEnd` — VoiceTurnEndSettings
+          - `holdMs` — number — Time in ms that the agent waits after the caller's last recognised words before it answers. Speech in this time joins the same caller turn, so a longer wait lets the caller pause; a shorter one makes the agent answer sooner. Absent: 250. _(min=0; max=2000)_
+          - `maxWaitMs` — number — Longest time in ms that the agent waits for the end of a caller turn, from the first final phrase of the turn. When the caller keeps speaking, or noise keeps the turn open, the agent answers after this time to the words recognised until then. 0: no limit. A value from 1 to 1999 counts as 2000. Absent: 0. _(min=0; max=20000)_
+          - `minConfidence` — number — Minimum recognition confidence, from 0 to 1, of a caller turn. A turn below it is handled as `lowConfidence` says. While the agent speaks, caller words below it do not interrupt the agent. 0: off. Absent: 0. _(format=double; min=0; max=1)_
+          - `lowConfidence` — string _(enum: `answer`, `ask_to_repeat`, `skip`)_
         - `silenceTimeout` — VoiceSilenceTimeoutSettings
           - `seconds` — number **(required)** — Seconds of caller silence before the action is taken. _(min=1; max=600)_
           - `action` — union **(required)**
@@ -1574,7 +1682,7 @@ Revokes an API key.
 
 ### Schemas appendix — Wilma Agents API
 
-<details><summary>179 component schemas</summary>
+<details><summary>182 component schemas</summary>
 
 **`Actor`**
 
@@ -1611,6 +1719,18 @@ _The complete, versionable configuration of an agent. This is what gets snapshot
     - `interruptions` — VoiceInterruptionSettings
       - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
       - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+      - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+      - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+      - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
+    - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+      - `silenceMs` — number — Silence in ms that ends the caller speech. Absent: 500. _(min=100; max=5000)_
+      - `silenceLevelDb` — number — Mean frame level in dBFS below which caller audio is silence. Absent: -36. _(min=-90; max=0)_
+      - `speechLevelDb` — number — Mean frame level in dBFS from which caller audio is speech. Absent: -30. _(min=-90; max=0)_
+    - `turnEnd` — VoiceTurnEndSettings
+      - `holdMs` — number — Time in ms that the agent waits after the caller's last recognised words before it answers. Speech in this time joins the same caller turn, so a longer wait lets the caller pause; a shorter one makes the agent answer sooner. Absent: 250. _(min=0; max=2000)_
+      - `maxWaitMs` — number — Longest time in ms that the agent waits for the end of a caller turn, from the first final phrase of the turn. When the caller keeps speaking, or noise keeps the turn open, the agent answers after this time to the words recognised until then. 0: no limit. A value from 1 to 1999 counts as 2000. Absent: 0. _(min=0; max=20000)_
+      - `minConfidence` — number — Minimum recognition confidence, from 0 to 1, of a caller turn. A turn below it is handled as `lowConfidence` says. While the agent speaks, caller words below it do not interrupt the agent. 0: off. Absent: 0. _(format=double; min=0; max=1)_
+      - `lowConfidence` — string _(enum: `answer`, `ask_to_repeat`, `skip`)_
     - `silenceTimeout` — VoiceSilenceTimeoutSettings
       - `seconds` — number **(required)** — Seconds of caller silence before the action is taken. _(min=1; max=600)_
       - `action` — union **(required)**
@@ -2064,11 +2184,23 @@ _The channels an agent serves and their channel-specific settings. Presence of a
         - _(nesting depth limit — see `VoiceLanguage` in the Schemas appendix)_
     - `greetEveryLanguage` — boolean — Speak the first message of every configured language in turn when the call is answered, each in the voice, provider account and pronunciation rules of its own language, instead of only the language the call resolved to. Languages whose first message is empty, and languages the PBX synthesizes itself, are skipped. Absent means off. Requires at least two languages carrying a first message; below that the runtime speaks only the resolved language's phrase, and the console clamps the member on save.
     - `transcription` — VoiceTranscriptionSettings — Speech-to-text configuration: which recogniser listens to the caller, and whether it identifies the language while it does.
-      - `engine` — string — Recogniser to transcribe the caller with. Absent resolves to the platform default ('aws://transcribe' today), resolved by the server so exactly one component decides it. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
-      - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. HERE RATHER THAN ON `VoiceSpeechSettings`, because identifying a language is something the RECOGNISER does: it becomes identify-multiple-languages plus language-options on the recognition stream, and nothing about synthesis reads it. Requires at least two configured languages and a recogniser that can identify them; the server clamps it to false otherwise, because forwarding true with a single candidate makes Amazon reject the stream outright.
+      - `engine` — string — Recogniser to transcribe the caller with. Absent means the company recogniser, else Soniox; such a block is validated against the Amazon rules so that it stays valid on any recogniser. When the recogniser fails during a call, the call continues on the other recogniser. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
+      - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. Absent or `false`: off on every recogniser, so the call keeps its language. `true`: on. Soniox identifies any language, also with one configured language. Amazon identifies only among the configured languages: an agent that names Amazon needs at least two different languages to save `true`. On a recogniser the agent does not name, `true` with too few languages for Amazon is kept, and the call runs without identification.
   - `interruptions` — VoiceInterruptionSettings
     - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
     - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+    - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+    - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+    - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
+  - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+    - `silenceMs` — number — Silence in ms that ends the caller speech. Absent: 500. _(min=100; max=5000)_
+    - `silenceLevelDb` — number — Mean frame level in dBFS below which caller audio is silence. Absent: -36. _(min=-90; max=0)_
+    - `speechLevelDb` — number — Mean frame level in dBFS from which caller audio is speech. Absent: -30. _(min=-90; max=0)_
+  - `turnEnd` — VoiceTurnEndSettings
+    - `holdMs` — number — Time in ms that the agent waits after the caller's last recognised words before it answers. Speech in this time joins the same caller turn, so a longer wait lets the caller pause; a shorter one makes the agent answer sooner. Absent: 250. _(min=0; max=2000)_
+    - `maxWaitMs` — number — Longest time in ms that the agent waits for the end of a caller turn, from the first final phrase of the turn. When the caller keeps speaking, or noise keeps the turn open, the agent answers after this time to the words recognised until then. 0: no limit. A value from 1 to 1999 counts as 2000. Absent: 0. _(min=0; max=20000)_
+    - `minConfidence` — number — Minimum recognition confidence, from 0 to 1, of a caller turn. A turn below it is handled as `lowConfidence` says. While the agent speaks, caller words below it do not interrupt the agent. 0: off. Absent: 0. _(format=double; min=0; max=1)_
+    - `lowConfidence` — string _(enum: `answer`, `ask_to_repeat`, `skip`)_
   - `silenceTimeout` — VoiceSilenceTimeoutSettings
     - `seconds` — number **(required)** — Seconds of caller silence before the action is taken. _(min=1; max=600)_
     - `action` — union **(required)**
@@ -2170,6 +2302,18 @@ _The complete, versionable configuration of an agent. This is what gets snapshot
     - `interruptions` — VoiceInterruptionSettings
       - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
       - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+      - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+      - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+      - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
+    - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+      - `silenceMs` — number — Silence in ms that ends the caller speech. Absent: 500. _(min=100; max=5000)_
+      - `silenceLevelDb` — number — Mean frame level in dBFS below which caller audio is silence. Absent: -36. _(min=-90; max=0)_
+      - `speechLevelDb` — number — Mean frame level in dBFS from which caller audio is speech. Absent: -30. _(min=-90; max=0)_
+    - `turnEnd` — VoiceTurnEndSettings
+      - `holdMs` — number — Time in ms that the agent waits after the caller's last recognised words before it answers. Speech in this time joins the same caller turn, so a longer wait lets the caller pause; a shorter one makes the agent answer sooner. Absent: 250. _(min=0; max=2000)_
+      - `maxWaitMs` — number — Longest time in ms that the agent waits for the end of a caller turn, from the first final phrase of the turn. When the caller keeps speaking, or noise keeps the turn open, the agent answers after this time to the words recognised until then. 0: no limit. A value from 1 to 1999 counts as 2000. Absent: 0. _(min=0; max=20000)_
+      - `minConfidence` — number — Minimum recognition confidence, from 0 to 1, of a caller turn. A turn below it is handled as `lowConfidence` says. While the agent speaks, caller words below it do not interrupt the agent. 0: off. Absent: 0. _(format=double; min=0; max=1)_
+      - `lowConfidence` — string _(enum: `answer`, `ask_to_repeat`, `skip`)_
     - `silenceTimeout` — VoiceSilenceTimeoutSettings
       - `seconds` — number **(required)** — Seconds of caller silence before the action is taken. _(min=1; max=600)_
       - `action` — union **(required)**
@@ -3035,6 +3179,10 @@ _Transfer the call to a PBX destination. Honoured on the voice channel. One capa
         - _(nesting depth limit — see `VoiceSpeechSettings` in the Schemas appendix)_
       - `interruptions` — VoiceInterruptionSettings
         - _(nesting depth limit — see `VoiceInterruptionSettings` in the Schemas appendix)_
+      - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+        - _(nesting depth limit — see `VoiceDetectionSettings` in the Schemas appendix)_
+      - `turnEnd` — VoiceTurnEndSettings
+        - _(nesting depth limit — see `VoiceTurnEndSettings` in the Schemas appendix)_
       - `silenceTimeout` — VoiceSilenceTimeoutSettings
         - _(nesting depth limit — see `VoiceSilenceTimeoutSettings` in the Schemas appendix)_
       - `maxDuration` — VoiceMaxDurationSettings
@@ -3493,6 +3641,9 @@ _Per-channel settings of a conversation step. Only voice has anything to say abo
   - `interruptions` — VoiceInterruptionSettings
     - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
     - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+    - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+    - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+    - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
 
 **`AgentWorkflowConversationHandler`**
 
@@ -3505,6 +3656,9 @@ _A stretch of conversation with a goal: the model talks, may use the capabilitie
     - `interruptions` — VoiceInterruptionSettings
       - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
       - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+      - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+      - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+      - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
 - `capabilities` — array — Capabilities offered to the model *in addition* to `engine.ai.capabilities` while this step runs, configured exactly as they are there — the same union, the same structures. Use it to give a step reach it should not have everywhere: authoring the refund tool on the refund step, rather than on the agent, is also what keeps it out of every other step. Additive only, by design. A step cannot drop an agent-level capability, so it cannot strand a session by taking away the `handover` or `transfer` its channel needs, and the runtime keeps one rule for the turn's tool set. Skills the model loads (`engine.ai.skills`) and the channel's own built-ins join it either way.
   - _array of_ `AgentCapability`
     - _oneOf_ — exactly one of:
@@ -3555,6 +3709,9 @@ _Voice-channel settings for a conversation step, overriding VoiceChannelSettings
 - `interruptions` — VoiceInterruptionSettings
   - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
   - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+  - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+  - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+  - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
 
 **`AgentWorkflowEndHandler`**
 
@@ -3724,6 +3881,9 @@ _Per-channel settings of a message step: how the line is protected when spoken, 
   - `interruptions` — VoiceInterruptionSettings
     - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
     - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+    - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+    - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+    - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
 - `chat` — AgentWorkflowMessageChatSettings — Chat-channel settings for a message step, honoured where a line is posted rather than spoken. Ignored on voice.
   - `suggestions` — array — Reply buttons posted with the line, e.g. 'Yes, go ahead' / 'No, not now' under a confirmation. Delivered as an x-bees `actions` element of `button` elements, so a tap either sends a reply — which the step's transitions then read like any other user message — or opens a link. Only offered on a fixed line: a conversation step is the model's to word, and buttons authored under words it has not chosen yet would contradict each other. _(minItems=1; maxItems=10)_
     - _array of_ `AgentWorkflowMessageButton`
@@ -3780,6 +3940,9 @@ _Say one thing — spoken on voice, posted on chat / assistant — then move on.
     - `interruptions` — VoiceInterruptionSettings
       - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
       - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+      - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+      - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+      - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
   - `chat` — AgentWorkflowMessageChatSettings — Chat-channel settings for a message step, honoured where a line is posted rather than spoken. Ignored on voice.
     - `suggestions` — array — Reply buttons posted with the line, e.g. 'Yes, go ahead' / 'No, not now' under a confirmation. Delivered as an x-bees `actions` element of `button` elements, so a tap either sends a reply — which the step's transitions then read like any other user message — or opens a link. Only offered on a fixed line: a conversation step is the model's to word, and buttons authored under words it has not chosen yet would contradict each other. _(minItems=1; maxItems=10)_
       - _array of_ `AgentWorkflowMessageButton`
@@ -3792,6 +3955,9 @@ _Voice-channel settings for a message step, honoured while the line is spoken. I
 - `interruptions` — VoiceInterruptionSettings
   - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
   - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+  - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+  - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+  - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
 
 **`AgentWorkflowNested`**
 
@@ -4144,6 +4310,18 @@ _The complete, versionable configuration of an agent. This is what gets snapshot
     - `interruptions` — VoiceInterruptionSettings
       - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
       - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+      - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+      - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+      - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
+    - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+      - `silenceMs` — number — Silence in ms that ends the caller speech. Absent: 500. _(min=100; max=5000)_
+      - `silenceLevelDb` — number — Mean frame level in dBFS below which caller audio is silence. Absent: -36. _(min=-90; max=0)_
+      - `speechLevelDb` — number — Mean frame level in dBFS from which caller audio is speech. Absent: -30. _(min=-90; max=0)_
+    - `turnEnd` — VoiceTurnEndSettings
+      - `holdMs` — number — Time in ms that the agent waits after the caller's last recognised words before it answers. Speech in this time joins the same caller turn, so a longer wait lets the caller pause; a shorter one makes the agent answer sooner. Absent: 250. _(min=0; max=2000)_
+      - `maxWaitMs` — number — Longest time in ms that the agent waits for the end of a caller turn, from the first final phrase of the turn. When the caller keeps speaking, or noise keeps the turn open, the agent answers after this time to the words recognised until then. 0: no limit. A value from 1 to 1999 counts as 2000. Absent: 0. _(min=0; max=20000)_
+      - `minConfidence` — number — Minimum recognition confidence, from 0 to 1, of a caller turn. A turn below it is handled as `lowConfidence` says. While the agent speaks, caller words below it do not interrupt the agent. 0: off. Absent: 0. _(format=double; min=0; max=1)_
+      - `lowConfidence` — string _(enum: `answer`, `ask_to_repeat`, `skip`)_
     - `silenceTimeout` — VoiceSilenceTimeoutSettings
       - `seconds` — number **(required)** — Seconds of caller silence before the action is taken. _(min=1; max=600)_
       - `action` — union **(required)**
@@ -4237,6 +4415,10 @@ _The complete, versionable configuration of an agent. This is what gets snapshot
         - _(nesting depth limit — see `VoiceSpeechSettings` in the Schemas appendix)_
       - `interruptions` — VoiceInterruptionSettings
         - _(nesting depth limit — see `VoiceInterruptionSettings` in the Schemas appendix)_
+      - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+        - _(nesting depth limit — see `VoiceDetectionSettings` in the Schemas appendix)_
+      - `turnEnd` — VoiceTurnEndSettings
+        - _(nesting depth limit — see `VoiceTurnEndSettings` in the Schemas appendix)_
       - `silenceTimeout` — VoiceSilenceTimeoutSettings
         - _(nesting depth limit — see `VoiceSilenceTimeoutSettings` in the Schemas appendix)_
       - `maxDuration` — VoiceMaxDurationSettings
@@ -4316,6 +4498,10 @@ _The complete, versionable configuration of an agent. This is what gets snapshot
         - _(nesting depth limit — see `VoiceSpeechSettings` in the Schemas appendix)_
       - `interruptions` — VoiceInterruptionSettings
         - _(nesting depth limit — see `VoiceInterruptionSettings` in the Schemas appendix)_
+      - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+        - _(nesting depth limit — see `VoiceDetectionSettings` in the Schemas appendix)_
+      - `turnEnd` — VoiceTurnEndSettings
+        - _(nesting depth limit — see `VoiceTurnEndSettings` in the Schemas appendix)_
       - `silenceTimeout` — VoiceSilenceTimeoutSettings
         - _(nesting depth limit — see `VoiceSilenceTimeoutSettings` in the Schemas appendix)_
       - `maxDuration` — VoiceMaxDurationSettings
@@ -4622,6 +4808,10 @@ _Minimum similarity a passage needs to be returned. Raising it trades recall for
         - _(nesting depth limit — see `VoiceSpeechSettings` in the Schemas appendix)_
       - `interruptions` — VoiceInterruptionSettings
         - _(nesting depth limit — see `VoiceInterruptionSettings` in the Schemas appendix)_
+      - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+        - _(nesting depth limit — see `VoiceDetectionSettings` in the Schemas appendix)_
+      - `turnEnd` — VoiceTurnEndSettings
+        - _(nesting depth limit — see `VoiceTurnEndSettings` in the Schemas appendix)_
       - `silenceTimeout` — VoiceSilenceTimeoutSettings
         - _(nesting depth limit — see `VoiceSilenceTimeoutSettings` in the Schemas appendix)_
       - `maxDuration` — VoiceMaxDurationSettings
@@ -4727,6 +4917,18 @@ _The complete, versionable configuration of an agent. This is what gets snapshot
     - `interruptions` — VoiceInterruptionSettings
       - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
       - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+      - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+      - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+      - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
+    - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+      - `silenceMs` — number — Silence in ms that ends the caller speech. Absent: 500. _(min=100; max=5000)_
+      - `silenceLevelDb` — number — Mean frame level in dBFS below which caller audio is silence. Absent: -36. _(min=-90; max=0)_
+      - `speechLevelDb` — number — Mean frame level in dBFS from which caller audio is speech. Absent: -30. _(min=-90; max=0)_
+    - `turnEnd` — VoiceTurnEndSettings
+      - `holdMs` — number — Time in ms that the agent waits after the caller's last recognised words before it answers. Speech in this time joins the same caller turn, so a longer wait lets the caller pause; a shorter one makes the agent answer sooner. Absent: 250. _(min=0; max=2000)_
+      - `maxWaitMs` — number — Longest time in ms that the agent waits for the end of a caller turn, from the first final phrase of the turn. When the caller keeps speaking, or noise keeps the turn open, the agent answers after this time to the words recognised until then. 0: no limit. A value from 1 to 1999 counts as 2000. Absent: 0. _(min=0; max=20000)_
+      - `minConfidence` — number — Minimum recognition confidence, from 0 to 1, of a caller turn. A turn below it is handled as `lowConfidence` says. While the agent speaks, caller words below it do not interrupt the agent. 0: off. Absent: 0. _(format=double; min=0; max=1)_
+      - `lowConfidence` — string _(enum: `answer`, `ask_to_repeat`, `skip`)_
     - `silenceTimeout` — VoiceSilenceTimeoutSettings
       - `seconds` — number **(required)** — Seconds of caller silence before the action is taken. _(min=1; max=600)_
       - `action` — union **(required)**
@@ -4821,6 +5023,10 @@ _The complete, versionable configuration of an agent. This is what gets snapshot
         - _(nesting depth limit — see `VoiceSpeechSettings` in the Schemas appendix)_
       - `interruptions` — VoiceInterruptionSettings
         - _(nesting depth limit — see `VoiceInterruptionSettings` in the Schemas appendix)_
+      - `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+        - _(nesting depth limit — see `VoiceDetectionSettings` in the Schemas appendix)_
+      - `turnEnd` — VoiceTurnEndSettings
+        - _(nesting depth limit — see `VoiceTurnEndSettings` in the Schemas appendix)_
       - `silenceTimeout` — VoiceSilenceTimeoutSettings
         - _(nesting depth limit — see `VoiceSilenceTimeoutSettings` in the Schemas appendix)_
       - `maxDuration` — VoiceMaxDurationSettings
@@ -4917,11 +5123,23 @@ _Voice channel settings. Note: a voice agent's AgentAccess.grants are ignored �
         - _(nesting depth limit — see `VoicePronunciation` in the Schemas appendix)_
   - `greetEveryLanguage` — boolean — Speak the first message of every configured language in turn when the call is answered, each in the voice, provider account and pronunciation rules of its own language, instead of only the language the call resolved to. Languages whose first message is empty, and languages the PBX synthesizes itself, are skipped. Absent means off. Requires at least two languages carrying a first message; below that the runtime speaks only the resolved language's phrase, and the console clamps the member on save.
   - `transcription` — VoiceTranscriptionSettings — Speech-to-text configuration: which recogniser listens to the caller, and whether it identifies the language while it does.
-    - `engine` — string — Recogniser to transcribe the caller with. Absent resolves to the platform default ('aws://transcribe' today), resolved by the server so exactly one component decides it. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
-    - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. HERE RATHER THAN ON `VoiceSpeechSettings`, because identifying a language is something the RECOGNISER does: it becomes identify-multiple-languages plus language-options on the recognition stream, and nothing about synthesis reads it. Requires at least two configured languages and a recogniser that can identify them; the server clamps it to false otherwise, because forwarding true with a single candidate makes Amazon reject the stream outright.
+    - `engine` — string — Recogniser to transcribe the caller with. Absent means the company recogniser, else Soniox; such a block is validated against the Amazon rules so that it stays valid on any recogniser. When the recogniser fails during a call, the call continues on the other recogniser. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
+    - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. Absent or `false`: off on every recogniser, so the call keeps its language. `true`: on. Soniox identifies any language, also with one configured language. Amazon identifies only among the configured languages: an agent that names Amazon needs at least two different languages to save `true`. On a recogniser the agent does not name, `true` with too few languages for Amazon is kept, and the call runs without identification.
 - `interruptions` — VoiceInterruptionSettings
   - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
   - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+  - `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+  - `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+  - `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
+- `voiceDetection` — VoiceDetectionSettings — Caller voice detection on the PBX.
+  - `silenceMs` — number — Silence in ms that ends the caller speech. Absent: 500. _(min=100; max=5000)_
+  - `silenceLevelDb` — number — Mean frame level in dBFS below which caller audio is silence. Absent: -36. _(min=-90; max=0)_
+  - `speechLevelDb` — number — Mean frame level in dBFS from which caller audio is speech. Absent: -30. _(min=-90; max=0)_
+- `turnEnd` — VoiceTurnEndSettings
+  - `holdMs` — number — Time in ms that the agent waits after the caller's last recognised words before it answers. Speech in this time joins the same caller turn, so a longer wait lets the caller pause; a shorter one makes the agent answer sooner. Absent: 250. _(min=0; max=2000)_
+  - `maxWaitMs` — number — Longest time in ms that the agent waits for the end of a caller turn, from the first final phrase of the turn. When the caller keeps speaking, or noise keeps the turn open, the agent answers after this time to the words recognised until then. 0: no limit. A value from 1 to 1999 counts as 2000. Absent: 0. _(min=0; max=20000)_
+  - `minConfidence` — number — Minimum recognition confidence, from 0 to 1, of a caller turn. A turn below it is handled as `lowConfidence` says. While the agent speaks, caller words below it do not interrupt the agent. 0: off. Absent: 0. _(format=double; min=0; max=1)_
+  - `lowConfidence` — string _(enum: `answer`, `ask_to_repeat`, `skip`)_
 - `silenceTimeout` — VoiceSilenceTimeoutSettings
   - `seconds` — number **(required)** — Seconds of caller silence before the action is taken. _(min=1; max=600)_
   - `action` — union **(required)**
@@ -4952,6 +5170,14 @@ _Voice channel settings. Note: a voice agent's AgentAccess.grants are ignored �
   - `callerCompany` — boolean — Include the caller company when known. Defaults to false.
   - `time` — boolean — Include the current time, rendered in the agent's `engine.ai.timeZone`. Defaults to false.
 
+**`VoiceDetectionSettings`**
+
+_Caller voice detection on the PBX._
+
+- `silenceMs` — number — Silence in ms that ends the caller speech. Absent: 500. _(min=100; max=5000)_
+- `silenceLevelDb` — number — Mean frame level in dBFS below which caller audio is silence. Absent: -36. _(min=-90; max=0)_
+- `speechLevelDb` — number — Mean frame level in dBFS from which caller audio is speech. Absent: -30. _(min=-90; max=0)_
+
 **`VoiceEndCallSettings`**
 
 - `enabled` — boolean **(required)**
@@ -4961,6 +5187,9 @@ _Voice channel settings. Note: a voice agent's AgentAccess.grants are ignored �
 
 - `enabled` — boolean **(required)** — Whether the caller can interrupt the agent while it is speaking.
 - `minWords` — number — Minimum number of caller words that count as an interruption. _(min=1; max=10)_
+- `duckAfterMs` — number — Caller speech in ms before the agent's reply is lowered. Absent: 200. _(min=0; max=2000)_
+- `duckVolumeDb` — number — Volume in dB of a lowered reply. Absent: -10. _(min=-40; max=0)_
+- `restoreAfterMs` — number — Caller silence in ms before a lowered reply gets its volume back. Absent: 300. _(min=0; max=3000)_
 
 **`VoiceLanguage`**
 
@@ -4975,6 +5204,10 @@ _One configured language: its voice, its initial phrase and its pronunciation ru
     - `phrase` — string **(required)** — The phrase as it appears in the text, e.g. 'Wildix'. Bounded because every rule is compiled into ONE regular expression — see the list below. _(maxLen=200)_
     - `as` — string **(required)** — Respelling (ALIAS) or phonetic transcription (IPA), e.g. 'Wil-dix'. _(maxLen=200)_
     - `encoding` — string — How the `as` member of a pronunciation rule is written. _(enum: `alias`, `ipa`)_
+
+**`VoiceLowConfidenceAction`**
+
+- string _(enum: `answer`, `ask_to_repeat`, `skip`)_
 
 **`VoiceMaxDurationSettings`**
 
@@ -5039,8 +5272,8 @@ _Speech configuration for the voice channel. When present it WINS over the dialp
         - _(nesting depth limit — see `VoicePronunciation` in the Schemas appendix)_
 - `greetEveryLanguage` — boolean — Speak the first message of every configured language in turn when the call is answered, each in the voice, provider account and pronunciation rules of its own language, instead of only the language the call resolved to. Languages whose first message is empty, and languages the PBX synthesizes itself, are skipped. Absent means off. Requires at least two languages carrying a first message; below that the runtime speaks only the resolved language's phrase, and the console clamps the member on save.
 - `transcription` — VoiceTranscriptionSettings — Speech-to-text configuration: which recogniser listens to the caller, and whether it identifies the language while it does.
-  - `engine` — string — Recogniser to transcribe the caller with. Absent resolves to the platform default ('aws://transcribe' today), resolved by the server so exactly one component decides it. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
-  - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. HERE RATHER THAN ON `VoiceSpeechSettings`, because identifying a language is something the RECOGNISER does: it becomes identify-multiple-languages plus language-options on the recognition stream, and nothing about synthesis reads it. Requires at least two configured languages and a recogniser that can identify them; the server clamps it to false otherwise, because forwarding true with a single candidate makes Amazon reject the stream outright.
+  - `engine` — string — Recogniser to transcribe the caller with. Absent means the company recogniser, else Soniox; such a block is validated against the Amazon rules so that it stays valid on any recogniser. When the recogniser fails during a call, the call continues on the other recogniser. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
+  - `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. Absent or `false`: off on every recogniser, so the call keeps its language. `true`: on. Soniox identifies any language, also with one configured language. Amazon identifies only among the configured languages: an agent that names Amazon needs at least two different languages to save `true`. On a recogniser the agent does not name, `true` with too few languages for Amazon is kept, and the call runs without identification.
 
 **`VoiceTerminateAction`**
 
@@ -5070,8 +5303,8 @@ _Speech configuration for the voice channel. When present it WINS over the dialp
 
 _Speech-to-text configuration: which recogniser listens to the caller, and whether it identifies the language while it does._
 
-- `engine` — string — Recogniser to transcribe the caller with. Absent resolves to the platform default ('aws://transcribe' today), resolved by the server so exactly one component decides it. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
-- `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. HERE RATHER THAN ON `VoiceSpeechSettings`, because identifying a language is something the RECOGNISER does: it becomes identify-multiple-languages plus language-options on the recognition stream, and nothing about synthesis reads it. Requires at least two configured languages and a recogniser that can identify them; the server clamps it to false otherwise, because forwarding true with a single candidate makes Amazon reject the stream outright.
+- `engine` — string — Recogniser to transcribe the caller with. Absent means the company recogniser, else Soniox; such a block is validated against the Amazon rules so that it stays valid on any recogniser. When the recogniser fails during a call, the call continues on the other recogniser. _(pattern=^[a-z0-9][a-z0-9_-]*://[a-zA-Z0-9._~/-]+(\?[a-zA-Z0-9._~%&=+:/-]*)?$; minLen=1; maxLen=1024)_
+- `autoDetect` — boolean — Identify the caller's language per utterance and switch voice and reply language mid-call. Absent or `false`: off on every recogniser, so the call keeps its language. `true`: on. Soniox identifies any language, also with one configured language. Amazon identifies only among the configured languages: an agent that names Amazon needs at least two different languages to save `true`. On a recogniser the agent does not name, `true` with too few languages for Amazon is kept, and the call runs without identification.
 
 **`VoiceTransferTarget`**
 
@@ -5079,6 +5312,13 @@ _Speech-to-text configuration: which recogniser listens to the caller, and wheth
 - `description` — string — When this target should be chosen.
 - `context` — string **(required)**
 - `extension` — string **(required)**
+
+**`VoiceTurnEndSettings`**
+
+- `holdMs` — number — Time in ms that the agent waits after the caller's last recognised words before it answers. Speech in this time joins the same caller turn, so a longer wait lets the caller pause; a shorter one makes the agent answer sooner. Absent: 250. _(min=0; max=2000)_
+- `maxWaitMs` — number — Longest time in ms that the agent waits for the end of a caller turn, from the first final phrase of the turn. When the caller keeps speaking, or noise keeps the turn open, the agent answers after this time to the words recognised until then. 0: no limit. A value from 1 to 1999 counts as 2000. Absent: 0. _(min=0; max=20000)_
+- `minConfidence` — number — Minimum recognition confidence, from 0 to 1, of a caller turn. A turn below it is handled as `lowConfidence` says. While the agent speaks, caller words below it do not interrupt the agent. 0: off. Absent: 0. _(format=double; min=0; max=1)_
+- `lowConfidence` — string _(enum: `answer`, `ask_to_repeat`, `skip`)_
 
 **`WebSearchContextSize`**
 

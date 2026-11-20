@@ -1,4 +1,4 @@
-## Wilma Skills API 🆕
+## Wilma Skills API
 
 _OpenAPI: Wilma Skills Service — version v2_
 

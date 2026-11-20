@@ -1,4 +1,4 @@
-## Wilma Artifacts API 🆕
+## Wilma Artifacts API
 
 _OpenAPI: Wilma Artifacts Service — version v2_
 

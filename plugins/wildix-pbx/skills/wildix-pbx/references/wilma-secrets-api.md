@@ -1,4 +1,4 @@
-## Wilma Secrets API (Credential Broker) 🆕
+## Wilma Secrets API (Credential Broker)
 
 _OpenAPI: Wilma Credential Broker — version v2_
 

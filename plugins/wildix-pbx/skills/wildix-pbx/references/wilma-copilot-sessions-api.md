@@ -1,4 +1,4 @@
-## Wilma Copilot Sessions API 🆕
+## Wilma Copilot Sessions API
 
 _OpenAPI: Wilma Copilot Sessions Service — version v2_
 

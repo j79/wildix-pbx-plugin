@@ -24,7 +24,7 @@ L'environnement Claude doit pouvoir joindre `*.wildixin.com`, `*.wildix.com`, `a
 
 - `skills/wildix-pbx/SKILL.md` — méthode suivie par Claude.
 - `skills/wildix-pbx/scripts/wildix.py` — client en ligne de commande (Python standard, sans dépendance).
-- `skills/wildix-pbx/references/` — référence API Wildix (révision du 2026-11-10, 50 services), un fichier par API, plus un index des routes et les webhooks.
+- `skills/wildix-pbx/references/` — référence API Wildix (révision du 2026-11-20, 50 services), un fichier par API, plus un index des routes et les webhooks.
 
 ## Mettre à jour la référence (mainteneur)
 
