@@ -224,7 +224,7 @@ Pour le détail d'une route : `wildix.py doc show <api> <MÉTHODE> <chemin>`.
 - `POST /api/v2/personal/features` — Update user personal features
 
 ## Cloud PBX API (Permissions) — alias `cloud-pbx-api` — https://wms-api.wildix.com (13 routes)
-- 🆕 `POST /v1/permissions/delete_call_recordings_of_users/check` — Checks the `can: Delete call recordings` permission of a specific user for the participants of a call or confe
+- `POST /v1/permissions/delete_call_recordings_of_users/check` — Checks the `can: Delete call recordings` permission of a specific user for the participants of a call or confe
 - `POST /v1/permissions/see_call_recordings/check` — Checks the `can: See Call Recordings` permissions for a specific user.
 - `POST /v1/permissions/view_call_recordings_of_users/check` — Checks the `can: See call recordings` permissions of a specific user for the list of targets.
 - `POST /v1/permissions/view_call_recordings_of_users/groups` — Gets a list of groups that are allowed to see the analytics.
@@ -397,8 +397,8 @@ Pour le détail d'une route : `wildix.py doc show <api> <MÉTHODE> <chemin>`.
 - `GET /v2/users/cloud/{userId}/pbx-link-data` — Retrieves PBX link data for a specific user.
 - `GET /v2/users/get-user-pbx-link-suggestion` — Retrieves PBX link suggestion information for a user based on their email address.
 - `POST /v2/users/query-colleagues` — Searches for colleagues using various filters and search criteria, with optional auto-invitation for new users
-- `POST /v2/users/query-user` — Searches for a single user using a query with optional predicate validation.
-- `POST /v2/users/query-users` — Searches for multiple users using queries with optional predicate validation.
+- `POST /v2/users/query-user` — Searches for a single user using a query with optional predicate validation. A user with a workspace in the ca
+- `POST /v2/users/query-users` — Searches for multiple users using queries with optional predicate validation. A user with a workspace in the c
 - `POST /v2/users/batch-get-users-email-notifications-settings` — Get multiple user settings by their IDs
 - `GET /v2/users/bots/{botId}` — Retrieves details of a specific bot by its unique identifier.
 - `GET /v2/users/bots/{botId}/callback` — Retrieves the callback configuration for a specific bot.
@@ -617,8 +617,8 @@ Pour le détail d'une route : `wildix.py doc show <api> <MÉTHODE> <chemin>`.
 - `GET /v1/skills` — Returns the list of unique skill names (LDAP department names) of the company's PBX. Used to populate the skil
 
 ## WMP Info API — alias `wmp-info-api` — https://api.wildix.com (5 routes)
-- 🆕 `GET /v2/PBXs/{domain}` — Get PBX information from portal
-- 🆕 `GET /v2/companies/{companyId}` — Get information about company from WMP
+- `GET /v2/PBXs/{domain}` — Get PBX information from portal
+- `GET /v2/companies/{companyId}` — Get information about company from WMP
 - ⚠️ `GET /v1/companies/{companyId}` — Gets information about company.
 - ⚠️ `GET /v1/pbxs/{nameOrSerial}` — Gets information about PBX.
 - ⚠️ `POST /v1/pbx-key/check` — Checking the validity of the PbxKey for this PBX. Temporary route. To be removed after remove PBX Auth
@@ -687,8 +687,8 @@ Pour le détail d'une route : `wildix.py doc show <api> <MÉTHODE> <chemin>`.
 - `POST /v1/numbers/ordering/order` — 
 - `GET /v1/s2s/messenger/pages` — Returns the Facebook pages a company can send Messenger messages from.
 - `POST /v1/s2s/messenger/send` — Sends a Facebook Messenger message from one of the company's pages to a person who wrote to it. Only a reply i
-- 🆕 `GET /v1/s2s/rcs/brands` — Returns the RCS brands a company can send from.
-- 🆕 `POST /v1/s2s/rcs/send` — Sends an RCS message from one of the company's brands to a phone number. There is no reply window: the person 
+- `GET /v1/s2s/rcs/brands` — Returns the RCS brands a company can send from.
+- `POST /v1/s2s/rcs/send` — Sends an RCS message from one of the company's brands to a phone number. There is no reply window: the person 
 - `POST /v1/s2s/sms` — 
 - `GET /v1/s2s/sms/history` — 
 - `GET /v1/s2s/sms/numbers` — 
@@ -719,7 +719,7 @@ Pour le détail d'une route : `wildix.py doc show <api> <MÉTHODE> <chemin>`.
 ## Insights API — alias `insights-api` — https://wda.wildix.com (59 routes)
 - `GET /v2/insights/analysis/settings` — Gets default analysis settings used for projections.
 - `PUT /v2/insights/analysis/settings` — Updates default analysis settings used for projections.
-- 🆕 `DELETE /v2/insights/calls/{callId}/assets` — Irreversibly deletes a call from Revenue Intelligence: the recordings, the transcription and all insights of e
+- `DELETE /v2/insights/calls/{callId}/assets` — Irreversibly deletes a call from Revenue Intelligence: the recordings, the transcription and all insights of e
 - `GET /v2/insights/calls/{callId}/flows/{flowIndex}/characteristics` — Gets the characteristics for a call by callId and flowIndex.
 - `GET /v2/insights/calls/{callId}/flows/{flowIndex}/insights` — Gets the insights for a call by callId and flowIndex.
 - ⚠️ `POST /v2/insights/calls/{callId}/flows/{flowIndex}/schedule_summary_generation` — 
@@ -729,7 +729,7 @@ Pour le détail d'une route : `wildix.py doc show <api> <MÉTHODE> <chemin>`.
 - `GET /v2/insights/chats/{chatId}/state` — Gets the summary for a chat by chatId.
 - `GET /v2/insights/chats/{chatId}/summary` — Gets the summary for a chat by chatId.
 - `GET /v2/insights/conferences/recording/download_url` — Retrieves a presigned URL for downloading a specific recording.
-- 🆕 `DELETE /v2/insights/conferences/{conferenceId}/assets` — Irreversibly deletes a conference from Revenue Intelligence: the recordings, the transcription and all insight
+- `DELETE /v2/insights/conferences/{conferenceId}/assets` — Irreversibly deletes a conference from Revenue Intelligence: the recordings, the transcription and all insight
 - `GET /v2/insights/conferences/{conferenceId}/insights` — Gets the insights for a conference by conferenceId.
 - ⚠️ `POST /v2/insights/conferences/{conferenceId}/schedule_summary_generation` — 
 - `GET /v2/insights/conferences/{conferenceId}/state` — Gets the summary for a conference by conferenceId.
@@ -793,250 +793,251 @@ Pour le détail d'une route : `wildix.py doc show <api> <MÉTHODE> <chemin>`.
 - `POST /v2/stream/presence/query_multiple` — Retrieves users presences
 - `POST /v2/stream/presence/update_last_seen` — Updates the user's last seen presence information.
 - `POST /v2/stream/services` — Retrieves a list of active services of the company.
-- 🆕 `POST /v2/stream/services/stats` — Retrieves live snapshot plus statistics for the requested lookback window. Period counters are cached for a fe
+- `POST /v2/stream/services/stats` — Retrieves live snapshot plus statistics for the requested lookback window. Period counters are cached for a fe
 
-## x-caracal API — alias `x-caracal-api` — https://wda.wildix.com (14 routes) 🆕
-- 🆕 `POST /v2/xcaracal/answered/breakdown/query` — Reads every call of the window on each request: nothing is pre-computed per user, agent, disconnect reason or 
-- 🆕 `POST /v2/xcaracal/answered/service-level/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
-- 🆕 `POST /v2/xcaracal/answered/summary/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
-- 🆕 `GET /v2/xcaracal/dashboards` — The dashboards of the user (live wallboards and reports): the predefined dashboards every user gets first, the
-- 🆕 `PUT /v2/xcaracal/dashboards/{id}` — Saves a dashboard of the user under the id the client chose: creates it when the id is new, otherwise replaces
-- 🆕 `DELETE /v2/xcaracal/dashboards/{id}` — Deletes a dashboard of the user. Deleting a dashboard that does not exist succeeds; deleting a predefined dash
-- 🆕 `POST /v2/xcaracal/distribution/by-period/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
-- 🆕 `POST /v2/xcaracal/distribution/by-service/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
-- 🆕 `POST /v2/xcaracal/distribution/summary/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
-- 🆕 `POST /v2/xcaracal/services/calls/query` — Cheap: one page of calls, read through an index, however long the window. Pages are requested one at a time. T
-- 🆕 `GET /v2/xcaracal/services/calls/{callId}/flows/{flowIndex}/events` — Cheap: one call, looked up by key. One service call in full: its call-list row and its raw lifecycle events (I
-- 🆕 `POST /v2/xcaracal/unanswered/breakdown/query` — Reads every call of the window on each request: nothing is pre-computed per service or disconnect reason. Reco
-- 🆕 `POST /v2/xcaracal/unanswered/service-level/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
-- 🆕 `POST /v2/xcaracal/unanswered/summary/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
+## x-caracal API — alias `x-caracal-api` — https://wda.wildix.com (14 routes)
+- `POST /v2/xcaracal/answered/breakdown/query` — Reads every call of the window on each request: nothing is pre-computed per user, agent, disconnect reason or 
+- `POST /v2/xcaracal/answered/service-level/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
+- `POST /v2/xcaracal/answered/summary/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
+- `GET /v2/xcaracal/dashboards` — The dashboards of the user (live wallboards and reports): the predefined dashboards every user gets first, the
+- `PUT /v2/xcaracal/dashboards/{id}` — Saves a dashboard of the user under the id the client chose: creates it when the id is new, otherwise replaces
+- `DELETE /v2/xcaracal/dashboards/{id}` — Deletes a dashboard of the user. Deleting a dashboard that does not exist succeeds; deleting a predefined dash
+- `POST /v2/xcaracal/distribution/by-period/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
+- `POST /v2/xcaracal/distribution/by-service/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
+- `POST /v2/xcaracal/distribution/summary/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
+- `POST /v2/xcaracal/services/calls/query` — Cheap: one page of calls, read through an index, however long the window. Pages are requested one at a time. T
+- `GET /v2/xcaracal/services/calls/{callId}/flows/{flowIndex}/events` — Cheap: one call, looked up by key. One service call in full: its call-list row and its raw lifecycle events (I
+- `POST /v2/xcaracal/unanswered/breakdown/query` — Reads every call of the window on each request: nothing is pre-computed per service or disconnect reason. Reco
+- `POST /v2/xcaracal/unanswered/service-level/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
+- `POST /v2/xcaracal/unanswered/summary/query` — Cheap: closed days come from pre-computed daily rows. It reads the individual calls only for today and for yes
 
-## Wilma Agents API — alias `wilma-agents-api` — https://api.wilma.wildix.com (17 routes) 🆕
-- 🆕 `GET /v2/agents/agents` — Retrieves a paginated list of agents for the specified company.
-- 🆕 `POST /v2/agents/agents` — Creates a new mutable agent draft. The agent serves no traffic until the draft is published and PutAgentDeploy
-- 🆕 `GET /v2/agents/agents-names` — Retrieves a lightweight list of agent names and basic information for the specified company.
-- 🆕 `GET /v2/agents/agents/{agentId}` — Retrieves an agent, including its draft definition and version/rollout state.
-- 🆕 `PUT /v2/agents/agents/{agentId}` — Updates the draft definition of an agent. Does not affect served traffic until the draft is published.
-- 🆕 `DELETE /v2/agents/agents/{agentId}` — Deletes an agent, its draft, versions and API keys. Fails with ConflictException while the agent has active se
-- 🆕 `GET /v2/agents/agents/{agentId}/compare-versions` — Returns the field-level differences between two versions, or between a version and the current draft.
-- 🆕 `GET /v2/agents/agents/{agentId}/versions` — Lists the published versions of an agent, newest first.
-- 🆕 `POST /v2/agents/agents/{agentId}/versions` — Publishes the current draft as a new immutable version. Publishing never changes what is served; call PutAgent
-- 🆕 `GET /v2/agents/agents/{agentId}/versions/{version}` — Retrieves a published version, including its full immutable definition snapshot.
-- 🆕 `POST /v2/agents/agents/{agentId}/versions/{version}/draft` — Replaces the mutable draft with a published version's definition. The draft revision is incremented; published
-- 🆕 `GET /v2/agents/agents/{agentId}/deployment` — Retrieves how new sessions are currently split across the agent's published versions.
-- 🆕 `PUT /v2/agents/agents/{agentId}/deployment` — Sets how new sessions are split across the agent's published versions, e.g. 80% on version 1 and 20% on versio
-- 🆕 `POST /v2/agents/agents/{agentId}/deployment/reset` — Resets the deployment to the default: 100% of new sessions on the latest published version. Fails with Conflic
-- 🆕 `GET /v2/agents/agents/{agentId}/keys` — Lists the API keys of an agent. Secrets are never returned.
-- 🆕 `POST /v2/agents/agents/{agentId}/keys` — Creates a new API key for an agent. The secret is returned only in this response and cannot be retrieved later
-- 🆕 `DELETE /v2/agents/agents/{agentId}/keys/{keyId}` — Revokes an API key.
+## Wilma Agents API — alias `wilma-agents-api` — https://api.wilma.wildix.com (17 routes)
+- `GET /v2/agents/agents` — Retrieves a paginated list of agents for the specified company.
+- `POST /v2/agents/agents` — Creates a new mutable agent draft. The agent serves no traffic until the draft is published and PutAgentDeploy
+- `GET /v2/agents/agents-names` — Retrieves a lightweight list of agent names and basic information for the specified company.
+- `GET /v2/agents/agents/{agentId}` — Retrieves an agent, including its draft definition and version/rollout state.
+- `PUT /v2/agents/agents/{agentId}` — Updates the draft definition of an agent. Does not affect served traffic until the draft is published.
+- `DELETE /v2/agents/agents/{agentId}` — Deletes an agent, its draft, versions and API keys. Fails with ConflictException while the agent has active se
+- `GET /v2/agents/agents/{agentId}/compare-versions` — Returns the field-level differences between two versions, or between a version and the current draft.
+- `GET /v2/agents/agents/{agentId}/versions` — Lists the published versions of an agent, newest first.
+- `POST /v2/agents/agents/{agentId}/versions` — Publishes the current draft as a new immutable version. Publishing never changes what is served; call PutAgent
+- `GET /v2/agents/agents/{agentId}/versions/{version}` — Retrieves a published version, including its full immutable definition snapshot.
+- `POST /v2/agents/agents/{agentId}/versions/{version}/draft` — Replaces the mutable draft with a published version's definition. The draft revision is incremented; published
+- `GET /v2/agents/agents/{agentId}/deployment` — Retrieves how new sessions are currently split across the agent's published versions.
+- `PUT /v2/agents/agents/{agentId}/deployment` — Sets how new sessions are split across the agent's published versions, e.g. 80% on version 1 and 20% on versio
+- `POST /v2/agents/agents/{agentId}/deployment/reset` — Resets the deployment to the default: 100% of new sessions on the latest published version. Fails with Conflic
+- `GET /v2/agents/agents/{agentId}/keys` — Lists the API keys of an agent. Secrets are never returned.
+- `POST /v2/agents/agents/{agentId}/keys` — Creates a new API key for an agent. The secret is returned only in this response and cannot be retrieved later
+- `DELETE /v2/agents/agents/{agentId}/keys/{keyId}` — Revokes an API key.
 
-## Wilma Artifacts API — alias `wilma-artifacts-api` — https://api.wilma.wildix.com (8 routes) 🆕
-- 🆕 `GET /v2/artifacts` — Lists artifacts. Listing is contextual: filter by the producing session or task (and optionally channel, agent
-- 🆕 `POST /v2/artifacts` — Registers a new artifact and returns a short-lived presigned URL to upload its content.
-- 🆕 `GET /v2/artifacts/items/{artifactId}` — Gets the metadata of a single artifact revision. Accessible to the owner, granted principals, and — when visib
-- 🆕 `DELETE /v2/artifacts/items/{artifactId}` — Permanently deletes an artifact, all retained revisions and their CDS files, and invalidates any share link. T
-- 🆕 `GET /v2/artifacts/items/{artifactId}/content-url` — Returns a short-lived URL that serves an artifact's content for rendering. The entry file sits
-- 🆕 `GET /v2/artifacts/items/{artifactId}/download` — Returns a short-lived URL to download an artifact's content: the file itself for a single-file artifact, the s
-- 🆕 `GET /v2/artifacts/items/{artifactId}/share-url` — Returns the shareable URL of an artifact whose visibility is `company` using the configured viewer base and ar
-- 🆕 `PUT /v2/artifacts/items/{artifactId}/sharing` — Sets an artifact's sharing settings: specific per-user/group grants plus a general access
+## Wilma Artifacts API — alias `wilma-artifacts-api` — https://api.wilma.wildix.com (8 routes)
+- `GET /v2/artifacts` — Lists artifacts. Listing is contextual: filter by the producing session or task (and optionally channel, agent
+- `POST /v2/artifacts` — Registers a new artifact and returns a short-lived presigned URL to upload its content.
+- `GET /v2/artifacts/items/{artifactId}` — Gets the metadata of a single artifact revision. Accessible to the owner, granted principals, and — when visib
+- `DELETE /v2/artifacts/items/{artifactId}` — Permanently deletes an artifact, all retained revisions and their CDS files, and invalidates any share link. T
+- `GET /v2/artifacts/items/{artifactId}/content-url` — Returns a short-lived URL that serves an artifact's content for rendering. The entry file sits
+- `GET /v2/artifacts/items/{artifactId}/download` — Returns a short-lived URL to download an artifact's content: the file itself for a single-file artifact, the s
+- `GET /v2/artifacts/items/{artifactId}/share-url` — Returns the shareable URL of an artifact whose visibility is `company` using the configured viewer base and ar
+- `PUT /v2/artifacts/items/{artifactId}/sharing` — Sets an artifact's sharing settings: specific per-user/group grants plus a general access
 
-## Wilma Assistant API — alias `wilma-assistant-api` — https://api.wilma.wildix.com (21 routes) 🆕
-- 🆕 `GET /v2/assistant/agents/items/{agentId}` — Gets the end-user view of one agent: its name, picture and the assistant presentation a client draws
-- 🆕 `POST /v2/assistant/attachments` — Registers an input attachment and returns a short-lived presigned PUT URL for its content.
-- 🆕 `GET /v2/assistant/attachments/items/{attachmentId}` — Gets the metadata of a single input attachment.
-- 🆕 `DELETE /v2/assistant/attachments/items/{attachmentId}` — Deletes an attachment and its content.
-- 🆕 `GET /v2/assistant/attachments/items/{attachmentId}/download` — Returns a short-lived presigned URL to download an attachment's content.
-- ⚠️ 🆕 `GET /v2/assistant/connectors` — Lists the connectors the current user can use in the assistant: every instance the company
-- 🆕 `POST /v2/assistant/connectors/{key}/authorize` — Starts connecting a `user`-mode connector for the current user. Returns a connect session
-- 🆕 `DELETE /v2/assistant/connectors/{key}/authorize` — Disconnects a `user`-mode connector for the current user, revoking the stored credential
-- 🆕 `POST /v2/assistant/connectors/{key}/authorize/complete` — Completes connecting a `user`-mode connector after the authorization flow succeeds. Pass the
-- 🆕 `GET /v2/assistant/sessions` — Lists durable assistant sessions for the authenticated owner. Hidden sessions (started by integrations) are ex
-- 🆕 `POST /v2/assistant/sessions` — Starts a durable assistant session and returns the event index from which the caller should stream. Services i
-- 🆕 `GET /v2/assistant/sessions/items/{sessionId}` — Gets the durable state of an assistant session.
-- 🆕 `DELETE /v2/assistant/sessions/items/{sessionId}` — Permanently deletes a durable assistant session and its event log. Idempotent: deleting an already-deleted ses
-- 🆕 `GET /v2/assistant/sessions/items/{sessionId}/events` — Returns recorded session events as a plain JSON page, without streaming. Use this to fetch the activity of pas
-- 🆕 `GET /v2/assistant/sessions/items/{sessionId}/events/stream` — Replays and tails session events as Server-Sent Events (`text/event-stream`). Each frame carries one Assistant
-- 🆕 `POST /v2/assistant/sessions/items/{sessionId}/resume` — Resolves pending session input and resumes agent execution.
-- 🆕 `POST /v2/assistant/sessions/items/{sessionId}/steer` — Adds a message to the turn already running, without discarding its work: the runtime injects
-- 🆕 `POST /v2/assistant/sessions/items/{sessionId}/stop` — Requests cancellation of the active turn in a durable assistant session.
-- 🆕 `POST /v2/assistant/sessions/items/{sessionId}/turns` — Starts another turn in an existing durable assistant session.
-- 🆕 `GET /v2/assistant/settings` — Gets AI assistant settings for the user. Returns personalisation fields (style, about),
-- 🆕 `PATCH /v2/assistant/settings` — Updates AI assistant settings for the user. Only supplied fields are changed.
+## Wilma Assistant API — alias `wilma-assistant-api` — https://api.wilma.wildix.com (22 routes)
+- `GET /v2/assistant/agents/items/{agentId}` — Gets the end-user view of one agent: its name, picture and the assistant presentation a client draws
+- `POST /v2/assistant/attachments` — Registers an input attachment and returns a short-lived presigned PUT URL for its content.
+- `GET /v2/assistant/attachments/items/{attachmentId}` — Gets the metadata of a single input attachment.
+- `DELETE /v2/assistant/attachments/items/{attachmentId}` — Deletes an attachment and its content.
+- `GET /v2/assistant/attachments/items/{attachmentId}/download` — Returns a short-lived presigned URL to download an attachment's content.
+- ⚠️ `GET /v2/assistant/connectors` — Lists the connectors the current user can use in the assistant: every instance the company
+- `POST /v2/assistant/connectors/{key}/authorize` — Starts connecting a `user`-mode connector for the current user. Returns a connect session
+- `DELETE /v2/assistant/connectors/{key}/authorize` — Disconnects a `user`-mode connector for the current user, revoking the stored credential
+- `POST /v2/assistant/connectors/{key}/authorize/complete` — Completes connecting a `user`-mode connector after the authorization flow succeeds. Pass the
+- `GET /v2/assistant/sessions` — Lists durable assistant sessions for the authenticated owner. Hidden sessions (started by integrations) are ex
+- `POST /v2/assistant/sessions` — Starts a durable assistant session and returns the event index from which the caller should stream. Services i
+- `GET /v2/assistant/sessions/items/{sessionId}` — Gets the durable state of an assistant session.
+- `DELETE /v2/assistant/sessions/items/{sessionId}` — Permanently deletes a durable assistant session and its event log. Idempotent: deleting an already-deleted ses
+- `GET /v2/assistant/sessions/items/{sessionId}/events` — Returns recorded session events as a plain JSON page, without streaming. Use this to fetch the activity of pas
+- `GET /v2/assistant/sessions/items/{sessionId}/events/stream` — Replays and tails session events as Server-Sent Events (`text/event-stream`). Each frame carries one Assistant
+- `POST /v2/assistant/sessions/items/{sessionId}/resume` — Resolves pending session input and resumes agent execution.
+- `POST /v2/assistant/sessions/items/{sessionId}/steer` — Adds a message to the turn already running, without discarding its work: the runtime injects
+- `POST /v2/assistant/sessions/items/{sessionId}/stop` — Requests cancellation of the active turn in a durable assistant session.
+- `POST /v2/assistant/sessions/items/{sessionId}/turns` — Starts another turn in an existing durable assistant session.
+- `GET /v2/assistant/settings` — Gets AI assistant settings for the user. Returns personalisation fields (style, about),
+- `PATCH /v2/assistant/settings` — Updates AI assistant settings for the user. Only supplied fields are changed.
+- 🆕 `POST /v2/assistant/voice/describe` — Describes the connect parameters and the frames of the assistant voice WebSocket `/v2/assistant/voice/ws`. Uti
 
-## Wilma Audit API — alias `wilma-audit-api` — https://api.wilma.wildix.com (3 routes) 🆕
-- 🆕 `GET /v2/audit/events` — Queries immutable audit events newest first. Filter by resource URI (exact
-- 🆕 `GET /v2/audit/events/{eventId}` — Returns a single audit event by id.
-- 🆕 `GET /v2/audit/references` — Returns the resources that reference the given entity — where it is used. Only the current
+## Wilma Audit API — alias `wilma-audit-api` — https://api.wilma.wildix.com (3 routes)
+- `GET /v2/audit/events` — Queries immutable audit events newest first. Filter by resource URI (exact
+- `GET /v2/audit/events/{eventId}` — Returns a single audit event by id.
+- `GET /v2/audit/references` — Returns the resources that reference the given entity — where it is used. Only the current
 
-## Wilma Chat API — alias `wilma-chat-api` — https://api.wilma.wildix.com (7 routes) 🆕
-- 🆕 `GET /v2/chat/sessions` — Lists chat sessions in the company (administration and debugging).
-- 🆕 `GET /v2/chat/sessions/items/{sessionId}` — Gets the state of a chat session.
-- 🆕 `GET /v2/chat/sessions/items/{sessionId}/events` — Returns recorded chat session events as a plain JSON page, without streaming. The event vocabulary is the shar
-- 🆕 `GET /v2/chat/sessions/items/{sessionId}/events/stream` — Replays and tails chat session events as Server-Sent Events (`text/event-stream`). Each frame carries one Chat
-- 🆕 `POST /v2/chat/sessions/items/{sessionId}/stop` — Requests cancellation of the active turn in a chat session. The runtime finalizes or removes the in-progress c
-- 🆕 `POST /v2/chat/simulations` — Creates a simulated chat session for an agent on a chosen transport. Send user messages with SendSimulationMes
-- 🆕 `POST /v2/chat/simulations/{sessionId}/messages` — Sends a user message into a simulated chat session and blocks until the agent turn
+## Wilma Chat API — alias `wilma-chat-api` — https://api.wilma.wildix.com (7 routes)
+- `GET /v2/chat/sessions` — Lists chat sessions in the company (administration and debugging).
+- `GET /v2/chat/sessions/items/{sessionId}` — Gets the state of a chat session.
+- `GET /v2/chat/sessions/items/{sessionId}/events` — Returns recorded chat session events as a plain JSON page, without streaming. The event vocabulary is the shar
+- `GET /v2/chat/sessions/items/{sessionId}/events/stream` — Replays and tails chat session events as Server-Sent Events (`text/event-stream`). Each frame carries one Chat
+- `POST /v2/chat/sessions/items/{sessionId}/stop` — Requests cancellation of the active turn in a chat session. The runtime finalizes or removes the in-progress c
+- `POST /v2/chat/simulations` — Creates a simulated chat session for an agent on a chosen transport. Send user messages with SendSimulationMes
+- `POST /v2/chat/simulations/{sessionId}/messages` — Sends a user message into a simulated chat session and blocks until the agent turn
 
-## Wilma Copilot API — alias `wilma-copilot-api` — https://api.wilma.wildix.com (35 routes) 🆕
-- 🆕 `GET /v2/copilot/assets` — Lists reusable assets in the company.
-- 🆕 `POST /v2/copilot/assets` — Creates a new reusable asset.
-- 🆕 `GET /v2/copilot/assets/{assetId}` — Gets an asset.
-- 🆕 `PUT /v2/copilot/assets/{assetId}` — Updates an asset. Published profile versions that captured this asset are unaffected; the change reaches live 
-- 🆕 `DELETE /v2/copilot/assets/{assetId}` — Deletes an asset and removes it from every profile draft that references it. Fails with ConflictException when
-- 🆕 `GET /v2/copilot/automations` — Lists reusable automations in the company.
-- 🆕 `POST /v2/copilot/automations` — Creates a new reusable automation.
-- 🆕 `GET /v2/copilot/automations/{automationId}` — Gets an automation.
-- 🆕 `PUT /v2/copilot/automations/{automationId}` — Updates an automation. Published profile versions that captured this automation are unaffected; the change rea
-- 🆕 `DELETE /v2/copilot/automations/{automationId}` — Deletes an automation and removes it from every profile draft that references it. Fails with ConflictException
-- 🆕 `GET /v2/copilot/evaluations` — Lists reusable evaluations in the company.
-- 🆕 `POST /v2/copilot/evaluations` — Creates a new reusable evaluation.
-- 🆕 `GET /v2/copilot/evaluations/{evaluationId}` — Gets an evaluation.
-- 🆕 `PUT /v2/copilot/evaluations/{evaluationId}` — Updates an evaluation. Published profile versions that captured this evaluation are unaffected; the change rea
-- 🆕 `DELETE /v2/copilot/evaluations/{evaluationId}` — Deletes an evaluation and removes it from every profile draft that references it. Fails with ConflictException
-- 🆕 `GET /v2/copilot/intents` — Lists reusable intents in the company.
-- 🆕 `POST /v2/copilot/intents` — Creates a new reusable intent.
-- 🆕 `GET /v2/copilot/intents/{intentId}` — Gets an intent.
-- 🆕 `PUT /v2/copilot/intents/{intentId}` — Updates an intent. Published profile versions that captured this intent are unaffected; the change reaches liv
-- 🆕 `DELETE /v2/copilot/intents/{intentId}` — Deletes an intent and removes it from every profile draft that references it. Fails with ConflictException whe
-- 🆕 `GET /v2/copilot/profiles` — Lists copilot profiles in the company.
-- 🆕 `POST /v2/copilot/profiles` — Creates a new profile draft. The profile is not applied to any conversation until its first version is publish
-- 🆕 `GET /v2/copilot/profiles/{profileId}` — Gets a profile draft, including metadata, referenced library resource ids and version state.
-- 🆕 `PUT /v2/copilot/profiles/{profileId}` — Updates profile metadata only. Attachments are changed through AttachProfileResource and DeleteProfileResource
-- 🆕 `DELETE /v2/copilot/profiles/{profileId}` — Deletes a profile and its version history. Library resources referenced by the profile are not deleted.
-- 🆕 `PATCH /v2/copilot/profiles/{profileId}/disable` — Disables a profile so it is no longer applied to live conversations. Its draft and published versions are kept
-- 🆕 `PATCH /v2/copilot/profiles/{profileId}/enable` — Enables a published profile so its latest version is applied to live conversations.
-- 🆕 `POST /v2/copilot/profiles/{profileId}/resources` — Attaches one feature or reusable library resource to the profile draft. Attaching an already attached resource
-- 🆕 `DELETE /v2/copilot/profiles/{profileId}/resources/{resourceType}/{resourceId}` — Deletes one feature or reusable library-resource attachment from the profile draft. Deleting an already absent
-- 🆕 `GET /v2/copilot/subscriptions` — Lists the wda-stream events copilot needs delivered, for every company that has a published
-- 🆕 `GET /v2/copilot/profiles/{profileId}/compare-versions` — Returns the field-level differences between two versions, or between a version and the current draft.
-- 🆕 `GET /v2/copilot/profiles/{profileId}/versions` — Lists the published versions of a profile, newest first.
-- 🆕 `POST /v2/copilot/profiles/{profileId}/versions` — Publishes the current draft as a new immutable version and updates latestVersion. The referenced intents, eval
-- 🆕 `GET /v2/copilot/profiles/{profileId}/versions/{version}` — Retrieves a published profile version, including its full immutable definition snapshot with resolved library 
-- 🆕 `POST /v2/copilot/profiles/{profileId}/versions/{version}/draft` — Replaces the mutable draft with a published version's definition. The draft revision is incremented; published
+## Wilma Copilot API — alias `wilma-copilot-api` — https://api.wilma.wildix.com (35 routes)
+- `GET /v2/copilot/assets` — Lists reusable assets in the company.
+- `POST /v2/copilot/assets` — Creates a new reusable asset.
+- `GET /v2/copilot/assets/{assetId}` — Gets an asset.
+- `PUT /v2/copilot/assets/{assetId}` — Updates an asset. Published profile versions that captured this asset are unaffected; the change reaches live 
+- `DELETE /v2/copilot/assets/{assetId}` — Deletes an asset and removes it from every profile draft that references it. Fails with ConflictException when
+- `GET /v2/copilot/automations` — Lists reusable automations in the company.
+- `POST /v2/copilot/automations` — Creates a new reusable automation.
+- `GET /v2/copilot/automations/{automationId}` — Gets an automation.
+- `PUT /v2/copilot/automations/{automationId}` — Updates an automation. Published profile versions that captured this automation are unaffected; the change rea
+- `DELETE /v2/copilot/automations/{automationId}` — Deletes an automation and removes it from every profile draft that references it. Fails with ConflictException
+- `GET /v2/copilot/evaluations` — Lists reusable evaluations in the company.
+- `POST /v2/copilot/evaluations` — Creates a new reusable evaluation.
+- `GET /v2/copilot/evaluations/{evaluationId}` — Gets an evaluation.
+- `PUT /v2/copilot/evaluations/{evaluationId}` — Updates an evaluation. Published profile versions that captured this evaluation are unaffected; the change rea
+- `DELETE /v2/copilot/evaluations/{evaluationId}` — Deletes an evaluation and removes it from every profile draft that references it. Fails with ConflictException
+- `GET /v2/copilot/intents` — Lists reusable intents in the company.
+- `POST /v2/copilot/intents` — Creates a new reusable intent.
+- `GET /v2/copilot/intents/{intentId}` — Gets an intent.
+- `PUT /v2/copilot/intents/{intentId}` — Updates an intent. Published profile versions that captured this intent are unaffected; the change reaches liv
+- `DELETE /v2/copilot/intents/{intentId}` — Deletes an intent and removes it from every profile draft that references it. Fails with ConflictException whe
+- `GET /v2/copilot/profiles` — Lists copilot profiles in the company.
+- `POST /v2/copilot/profiles` — Creates a new profile draft. The profile is not applied to any conversation until its first version is publish
+- `GET /v2/copilot/profiles/{profileId}` — Gets a profile draft, including metadata, referenced library resource ids and version state.
+- `PUT /v2/copilot/profiles/{profileId}` — Updates profile metadata only. Attachments are changed through AttachProfileResource and DeleteProfileResource
+- `DELETE /v2/copilot/profiles/{profileId}` — Deletes a profile and its version history. Library resources referenced by the profile are not deleted.
+- `PATCH /v2/copilot/profiles/{profileId}/disable` — Disables a profile so it is no longer applied to live conversations. Its draft and published versions are kept
+- `PATCH /v2/copilot/profiles/{profileId}/enable` — Enables a published profile so its latest version is applied to live conversations.
+- `POST /v2/copilot/profiles/{profileId}/resources` — Attaches one feature or reusable library resource to the profile draft. Attaching an already attached resource
+- `DELETE /v2/copilot/profiles/{profileId}/resources/{resourceType}/{resourceId}` — Deletes one feature or reusable library-resource attachment from the profile draft. Deleting an already absent
+- `GET /v2/copilot/subscriptions` — Lists the wda-stream events copilot needs delivered, for every company that has a published
+- `GET /v2/copilot/profiles/{profileId}/compare-versions` — Returns the field-level differences between two versions, or between a version and the current draft.
+- `GET /v2/copilot/profiles/{profileId}/versions` — Lists the published versions of a profile, newest first.
+- `POST /v2/copilot/profiles/{profileId}/versions` — Publishes the current draft as a new immutable version and updates latestVersion. The referenced intents, eval
+- `GET /v2/copilot/profiles/{profileId}/versions/{version}` — Retrieves a published profile version, including its full immutable definition snapshot with resolved library 
+- `POST /v2/copilot/profiles/{profileId}/versions/{version}/draft` — Replaces the mutable draft with a published version's definition. The draft revision is incremented; published
 
-## Wilma Copilot Sessions API — alias `wilma-copilot-sessions-api` — https://api.wilma.wildix.com (11 routes) 🆕
-- 🆕 `POST /v2/copilot/enrich` — Attaches late-arriving lookup evidence to a relationship — e.g. a CRM match the iframe
-- 🆕 `POST /v2/copilot/lookup` — Resolves a lookup to a relationship and its sessions without opening copilot or creating
-- 🆕 `POST /v2/copilot/open` — Opens copilot for a client surface. `lookup` (when present) is treated as hints: emails,
-- 🆕 `GET /v2/copilot/relationships/{relationshipId}/sessions` — Lists the copilot sessions associated with a relationship, most recent first — the paginated
-- 🆕 `GET /v2/copilot/sessions` — Lists copilot sessions a user participated in, most recent first. Lets a user find a session they opened earli
-- 🆕 `POST /v2/copilot/sessions/{sessionId}/actions` — Submits one user interaction with copilot output — a knowledge-search suggestion click, a
-- 🆕 `POST /v2/copilot/sessions/{sessionId}/ask` — Records an ask in a copilot session and publishes it as an `ask` event on the session
-- 🆕 `GET /v2/copilot/sessions/{sessionId}/events` — Returns recorded copilot session events as a plain JSON page, without streaming. Use it to inspect past sessio
-- 🆕 `GET /v2/copilot/sessions/{sessionId}/events/stream` — Replays and tails copilot session events as Server-Sent Events (`text/event-stream`). Each frame carries one C
-- 🆕 `GET /v2/copilot/sessions/{sessionId}/state` — Returns the whole state of a copilot session: the conversation and its participants, the full transcript, and 
-- 🆕 `POST /v2/copilot/sessions/{sessionId}/views` — Reports which copilot assets the user actually saw rendered (impressions). Copilot may emit
+## Wilma Copilot Sessions API — alias `wilma-copilot-sessions-api` — https://api.wilma.wildix.com (11 routes)
+- `POST /v2/copilot/enrich` — Attaches late-arriving lookup evidence to a relationship — e.g. a CRM match the iframe
+- `POST /v2/copilot/lookup` — Resolves a lookup to a relationship and its sessions without opening copilot or creating
+- `POST /v2/copilot/open` — Opens copilot for a client surface. `lookup` (when present) is treated as hints: emails,
+- `GET /v2/copilot/relationships/{relationshipId}/sessions` — Lists the copilot sessions associated with a relationship, most recent first — the paginated
+- `GET /v2/copilot/sessions` — Lists copilot sessions a user participated in, most recent first. Lets a user find a session they opened earli
+- `POST /v2/copilot/sessions/{sessionId}/actions` — Submits one user interaction with copilot output — a knowledge-search suggestion click, a
+- `POST /v2/copilot/sessions/{sessionId}/ask` — Records an ask in a copilot session and publishes it as an `ask` event on the session
+- `GET /v2/copilot/sessions/{sessionId}/events` — Returns recorded copilot session events as a plain JSON page, without streaming. Use it to inspect past sessio
+- `GET /v2/copilot/sessions/{sessionId}/events/stream` — Replays and tails copilot session events as Server-Sent Events (`text/event-stream`). Each frame carries one C
+- `GET /v2/copilot/sessions/{sessionId}/state` — Returns the whole state of a copilot session: the conversation and its participants, the full transcript, and 
+- `POST /v2/copilot/sessions/{sessionId}/views` — Reports which copilot assets the user actually saw rendered (impressions). Copilot may emit
 
-## Wilma Sandbox API — alias `wilma-sandbox-api` — https://api.wilma.wildix.com (11 routes) 🆕
-- 🆕 `GET /v2/sandbox/sandboxes` — Lists sandboxes that ran (or are running), newest first. Filter by `snapshotId` to audit every
-- 🆕 `GET /v2/sandbox/sandboxes/{sandboxId}` — Retrieves a single sandbox with its status, lineage (snapshot/owner) and resource usage.
-- 🆕 `POST /v2/sandbox/sandboxes/{sandboxId}/terminate` — Forcibly stops a running sandbox. Idempotent: terminating an already-stopped sandbox succeeds. Intended for op
-- 🆕 `GET /v2/sandbox/snapshots` — Lists sandbox snapshots for the company, newest first.
-- 🆕 `POST /v2/sandbox/snapshots` — Creates a snapshot and starts building its image asynchronously. Returns immediately with the
-- 🆕 `GET /v2/sandbox/snapshots/{snapshotId}` — Retrieves a snapshot, including its full build config, build outcome and runtime usage stats.
-- 🆕 `PUT /v2/sandbox/snapshots/{snapshotId}` — Updates a snapshot under its existing id. Changed build settings queue a new immutable image; omitted build fi
-- 🆕 `DELETE /v2/sandbox/snapshots/{snapshotId}` — Deletes a snapshot. Fails with ConflictException while any agent references it, unless force=true.
-- 🆕 `GET /v2/sandbox/snapshots/{snapshotId}/build-logs` — Returns the build logs of a snapshot, oldest first. Poll while the snapshot is BUILDING to follow progress, or
-- 🆕 `POST /v2/sandbox/snapshots/{snapshotId}/rebuild` — Queues a new image build from the snapshot's current configuration, without changing it. Use it to pick up mov
-- 🆕 `POST /v2/sandbox/snapshots/{snapshotId}/test` — Launches a short-lived sandbox from a READY snapshot, runs a command in it and returns the result. Use it to v
+## Wilma Sandbox API — alias `wilma-sandbox-api` — https://api.wilma.wildix.com (11 routes)
+- `GET /v2/sandbox/sandboxes` — Lists sandboxes that ran (or are running), newest first. Filter by `snapshotId` to audit every
+- `GET /v2/sandbox/sandboxes/{sandboxId}` — Retrieves a single sandbox with its status, lineage (snapshot/owner) and resource usage.
+- `POST /v2/sandbox/sandboxes/{sandboxId}/terminate` — Forcibly stops a running sandbox. Idempotent: terminating an already-stopped sandbox succeeds. Intended for op
+- `GET /v2/sandbox/snapshots` — Lists sandbox snapshots for the company, newest first.
+- `POST /v2/sandbox/snapshots` — Creates a snapshot and starts building its image asynchronously. Returns immediately with the
+- `GET /v2/sandbox/snapshots/{snapshotId}` — Retrieves a snapshot, including its full build config, build outcome and runtime usage stats.
+- `PUT /v2/sandbox/snapshots/{snapshotId}` — Updates a snapshot under its existing id. Changed build settings queue a new immutable image; omitted build fi
+- `DELETE /v2/sandbox/snapshots/{snapshotId}` — Deletes a snapshot. Fails with ConflictException while any agent references it, unless force=true.
+- `GET /v2/sandbox/snapshots/{snapshotId}/build-logs` — Returns the build logs of a snapshot, oldest first. Poll while the snapshot is BUILDING to follow progress, or
+- `POST /v2/sandbox/snapshots/{snapshotId}/rebuild` — Queues a new image build from the snapshot's current configuration, without changing it. Use it to pick up mov
+- `POST /v2/sandbox/snapshots/{snapshotId}/test` — Launches a short-lived sandbox from a READY snapshot, runs a command in it and returns the result. Use it to v
 
-## Wilma Secrets API (Credential Broker) — alias `wilma-secrets-api` — https://api.wilma.wildix.com (20 routes) 🆕
-- 🆕 `GET /v2/secrets` — Lists company secrets (metadata only).
-- 🆕 `POST /v2/secrets` — Creates a company secret. The value is stored envelope-encrypted and never returned.
-- 🆕 `GET /v2/secrets/connections` — Lists the company's connections, SHARED and USER. Filter by `type`, `provider`, or `user`
-- 🆕 `POST /v2/secrets/connections` — Creates a company-wide SHARED connection. It starts PENDING; authorize it with
-- 🆕 `GET /v2/secrets/connections/{connectionId}` — Gets a connection by id — SHARED or USER (registry/ownership metadata; never the credential).
-- 🆕 `PUT /v2/secrets/connections/{connectionId}` — Updates connection metadata (name, description, scopes).
-- 🆕 `DELETE /v2/secrets/connections/{connectionId}` — Deletes a connection by id — SHARED or USER — and revokes its stored credential. Deleting a
-- 🆕 `POST /v2/secrets/connections/{connectionId}/confirm` — Records the connection a finished company authorization produced, and marks the row ACTIVE.
-- 🆕 `POST /v2/secrets/connections/{connectionId}/sessions` — Starts an interactive authorization session for a SHARED connection, returning a session token
-- 🆕 `POST /v2/secrets/connections/{connectionId}/token` — Resolves a short-lived access token for a SHARED connection at execution time; refresh is
-- 🆕 `POST /v2/secrets/connections/{connectionId}/verify` — Checks whether a connection's credential actually works, without returning it.
-- 🆕 `POST /v2/secrets/items/values` — Resolves several secrets in one call, for a consumer holding more than one reference.
-- 🆕 `GET /v2/secrets/items/{secretId}` — Gets secret metadata. Never returns the value.
-- 🆕 `PUT /v2/secrets/items/{secretId}` — Updates secret metadata (name, description). Use RotateSecret to change the value.
-- 🆕 `DELETE /v2/secrets/items/{secretId}` — Deletes a secret. Usage is not verified: any reference that still points at it fails to
-- 🆕 `POST /v2/secrets/items/{secretId}/rotate` — Rotates the secret to a new value in place and bumps its revision. References always
-- 🆕 `POST /v2/secrets/items/{secretId}/value` — Resolves and returns the current secret value for server-to-server use at execution time.
-- 🆕 `POST /v2/secrets/user-connections/{provider}/confirm` — Completes per-user authorization by recording the connection id returned by the authorization
-- 🆕 `POST /v2/secrets/user-connections/{provider}/sessions` — Starts an interactive authorization session for the calling user against a provider, returning
-- 🆕 `POST /v2/secrets/user-connections/{provider}/token` — Resolves a short-lived access token for a user's provider authorization at execution time;
+## Wilma Secrets API (Credential Broker) — alias `wilma-secrets-api` — https://api.wilma.wildix.com (20 routes)
+- `GET /v2/secrets` — Lists company secrets (metadata only).
+- `POST /v2/secrets` — Creates a company secret. The value is stored envelope-encrypted and never returned.
+- `GET /v2/secrets/connections` — Lists the company's connections, SHARED and USER. Filter by `type`, `provider`, or `user`
+- `POST /v2/secrets/connections` — Creates a company-wide SHARED connection. It starts PENDING; authorize it with
+- `GET /v2/secrets/connections/{connectionId}` — Gets a connection by id — SHARED or USER (registry/ownership metadata; never the credential).
+- `PUT /v2/secrets/connections/{connectionId}` — Updates connection metadata (name, description, scopes).
+- `DELETE /v2/secrets/connections/{connectionId}` — Deletes a connection by id — SHARED or USER — and revokes its stored credential. Deleting a
+- `POST /v2/secrets/connections/{connectionId}/confirm` — Records the connection a finished company authorization produced, and marks the row ACTIVE.
+- `POST /v2/secrets/connections/{connectionId}/sessions` — Starts an interactive authorization session for a SHARED connection, returning a session token
+- `POST /v2/secrets/connections/{connectionId}/token` — Resolves a short-lived access token for a SHARED connection at execution time; refresh is
+- `POST /v2/secrets/connections/{connectionId}/verify` — Checks whether a connection's credential actually works, without returning it.
+- `POST /v2/secrets/items/values` — Resolves several secrets in one call, for a consumer holding more than one reference.
+- `GET /v2/secrets/items/{secretId}` — Gets secret metadata. Never returns the value.
+- `PUT /v2/secrets/items/{secretId}` — Updates secret metadata (name, description). Use RotateSecret to change the value.
+- `DELETE /v2/secrets/items/{secretId}` — Deletes a secret. Usage is not verified: any reference that still points at it fails to
+- `POST /v2/secrets/items/{secretId}/rotate` — Rotates the secret to a new value in place and bumps its revision. References always
+- `POST /v2/secrets/items/{secretId}/value` — Resolves and returns the current secret value for server-to-server use at execution time.
+- `POST /v2/secrets/user-connections/{provider}/confirm` — Completes per-user authorization by recording the connection id returned by the authorization
+- `POST /v2/secrets/user-connections/{provider}/sessions` — Starts an interactive authorization session for the calling user against a provider, returning
+- `POST /v2/secrets/user-connections/{provider}/token` — Resolves a short-lived access token for a user's provider authorization at execution time;
 
-## Wilma Skills API — alias `wilma-skills-api` — https://api.wilma.wildix.com (12 routes) 🆕
-- 🆕 `GET /v2/skills` — Lists skills visible to the calling user.
-- 🆕 `POST /v2/skills` — Creates a new skill draft owned by the caller, complete with its bundled files: upload them with UploadSkillFi
-- 🆕 `GET /v2/skills/items/{skillId}` — Gets a skill draft: metadata, SKILL.md content, tools, bundled file references and version state.
-- 🆕 `PUT /v2/skills/items/{skillId}` — Updates the draft definition or access policy. Does not affect served traffic until the draft
-- 🆕 `DELETE /v2/skills/items/{skillId}` — Deletes a skill, its bundled files and version history. Agents that still reference the skill keep the referen
-- 🆕 `POST /v2/skills/files` — Registers a skill file and returns a short-lived presigned PUT URL for its content. The client
-- 🆕 `GET /v2/skills/files/items/{fileId}/download` — Returns a short-lived presigned URL to download a skill file's content, addressed by file id
-- 🆕 `GET /v2/skills/items/{skillId}/compare-versions` — Returns the field-level differences between two versions, or between a version and the current draft.
-- 🆕 `GET /v2/skills/items/{skillId}/versions` — Lists the published versions of a skill, newest first.
-- 🆕 `POST /v2/skills/items/{skillId}/versions` — Publishes the current draft as a new immutable version and updates latestVersion. Unpinned agent attachments r
-- 🆕 `GET /v2/skills/items/{skillId}/versions/{version}` — Retrieves a published skill version, including its full immutable definition snapshot.
-- 🆕 `POST /v2/skills/items/{skillId}/versions/{version}/draft` — Replaces the mutable draft with a published version's definition. The draft revision is incremented; published
+## Wilma Skills API — alias `wilma-skills-api` — https://api.wilma.wildix.com (12 routes)
+- `GET /v2/skills` — Lists skills visible to the calling user.
+- `POST /v2/skills` — Creates a new skill draft owned by the caller, complete with its bundled files: upload them with UploadSkillFi
+- `GET /v2/skills/items/{skillId}` — Gets a skill draft: metadata, SKILL.md content, tools, bundled file references and version state.
+- `PUT /v2/skills/items/{skillId}` — Updates the draft definition or access policy. Does not affect served traffic until the draft
+- `DELETE /v2/skills/items/{skillId}` — Deletes a skill, its bundled files and version history. Agents that still reference the skill keep the referen
+- `POST /v2/skills/files` — Registers a skill file and returns a short-lived presigned PUT URL for its content. The client
+- `GET /v2/skills/files/items/{fileId}/download` — Returns a short-lived presigned URL to download a skill file's content, addressed by file id
+- `GET /v2/skills/items/{skillId}/compare-versions` — Returns the field-level differences between two versions, or between a version and the current draft.
+- `GET /v2/skills/items/{skillId}/versions` — Lists the published versions of a skill, newest first.
+- `POST /v2/skills/items/{skillId}/versions` — Publishes the current draft as a new immutable version and updates latestVersion. Unpinned agent attachments r
+- `GET /v2/skills/items/{skillId}/versions/{version}` — Retrieves a published skill version, including its full immutable definition snapshot.
+- `POST /v2/skills/items/{skillId}/versions/{version}/draft` — Replaces the mutable draft with a published version's definition. The draft revision is incremented; published
 
-## Wilma Tools API — alias `wilma-tools-api` — https://api.wilma.wildix.com (25 routes) 🆕
-- 🆕 `GET /v2/tools` — List all tools for the current company.
-- 🆕 `POST /v2/tools` — Create a new tool draft. The tool is offered to no model until PublishToolVersion snapshots the draft into its
-- 🆕 `POST /v2/tools/capabilities/describe` — Describes an agent's wilma-tools-backed capabilities — standalone Tools and configured
-- 🆕 `GET /v2/tools/connector-definitions` — Lists immutable connector definitions available from the server catalog.
-- 🆕 `GET /v2/tools/connector-definitions/{key}/versions/{version}` — Gets one immutable connector definition.
-- 🆕 `POST /v2/tools/connector-definitions/{key}/versions/{version}/configuration` — Resolves account-dependent configuration fields from current form values. By default the
-- 🆕 `GET /v2/tools/connectors` — Lists configured connectors owned by the current company.
-- 🆕 `POST /v2/tools/connectors` — Creates a company-owned connector from a server definition.
-- 🆕 `POST /v2/tools/connectors/describe` — Describes configured connectors by id for agent load; callers pass only `companyId` and
-- 🆕 `GET /v2/tools/connectors/items/{connectorId}` — Gets a configured connector.
-- 🆕 `PUT /v2/tools/connectors/items/{connectorId}` — Replaces the editable configuration of a connector.
-- 🆕 `DELETE /v2/tools/connectors/items/{connectorId}` — Deletes a configured connector. Fails with ConflictException while the connector is referenced
-- 🆕 `POST /v2/tools/connectors/items/{connectorId}/execute` — Executes a connector with the invocation payload supplied by the model or agent.
-- 🆕 `POST /v2/tools/describe` — Describe multiple tools for agent load. Each reference either pins a published version or resolves the tool's 
-- 🆕 `POST /v2/tools/discover` — Discover tools from an MCP server.
-- 🆕 `POST /v2/tools/execute` — Execute a tool with the provided input.
-- 🆕 `GET /v2/tools/items/{toolId}` — Get a tool's draft by its ID, including its version state. Use GetToolVersion to read a published version's de
-- 🆕 `PUT /v2/tools/items/{toolId}` — Update the draft definition of a tool. Published versions are never affected, so nothing the model sees change
-- 🆕 `DELETE /v2/tools/items/{toolId}` — Delete a tool, its draft and its version history. Fails with ConflictException while the tool is referenced by
-- 🆕 `GET /v2/tools/items/{toolId}/compare-versions` — Returns the field-level differences between two versions, or between a version and the current draft.
-- 🆕 `GET /v2/tools/items/{toolId}/versions` — Lists the published versions of a tool, newest first.
-- 🆕 `POST /v2/tools/items/{toolId}/versions` — Publishes the current draft as a new immutable version and updates latestVersion. Agent and skill capabilities
-- 🆕 `GET /v2/tools/items/{toolId}/versions/{version}` — Retrieves a published tool version, including its full immutable definition snapshot.
-- 🆕 `POST /v2/tools/items/{toolId}/versions/{version}/draft` — Replaces the mutable draft with a published version's definition. The draft revision is incremented; published
-- 🆕 `GET /v2/tools/mentions/resolve` — Reads the current content of one referenced resource for an agent. Service-only. With `user`, the source is re
+## Wilma Tools API — alias `wilma-tools-api` — https://api.wilma.wildix.com (25 routes)
+- `GET /v2/tools` — List all tools for the current company.
+- `POST /v2/tools` — Create a new tool draft. The tool is offered to no model until PublishToolVersion snapshots the draft into its
+- `POST /v2/tools/capabilities/describe` — Describes an agent's wilma-tools-backed capabilities — standalone Tools and configured
+- `GET /v2/tools/connector-definitions` — Lists immutable connector definitions available from the server catalog.
+- `GET /v2/tools/connector-definitions/{key}/versions/{version}` — Gets one immutable connector definition.
+- `POST /v2/tools/connector-definitions/{key}/versions/{version}/configuration` — Resolves account-dependent configuration fields from current form values. By default the
+- `GET /v2/tools/connectors` — Lists configured connectors owned by the current company.
+- `POST /v2/tools/connectors` — Creates a company-owned connector from a server definition.
+- `POST /v2/tools/connectors/describe` — Describes configured connectors by id for agent load; callers pass only `companyId` and
+- `GET /v2/tools/connectors/items/{connectorId}` — Gets a configured connector.
+- `PUT /v2/tools/connectors/items/{connectorId}` — Replaces the editable configuration of a connector.
+- `DELETE /v2/tools/connectors/items/{connectorId}` — Deletes a configured connector. Fails with ConflictException while the connector is referenced
+- `POST /v2/tools/connectors/items/{connectorId}/execute` — Executes a connector with the invocation payload supplied by the model or agent.
+- `POST /v2/tools/describe` — Describe multiple tools for agent load. Each reference either pins a published version or resolves the tool's 
+- `POST /v2/tools/discover` — Discover tools from an MCP server.
+- `POST /v2/tools/execute` — Execute a tool with the provided input.
+- `GET /v2/tools/items/{toolId}` — Get a tool's draft by its ID, including its version state. Use GetToolVersion to read a published version's de
+- `PUT /v2/tools/items/{toolId}` — Update the draft definition of a tool. Published versions are never affected, so nothing the model sees change
+- `DELETE /v2/tools/items/{toolId}` — Delete a tool, its draft and its version history. Fails with ConflictException while the tool is referenced by
+- `GET /v2/tools/items/{toolId}/compare-versions` — Returns the field-level differences between two versions, or between a version and the current draft.
+- `GET /v2/tools/items/{toolId}/versions` — Lists the published versions of a tool, newest first.
+- `POST /v2/tools/items/{toolId}/versions` — Publishes the current draft as a new immutable version and updates latestVersion. Agent and skill capabilities
+- `GET /v2/tools/items/{toolId}/versions/{version}` — Retrieves a published tool version, including its full immutable definition snapshot.
+- `POST /v2/tools/items/{toolId}/versions/{version}/draft` — Replaces the mutable draft with a published version's definition. The draft revision is incremented; published
+- `GET /v2/tools/mentions/resolve` — Reads the current content of one referenced resource for an agent. Service-only. With `user`, the source is re
 
-## Wilma Traces API — alias `wilma-traces-api` — https://api.wilma.wildix.com (7 routes) 🆕
-- 🆕 `GET /v2/traces` — Queries traces newest first. Filter by service, status, time range, text
-- 🆕 `GET /v2/traces/items/{traceId}` — Returns one trace and all spans recorded so far, ordered by start time.
-- 🆕 `GET /v2/traces/items/{traceId}/model-calls/{spanId}` — Returns the exact request one model call of a session trace was sent, and what the model
-- 🆕 `GET /v2/traces/items/{traceId}/stream` — Replays the current full snapshot of one trace and then tails it as
-- 🆕 `GET /v2/traces/stream` — Streams trace summary upserts across the service. Filter by required Trace
-- 🆕 `GET /v2/traces/metrics` — Aggregates span-level metrics from traces. QueryUsage answers session-level questions
-- 🆕 `GET /v2/traces/usage` — Aggregates usage from traces. For conversational services one trace is
+## Wilma Traces API — alias `wilma-traces-api` — https://api.wilma.wildix.com (7 routes)
+- `GET /v2/traces` — Queries traces newest first. Filter by service, status, time range, text
+- `GET /v2/traces/items/{traceId}` — Returns one trace and all spans recorded so far, ordered by start time.
+- `GET /v2/traces/items/{traceId}/model-calls/{spanId}` — Returns the exact request one model call of a session trace was sent, and what the model
+- `GET /v2/traces/items/{traceId}/stream` — Replays the current full snapshot of one trace and then tails it as
+- `GET /v2/traces/stream` — Streams trace summary upserts across the service. Filter by required Trace
+- `GET /v2/traces/metrics` — Aggregates span-level metrics from traces. QueryUsage answers session-level questions
+- `GET /v2/traces/usage` — Aggregates usage from traces. For conversational services one trace is
 
-## Wilma Voice API — alias `wilma-voice-api` — https://api.wilma.wildix.com (9 routes) 🆕
-- 🆕 `GET /v2/voice/calls/{callId}/events` — Tails a live call's events as Server-Sent Events (`text/event-stream`): the caller's recognised speech, the ag
-- 🆕 `POST /v2/voice/describe` — Describes the WebSocket connect parameters, events and commands of the voice protocol. Utility method; the gen
-- 🆕 `POST /v2/voice/sessions/{sessionId}/hangup` — Terminates the voice session and the call.
-- 🆕 `POST /v2/voice/sessions/{sessionId}/play` — Plays the specified audio chunk through the audio stream of the voice session.
-- 🆕 `POST /v2/voice/sessions/{sessionId}/say` — Generates and plays the specified text through the audio stream of the voice session.
-- 🆕 `POST /v2/voice/sessions/{sessionId}/stop` — Stops any audio currently being played by the voice session.
-- 🆕 `POST /v2/voice/sessions/{sessionId}/transfer` — Transfers the call to the specified context and extension, and terminates the voice session.
-- 🆕 `POST /v2/voice/text-to-speech` — Synthesizes one phrase and returns MP3.
-- 🆕 `GET /v2/voice/voices` — Lists the voices a synthesis provider offers, read from the provider's own API and cached per company, provide
+## Wilma Voice API — alias `wilma-voice-api` — https://api.wilma.wildix.com (9 routes)
+- `GET /v2/voice/calls/{callId}/events` — Tails a live call's events as Server-Sent Events (`text/event-stream`): the caller's recognised speech, the ag
+- `POST /v2/voice/describe` — Describes the messages of the voice protocols: the text socket `/v2/voice/ws`, the call socket `/v2/voice/call
+- `POST /v2/voice/sessions/{sessionId}/hangup` — Terminates the voice session and the call.
+- `POST /v2/voice/sessions/{sessionId}/play` — Plays the specified audio chunk through the audio stream of the voice session.
+- `POST /v2/voice/sessions/{sessionId}/say` — Generates and plays the specified text through the audio stream of the voice session.
+- `POST /v2/voice/sessions/{sessionId}/stop` — Stops any audio currently being played by the voice session.
+- `POST /v2/voice/sessions/{sessionId}/transfer` — Transfers the call to the specified context and extension, and terminates the voice session.
+- `POST /v2/voice/text-to-speech` — Synthesizes one phrase and returns MP3.
+- `GET /v2/voice/voices` — Lists the voices a synthesis provider offers, read from the provider's own API and cached per company, provide
 
-## Wilma Workflows API — alias `wilma-workflows-api` — https://api.wilma.wildix.com (16 routes) 🆕
-- 🆕 `GET /v2/workflows/automations` — Lists automations in the company.
-- 🆕 `POST /v2/workflows/automations` — Creates a new automation.
-- 🆕 `POST /v2/workflows/automations/ingest/{token}` — Ingestion endpoint for `webhook`-triggered automations. External integrations POST their JSON
-- 🆕 `GET /v2/workflows/automations/items/{automationId}` — Gets an automation.
-- 🆕 `PUT /v2/workflows/automations/items/{automationId}` — Updates an automation. The change applies from the next firing; tasks already started are unaffected.
-- 🆕 `DELETE /v2/workflows/automations/items/{automationId}` — Deletes an automation. Tasks it started remain listed until they age out.
-- 🆕 `POST /v2/workflows/automations/items/{automationId}/run` — Fires an automation immediately (manual run, e.g. to test it), regardless of its trigger and enablement, and r
-- 🆕 `GET /v2/workflows/automations/items/{automationId}/webhook-url` — Returns the unique ingestion URL of a `webhook`-triggered automation, including its secret token. Fails with C
-- 🆕 `GET /v2/workflows/subscriptions` — Lists the wda-stream events event-triggered automations need delivered, for every company that
-- 🆕 `GET /v2/workflows/tasks` — Lists tasks in the company.
-- 🆕 `POST /v2/workflows/tasks` — Starts a background task asynchronously and returns the event index from which the caller should stream. Follo
-- 🆕 `GET /v2/workflows/tasks/items/{taskId}` — Gets the state of a task, including its result once completed.
-- 🆕 `GET /v2/workflows/tasks/items/{taskId}/events` — Returns recorded task events as a plain JSON page, without streaming. The event vocabulary is the shared Wilma
-- 🆕 `GET /v2/workflows/tasks/items/{taskId}/events/stream` — Replays and tails task events as Server-Sent Events (`text/event-stream`). Each frame carries one WorkflowTask
-- 🆕 `POST /v2/workflows/tasks/items/{taskId}/stop` — Requests cancellation of a pending or running task.
-- 🆕 `POST /v2/workflows/tasks/run` — Runs a task and blocks until it finishes, for callers that only need the end result —
+## Wilma Workflows API — alias `wilma-workflows-api` — https://api.wilma.wildix.com (16 routes)
+- `GET /v2/workflows/automations` — Lists automations in the company.
+- `POST /v2/workflows/automations` — Creates a new automation.
+- `POST /v2/workflows/automations/ingest/{token}` — Ingestion endpoint for `webhook`-triggered automations. External integrations POST their JSON
+- `GET /v2/workflows/automations/items/{automationId}` — Gets an automation.
+- `PUT /v2/workflows/automations/items/{automationId}` — Updates an automation. The change applies from the next firing; tasks already started are unaffected.
+- `DELETE /v2/workflows/automations/items/{automationId}` — Deletes an automation. Tasks it started remain listed until they age out.
+- `POST /v2/workflows/automations/items/{automationId}/run` — Fires an automation immediately (manual run, e.g. to test it), regardless of its trigger and enablement, and r
+- `GET /v2/workflows/automations/items/{automationId}/webhook-url` — Returns the unique ingestion URL of a `webhook`-triggered automation, including its secret token. Fails with C
+- `GET /v2/workflows/subscriptions` — Lists the wda-stream events event-triggered automations need delivered, for every company that
+- `GET /v2/workflows/tasks` — Lists tasks in the company.
+- `POST /v2/workflows/tasks` — Starts a background task asynchronously and returns the event index from which the caller should stream. Follo
+- `GET /v2/workflows/tasks/items/{taskId}` — Gets the state of a task, including its result once completed.
+- `GET /v2/workflows/tasks/items/{taskId}/events` — Returns recorded task events as a plain JSON page, without streaming. The event vocabulary is the shared Wilma
+- `GET /v2/workflows/tasks/items/{taskId}/events/stream` — Replays and tails task events as Server-Sent Events (`text/event-stream`). Each frame carries one WorkflowTask
+- `POST /v2/workflows/tasks/items/{taskId}/stop` — Requests cancellation of a pending or running task.
+- `POST /v2/workflows/tasks/run` — Runs a task and blocks until it finishes, for callers that only need the end result —

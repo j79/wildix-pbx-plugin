@@ -497,7 +497,7 @@ Sends a Facebook Messenger message from one of the company's pages to a person w
     - `simulated` — boolean — True when the request was recorded but nothing was sent to the supplier.
 - Errors: `400`, `403`, `404`, `408`, `409`, `500`, `502`, `503`
 
-#### `GET` `/v1/s2s/rcs/brands` 🆕
+#### `GET` `/v1/s2s/rcs/brands`
 
 Returns the RCS brands a company can send from.
 
@@ -517,7 +517,7 @@ Returns the RCS brands a company can send from.
         - `channel` — string **(required)**
 - Errors: `400`, `403`, `404`, `408`, `500`, `503`
 
-#### `POST` `/v1/s2s/rcs/send` 🆕
+#### `POST` `/v1/s2s/rcs/send`
 
 Sends an RCS message from one of the company's brands to a phone number. There is no reply window: the person does not have to have written first.
 

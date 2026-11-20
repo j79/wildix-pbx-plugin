@@ -9,7 +9,7 @@ _OpenAPI: WMP API service (deprecated) — version —_
 
 ### Other
 
-#### `GET` `/v2/PBXs/{domain}` 🆕
+#### `GET` `/v2/PBXs/{domain}`
 
 Get PBX information from portal
 
@@ -80,7 +80,7 @@ Get PBX information from portal
     - `key` — string **(required)**
 - Errors: `401`, `403`, `404`
 
-#### `GET` `/v2/companies/{companyId}` 🆕
+#### `GET` `/v2/companies/{companyId}`
 
 Get information about company from WMP
 

@@ -99,6 +99,6 @@ Routes flagged ⚠️ in the index are **deprecated**: either removed from the p
 
 - `references/endpoints-index.md` — every route, one line each (searchable via `doc search`).
 - `references/overview.md` — authentication schemes, publication status legend, changes since the previous revision (read it when the user asks what changed).
-- `references/<api>.md` — full schemas per API (50 files, revision 2026-11-10) — access via `doc show` / `doc grep` / `doc schema` only.
+- `references/<api>.md` — full schemas per API (50 files, revision 2026-11-20) — access via `doc show` / `doc grep` / `doc schema` only.
 - `references/webhooks.md` — webhook event types, VoiceBots/Chatbots webhook & SQS integration.
 - `references/readonly-posts.json` — POST routes documented as reads (used by the CLI's write guard).

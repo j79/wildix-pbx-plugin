@@ -1,4 +1,4 @@
-## Wilma Workflows API 🆕
+## Wilma Workflows API
 
 _OpenAPI: Wilma Workflows Service — version v2_
 

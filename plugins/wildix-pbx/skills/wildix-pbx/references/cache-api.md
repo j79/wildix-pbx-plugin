@@ -29,7 +29,7 @@ Adds entities to the general cache
       - `UpdatedAt` — string
       - `CustomData` — GeneralDataMap
         - _map of_ `string`
-- Errors: `400`, `403`
+- Errors: `400`, `403`, `429`
 
 #### `DELETE` `/v1/cache/general`
 
@@ -40,7 +40,7 @@ Deleting entities to the general cache, requires one of the parameters: email or
   - `email` (query) — string — Email for delete _(minLen=1; maxLen=50)_
   - `phone` (query) — string — Phone for delete _(minLen=1; maxLen=30)_
   - `clean` (query) — boolean — Delete all general cache for the current user _(default=False)_
-- Errors: `400`, `403`
+- Errors: `400`, `403`, `429`
 
 #### `PUT` `/v1/cache/integration-data`
 
@@ -55,7 +55,7 @@ Batch upsert operation for storing integration data records in the cache
       - `id` — string **(required)** — Unique identifier _(minLen=1; maxLen=32)_
   - `companyId` — string — Company identifier should be provided only for S2S authorization _(minLen=3; maxLen=30)_
   - `integrationId` — string **(required)** — Integration identifier _(minLen=6; maxLen=6)_
-- Errors: `400`, `403`
+- Errors: `400`, `403`, `429`
 
 #### `POST` `/v1/cache/integration-data/batch-write`
 
@@ -74,7 +74,7 @@ Batch writes and deletes integration data in a single request
       - `type` — string — Integration data type _(minLen=1; maxLen=32)_
   - `integrationId` — string **(required)** — Integration identifier _(minLen=6; maxLen=6)_
   - `companyId` — string — Company identifier should be provided only for S2S authorization _(minLen=3; maxLen=30)_
-- Errors: `400`, `403`
+- Errors: `400`, `403`, `429`
 
 #### `POST` `/v1/cache/integration-data/delete`
 
@@ -87,7 +87,7 @@ Batch deletion of integration data by id with optional filters
       - `id` — string **(required)** — Unique identifier _(minLen=1; maxLen=32)_
       - `type` — string — Integration data type _(minLen=1; maxLen=32)_
   - `companyId` — string — Company identifier should be provided only for S2S authorization _(minLen=3; maxLen=30)_
-- Errors: `400`, `403`
+- Errors: `400`, `403`, `429`
 
 #### `POST` `/v1/cache/integration-data/get`
 
@@ -107,7 +107,7 @@ Batch retrieval of integration data by id with optional filters
       - `data` — any **(required)** — Integration data
       - `id` — string **(required)** — Unique identifier _(minLen=1; maxLen=32)_
       - `integrationId` — string **(required)** — Integration identifier _(minLen=6; maxLen=6)_
-- Errors: `400`, `403`
+- Errors: `400`, `403`, `429`
 
 #### `POST` `/v1/cache/object`
 
@@ -154,7 +154,7 @@ Allows to retrieve entities by id, use only in backend integrations
           - _map of_ `string`
       - `weight` — number
       - `integrationOrder` — number
-- Errors: `400`, `403`
+- Errors: `400`, `403`, `429`
 
 #### `GET` `/v1/cache/search`
 
@@ -209,7 +209,7 @@ Searches for entities, unlike a POST request allows to specify additional parame
               - _(nesting depth limit — see `GeneralDataMap` in the Schemas appendix)_
           - `weight` — number
           - `integrationOrder` — number
-- Errors: `400`, `403`
+- Errors: `400`, `403`, `429`
 
 #### `POST` `/v1/cache/search`
 
@@ -261,7 +261,7 @@ searches for entities, unlike a GET request, allows you to specify more matching
               - _(nesting depth limit — see `GeneralDataMap` in the Schemas appendix)_
           - `weight` — number
           - `integrationOrder` — number
-- Errors: `400`, `403`
+- Errors: `400`, `403`, `429`
 
 #### `POST` `/v1/cache/sync`
 
@@ -272,7 +272,7 @@ Allows to run target integration synchronization
   - `organizationId` — string **(required)** — Organization identifier _(minLen=1; maxLen=30)_
 - **Response 200** (`SyncCacheResponseContent`)
   - `success` — boolean
-- Errors: `400`, `403`
+- Errors: `400`, `403`, `429`
 
 #### `POST` `/v1/cache/weight`
 
@@ -285,11 +285,11 @@ Allows for batch updating the weight property of multiple entities
     - _array of_ `string`
 - **Response 200** (`UpdateEntitiesWeightResponseContent`)
   - `success` — boolean **(required)**
-- Errors: `400`, `403`
+- Errors: `400`, `403`, `429`
 
 ### Schemas appendix — Cache API
 
-<details><summary>27 component schemas</summary>
+<details><summary>28 component schemas</summary>
 
 **`BatchWriteIntegrationDataRequestContent`**
 
@@ -505,6 +505,10 @@ Allows for batch updating the weight property of multiple entities
     - `id` — string **(required)** — Unique identifier _(minLen=1; maxLen=32)_
 - `companyId` — string — Company identifier should be provided only for S2S authorization _(minLen=3; maxLen=30)_
 - `integrationId` — string **(required)** — Integration identifier _(minLen=6; maxLen=6)_
+
+**`RateLimitExceededExceptionResponseContent`**
+
+- `message` — string **(required)** _(default=Too Many Requests)_
 
 **`SalesforceAttrubuteField`**
 

@@ -1,4 +1,4 @@
-## Wilma Chat API 🆕
+## Wilma Chat API
 
 _OpenAPI: Wilma Chat Service — version v2_
 

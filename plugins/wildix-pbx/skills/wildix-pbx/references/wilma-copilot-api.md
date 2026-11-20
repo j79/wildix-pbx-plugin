@@ -1,4 +1,4 @@
-## Wilma Copilot API 🆕
+## Wilma Copilot API
 
 _OpenAPI: Wilma Copilot Service — version v2_
 

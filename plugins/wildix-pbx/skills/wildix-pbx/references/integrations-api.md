@@ -25,7 +25,7 @@ Creates multiple integrations in a single batch operation.
       - `errorInfo` — any
       - `warningInfo` — any
       - `data` — any — Data for integration
-      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
       - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
       - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
 - **Response 200** (`CreateIntegrationsResponseContent`)
@@ -37,7 +37,7 @@ Creates multiple integrations in a single batch operation.
       - `errorInfo` — any
       - `warningInfo` — any
       - `data` — any — Data for integration
-      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
       - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
       - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
       - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -77,7 +77,7 @@ Creates multiple integrations in a single batch operation. This is a deprecated 
       - `errorInfo` — any
       - `warningInfo` — any
       - `data` — any — Data for integration
-      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
       - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
       - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
 - **Response 200** (`BulkPutIntegrationsResponseContent`)
@@ -89,7 +89,7 @@ Creates multiple integrations in a single batch operation. This is a deprecated 
       - `errorInfo` — any
       - `warningInfo` — any
       - `data` — any — Data for integration
-      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
       - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
       - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
       - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -117,7 +117,7 @@ Retrieves integrations filtered by multiple companies and services. This is a de
       - `errorInfo` — any
       - `warningInfo` — any
       - `data` — any — Data for integration
-      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
       - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
       - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
       - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -144,7 +144,7 @@ Retrieves details of a specific integration by its unique identifier. This is a 
     - `errorInfo` — any
     - `warningInfo` — any
     - `data` — any — Data for integration
-    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
     - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
     - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
     - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -167,7 +167,7 @@ Retrieves a list of all companies with their integration information. This is a 
       - `briefIntegrationList` — array **(required)**
         - _array of_ `BriefIntegration`
           - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
-          - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+          - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
 - Errors: `400`, `403`, `404`
 
 #### `GET` `/v2/integrations/companies/{companyId}`
@@ -190,7 +190,7 @@ Retrieves all integrations for a specific company. This is a deprecated operatio
       - `errorInfo` — any
       - `warningInfo` — any
       - `data` — any — Data for integration
-      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
       - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
       - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
       - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -215,7 +215,7 @@ Creates or updates an integration for a specific company. This is a deprecated o
   - `errorInfo` — any
   - `warningInfo` — any
   - `data` — any — Data for integration
-  - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+  - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
   - `integrationId` — string _(minLen=6; maxLen=6)_
 - **Response 200** (`PutIntegrationResponseContent`)
   - `item` — Integration **(required)**
@@ -225,7 +225,7 @@ Creates or updates an integration for a specific company. This is a deprecated o
     - `errorInfo` — any
     - `warningInfo` — any
     - `data` — any — Data for integration
-    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
     - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
     - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
     - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -246,7 +246,7 @@ Updates an existing integration for a specific company. This is a deprecated ope
   - `integrationId` (path) — string **(required)** _(minLen=6; maxLen=6)_
 - **Request body** (`application/json` — `PatchIntegrationRequestContent`)
   - `externalId` — string — Deprecated. Will use companyId instead This shape is deprecated. _(minLen=3; maxLen=30; deprecated)_
-  - `service` — string _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+  - `service` — string _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
   - `status` — string _(enum: `deleting`, `installing`, `warning`, `enabled`, `disabled`, `suspended`, `broken`)_
   - `entityType` — string _(enum: `sf_partner`, `main`)_
   - `statusChangeDate` — string
@@ -261,7 +261,7 @@ Updates an existing integration for a specific company. This is a deprecated ope
     - `errorInfo` — any
     - `warningInfo` — any
     - `data` — any — Data for integration
-    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
     - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
     - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
     - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -297,7 +297,7 @@ Creates a new integration for the specified company with the provided configurat
   - `errorInfo` — any
   - `warningInfo` — any
   - `data` — any — Data for integration
-  - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+  - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
 - **Response 200** (`CreateIntegrationResponseContent`)
   - `integration` — Integration **(required)**
     - `status` — string _(enum: `deleting`, `installing`, `warning`, `enabled`, `disabled`, `suspended`, `broken`)_
@@ -306,7 +306,7 @@ Creates a new integration for the specified company with the provided configurat
     - `errorInfo` — any
     - `warningInfo` — any
     - `data` — any — Data for integration
-    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
     - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
     - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
     - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -330,7 +330,7 @@ Updates the configuration of an existing integration for the specified company.
   - `errorInfo` — any
   - `warningInfo` — any
   - `data` — any — Data for integration
-  - `service` — string _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+  - `service` — string _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
 - **Response 200** (`UpdateIntegrationResponseContent`)
   - `integration` — Integration **(required)**
     - `status` — string _(enum: `deleting`, `installing`, `warning`, `enabled`, `disabled`, `suspended`, `broken`)_
@@ -339,7 +339,7 @@ Updates the configuration of an existing integration for the specified company.
     - `errorInfo` — any
     - `warningInfo` — any
     - `data` — any — Data for integration
-    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
     - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
     - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
     - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -387,7 +387,7 @@ Retrieves details of a specific integration by its unique identifier.
     - `errorInfo` — any
     - `warningInfo` — any
     - `data` — any — Data for integration
-    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
     - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
     - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
     - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -424,7 +424,7 @@ Retrieves a paginated list of integrations with optional filtering by company, s
       - `errorInfo` — any
       - `warningInfo` — any
       - `data` — any — Data for integration
-      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
       - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
       - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
       - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -452,7 +452,7 @@ Retrieves all integrations for multiple services. This is a deprecated operation
       - `errorInfo` — any
       - `warningInfo` — any
       - `data` — any — Data for integration
-      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
       - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
       - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
       - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -469,7 +469,7 @@ Retrieves all integrations for a specific service with optional filtering. This 
 - operationId: `GetIntegrationsByService`
 - **Scopes**: `integrations:GetIntegrationsByService`, `integrations:read`
 - **Parameters**
-  - `service` (path) — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+  - `service` (path) — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
   - `filter[hubspot_hub_id]` (query) — number — Filter by hub_id for hubspot_backend integration.
   - `filter[tenant]` (query) — string — Filter by tenant for microsoft_presence integration.
   - `filter[entityType]` (query) — string — Filter by tenant for entityType integration. _(enum: `sf_partner`, `main`)_
@@ -482,7 +482,7 @@ Retrieves all integrations for a specific service with optional filtering. This 
       - `errorInfo` — any
       - `warningInfo` — any
       - `data` — any — Data for integration
-      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+      - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
       - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
       - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
       - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -516,7 +516,7 @@ Fetch the whole list of webhook integrations
 **`BriefIntegration`**
 
 - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
-- `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+- `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
 
 **`BulkDeleteIntegrationsRequestContent`**
 
@@ -535,7 +535,7 @@ Fetch the whole list of webhook integrations
     - `errorInfo` — any
     - `warningInfo` — any
     - `data` — any — Data for integration
-    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
     - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
     - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
 
@@ -549,7 +549,7 @@ Fetch the whole list of webhook integrations
     - `errorInfo` — any
     - `warningInfo` — any
     - `data` — any — Data for integration
-    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
     - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
     - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
     - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -562,7 +562,7 @@ Fetch the whole list of webhook integrations
 - `briefIntegrationList` — array **(required)**
   - _array of_ `BriefIntegration`
     - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
-    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
 
 **`CreateIntegrationRequestContent`**
 
@@ -572,7 +572,7 @@ Fetch the whole list of webhook integrations
 - `errorInfo` — any
 - `warningInfo` — any
 - `data` — any — Data for integration
-- `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+- `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
 
 **`CreateIntegrationResponseContent`**
 
@@ -583,7 +583,7 @@ Fetch the whole list of webhook integrations
   - `errorInfo` — any
   - `warningInfo` — any
   - `data` — any — Data for integration
-  - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+  - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
   - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
   - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
   - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -600,7 +600,7 @@ Fetch the whole list of webhook integrations
     - `errorInfo` — any
     - `warningInfo` — any
     - `data` — any — Data for integration
-    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
     - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
     - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
 
@@ -614,7 +614,7 @@ Fetch the whole list of webhook integrations
     - `errorInfo` — any
     - `warningInfo` — any
     - `data` — any — Data for integration
-    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
     - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
     - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
     - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -654,7 +654,7 @@ Fetch the whole list of webhook integrations
   - `errorInfo` — any
   - `warningInfo` — any
   - `data` — any — Data for integration
-  - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+  - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
   - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
   - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
   - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -670,7 +670,7 @@ Fetch the whole list of webhook integrations
   - `errorInfo` — any
   - `warningInfo` — any
   - `data` — any — Data for integration
-  - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+  - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
   - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
   - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
   - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -687,7 +687,7 @@ Fetch the whole list of webhook integrations
     - `errorInfo` — any
     - `warningInfo` — any
     - `data` — any — Data for integration
-    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
     - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
     - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
     - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -704,7 +704,7 @@ Fetch the whole list of webhook integrations
     - `errorInfo` — any
     - `warningInfo` — any
     - `data` — any — Data for integration
-    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
     - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
     - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
     - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -721,7 +721,7 @@ Fetch the whole list of webhook integrations
     - `errorInfo` — any
     - `warningInfo` — any
     - `data` — any — Data for integration
-    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
     - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
     - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
     - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -738,7 +738,7 @@ Fetch the whole list of webhook integrations
     - `errorInfo` — any
     - `warningInfo` — any
     - `data` — any — Data for integration
-    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
     - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
     - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
     - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -753,7 +753,7 @@ Fetch the whole list of webhook integrations
 - `errorInfo` — any
 - `warningInfo` — any
 - `data` — any — Data for integration
-- `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+- `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
 - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
 - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
 - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -800,7 +800,7 @@ Fetch the whole list of webhook integrations
     - `errorInfo` — any
     - `warningInfo` — any
     - `data` — any — Data for integration
-    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+    - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
     - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
     - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
     - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -824,7 +824,7 @@ Fetch the whole list of webhook integrations
 **`PatchIntegrationRequestContent`**
 
 - `externalId` — string — Deprecated. Will use companyId instead This shape is deprecated. _(minLen=3; maxLen=30; deprecated)_
-- `service` — string _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+- `service` — string _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
 - `status` — string _(enum: `deleting`, `installing`, `warning`, `enabled`, `disabled`, `suspended`, `broken`)_
 - `entityType` — string _(enum: `sf_partner`, `main`)_
 - `statusChangeDate` — string
@@ -841,7 +841,7 @@ Fetch the whole list of webhook integrations
   - `errorInfo` — any
   - `warningInfo` — any
   - `data` — any — Data for integration
-  - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+  - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
   - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
   - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
   - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -856,7 +856,7 @@ Fetch the whole list of webhook integrations
 - `errorInfo` — any
 - `warningInfo` — any
 - `data` — any — Data for integration
-- `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+- `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
 - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
 - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
 
@@ -868,7 +868,7 @@ Fetch the whole list of webhook integrations
 - `errorInfo` — any
 - `warningInfo` — any
 - `data` — any — Data for integration
-- `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+- `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
 - `integrationId` — string _(minLen=6; maxLen=6)_
 
 **`PutIntegrationResponseContent`**
@@ -880,7 +880,7 @@ Fetch the whole list of webhook integrations
   - `errorInfo` — any
   - `warningInfo` — any
   - `data` — any — Data for integration
-  - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+  - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
   - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
   - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
   - `companyId` — string **(required)** _(minLen=3; maxLen=30)_
@@ -889,7 +889,7 @@ Fetch the whole list of webhook integrations
 
 **`Service`**
 
-- string _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+- string _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
 
 **`UpdateIntegrationRequestContent`**
 
@@ -899,7 +899,7 @@ Fetch the whole list of webhook integrations
 - `errorInfo` — any
 - `warningInfo` — any
 - `data` — any — Data for integration
-- `service` — string _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+- `service` — string _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
 
 **`UpdateIntegrationResponseContent`**
 
@@ -910,7 +910,7 @@ Fetch the whole list of webhook integrations
   - `errorInfo` — any
   - `warningInfo` — any
   - `data` — any — Data for integration
-  - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+4))_
+  - `service` — string **(required)** _(enum: `salesforce`, `hubspot`, `google_calendar`, `microsoft_calendar`, `salesforce_community`, `bamboo_hr`, `microsoft_presence`, `iframe_integration`, `webhook`, `hubspot_backend`, `salesforce_backend`, `salesforce_omni`, … (+5))_
   - `integrationId` — string **(required)** _(minLen=6; maxLen=6)_
   - `externalId` — string — Deprecated. Will use companyId instead _(minLen=3; maxLen=30)_
   - `companyId` — string **(required)** _(minLen=3; maxLen=30)_

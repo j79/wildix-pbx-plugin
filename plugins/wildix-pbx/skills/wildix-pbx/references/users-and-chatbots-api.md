@@ -639,7 +639,7 @@ Searches for colleagues using various filters and search criteria, with optional
     - `start` — number
     - `count` — number _(default=50; min=1; max=50)_
     - `dir` — string _(enum: `asc`, `desc`)_
-  - `invite` — boolean — If enabled, the system will automatically invite users for colleagues returned from the PBX if they haven't logged in yet.
+  - `invite` — boolean — If enabled, the system will automatically invite users for colleagues returned from the PBX if they haven't logged in yet. A colleague without an email is the user of the phone-user address (`{digits}@phone.wildix.com`) of their mobile, which must be in E.164; a colleague with neither gets no user.
 - **Response 200** (`QueryColleaguesResponseContent`)
   - `colleagues` — array **(required)** — A list of users that exist in the platform and matches predicate if specified.
     - _array of_ `QueryColleaguesOutputItem`
@@ -687,7 +687,7 @@ Searches for colleagues using various filters and search criteria, with optional
 
 #### `POST` `/v2/users/query-user`
 
-Searches for a single user using a query with optional predicate validation.
+Searches for a single user using a query with optional predicate validation. A user with a workspace in the caller's company is returned in that workspace; otherwise, and for a service token, in the user's default workspace.
 
 **Rate Limits**
 | Authorization Type | Period (seconds) | Requests by period |
@@ -707,9 +707,9 @@ Searches for a single user using a query with optional predicate validation.
       - **`id`**
         - `id` — string **(required)** — The unique identifier of the user (Cloud ID, not ID of the user on PBX).
       - **`email`**
-        - `email` — string **(required)** — The email address of the user.
+        - `email` — string **(required)** — The email address of the user. A phone-user address (`{digits}@phone.wildix.com`) finds the user who signs in via SMS with that number.
       - **`phone`**
-        - `phone` — string **(required)** — The phone number of the user.
+        - `phone` — string **(required)** — The phone number of an SMS/WhatsApp contact: an external customer reached in SMS, WhatsApp or Messenger channels, who never signs in. It never finds the user who signs in via SMS with that number; query that user by the phone-user address in `email`.
   - `predicate` — UserQueryPredicate
     - `license` — string _(enum: `basic`, `essential`, `business`, `premium`, `wizyconf`)_
 - **Response 200** (`QueryUserResponseContent`)
@@ -735,7 +735,7 @@ Searches for a single user using a query with optional predicate validation.
 
 #### `POST` `/v2/users/query-users`
 
-Searches for multiple users using queries with optional predicate validation.
+Searches for multiple users using queries with optional predicate validation. A user with a workspace in the caller's company is returned in that workspace; otherwise, and for a service token, in the user's default workspace.
 
 **Rate Limits**
 | Authorization Type | Period (seconds) | Requests by period |
@@ -756,9 +756,9 @@ Searches for multiple users using queries with optional predicate validation.
         - **`id`**
           - `id` — string **(required)** — The unique identifier of the user (Cloud ID, not ID of the user on PBX).
         - **`email`**
-          - `email` — string **(required)** — The email address of the user.
+          - `email` — string **(required)** — The email address of the user. A phone-user address (`{digits}@phone.wildix.com`) finds the user who signs in via SMS with that number.
         - **`phone`**
-          - `phone` — string **(required)** — The phone number of the user.
+          - `phone` — string **(required)** — The phone number of an SMS/WhatsApp contact: an external customer reached in SMS, WhatsApp or Messenger channels, who never signs in. It never finds the user who signs in via SMS with that number; query that user by the phone-user address in `email`.
   - `predicate` — UserQueryPredicate
     - `license` — string _(enum: `basic`, `essential`, `business`, `premium`, `wizyconf`)_
 - **Response 200** (`QueryUsersResponseContent`)
@@ -1332,8 +1332,8 @@ If an invitee resolves to an account that is currently deactivated in GetStream,
 - **Request body** (`application/json` — `InviteRequestContent`) **(required)**
   - `invitees` — array **(required)** — A list of users to invite. The list must contain between 1 and 20 users. _(minItems=1; maxItems=20)_
     - _array of_ `UserToInvite`
-      - `email` — string — The email address of the invited user. If no user exists with the specified email and "colleague" flag is provided, the system will retrieve the colleague's details from the PBX. _(pattern=^(^[\w+-]+(\.[\w+-]+)*)@(([\w-]+\.)+\w{2,}$)$)_
-      - `phone` — string — The phone number of the invited user. This phone number is used to create or find the user if an email address is not provided. On Messenger and Instagram it is not a phone number at all: the caller passes the channel's own customer id, the Page Scoped ID on Messenger, so the identity key stays the one the supplier reports. On RCS it is the person's phone number. A phone number allows up to 17 digits and a Page Scoped ID is 17, so there is no headroom left, and the Instagram scoped id has to be checked against the same limit. A WhatsApp user who hides the number is invited by the BSUID exactly as Meta spells it (see InviteePhone). _(pattern=^(\+?[0-9]{4,17}|[A-Za-z]{2}\.[A-Za-z0-9]{1,128})$)_
+      - `email` — string — The email address of the invited user. If no user exists with the specified email and "colleague" flag is provided, the system will retrieve the colleague's details from the PBX. A phone-user address (`{digits}@phone.wildix.com`) invites the user who signs in via SMS with that number: the user is created before their first sign-in, without a phone, and is never the SMS/WhatsApp contact of the number. _(pattern=^(^[\w+-]+(\.[\w+-]+)*)@(([\w-]+\.)+\w{2,}$)$)_
+      - `phone` — string — The phone number of the invited SMS/WhatsApp contact: an external customer who never signs in. This phone number is used to create or find the contact if an email address is not provided; it never finds the user who signs in via SMS with that number. On Messenger and Instagram it is not a phone number at all: the caller passes the channel's own customer id, the Page Scoped ID on Messenger, so the identity key stays the one the supplier reports. On RCS it is the person's phone number. A phone number allows up to 17 digits and a Page Scoped ID is 17, so there is no headroom left, and the Instagram scoped id has to be checked against the same limit. A WhatsApp user who hides the number is invited by the BSUID exactly as Meta spells it (see InviteePhone). _(pattern=^(\+?[0-9]{4,17}|[A-Za-z]{2}\.[A-Za-z0-9]{1,128})$)_
       - `name` — string — An optional name for the invited user. If the user logs in later and a different name is provided via SSO or the PBX, the system will update the user's name accordingly.
       - `colleague` — boolean — A flag to indicate that specified email are registered colleague on the PBX. When provided, the system will search for the colleague on the PBX and automatically establish a connection to the organization if one does not already exist. If the specified colleague does not exist on the WMS, a ValidationException will be thrown and no users will be invited.
 - **Response 200** (`InviteResponseContent`)
@@ -2357,8 +2357,8 @@ _Variables annotation emitted after a tool completes._
 
 - `invitees` — array **(required)** — A list of users to invite. The list must contain between 1 and 20 users. _(minItems=1; maxItems=20)_
   - _array of_ `UserToInvite`
-    - `email` — string — The email address of the invited user. If no user exists with the specified email and "colleague" flag is provided, the system will retrieve the colleague's details from the PBX. _(pattern=^(^[\w+-]+(\.[\w+-]+)*)@(([\w-]+\.)+\w{2,}$)$)_
-    - `phone` — string — The phone number of the invited user. This phone number is used to create or find the user if an email address is not provided. On Messenger and Instagram it is not a phone number at all: the caller passes the channel's own customer id, the Page Scoped ID on Messenger, so the identity key stays the one the supplier reports. On RCS it is the person's phone number. A phone number allows up to 17 digits and a Page Scoped ID is 17, so there is no headroom left, and the Instagram scoped id has to be checked against the same limit. A WhatsApp user who hides the number is invited by the BSUID exactly as Meta spells it (see InviteePhone). _(pattern=^(\+?[0-9]{4,17}|[A-Za-z]{2}\.[A-Za-z0-9]{1,128})$)_
+    - `email` — string — The email address of the invited user. If no user exists with the specified email and "colleague" flag is provided, the system will retrieve the colleague's details from the PBX. A phone-user address (`{digits}@phone.wildix.com`) invites the user who signs in via SMS with that number: the user is created before their first sign-in, without a phone, and is never the SMS/WhatsApp contact of the number. _(pattern=^(^[\w+-]+(\.[\w+-]+)*)@(([\w-]+\.)+\w{2,}$)$)_
+    - `phone` — string — The phone number of the invited SMS/WhatsApp contact: an external customer who never signs in. This phone number is used to create or find the contact if an email address is not provided; it never finds the user who signs in via SMS with that number. On Messenger and Instagram it is not a phone number at all: the caller passes the channel's own customer id, the Page Scoped ID on Messenger, so the identity key stays the one the supplier reports. On RCS it is the person's phone number. A phone number allows up to 17 digits and a Page Scoped ID is 17, so there is no headroom left, and the Instagram scoped id has to be checked against the same limit. A WhatsApp user who hides the number is invited by the BSUID exactly as Meta spells it (see InviteePhone). _(pattern=^(\+?[0-9]{4,17}|[A-Za-z]{2}\.[A-Za-z0-9]{1,128})$)_
     - `name` — string — An optional name for the invited user. If the user logs in later and a different name is provided via SSO or the PBX, the system will update the user's name accordingly.
     - `colleague` — boolean — A flag to indicate that specified email are registered colleague on the PBX. When provided, the system will search for the colleague on the PBX and automatically establish a connection to the organization if one does not already exist. If the specified colleague does not exist on the WMS, a ValidationException will be thrown and no users will be invited.
 
@@ -2643,7 +2643,7 @@ _Reduced user record returned by Invite. Callers receive only the fields they us
   - `start` — number
   - `count` — number _(default=50; min=1; max=50)_
   - `dir` — string _(enum: `asc`, `desc`)_
-- `invite` — boolean — If enabled, the system will automatically invite users for colleagues returned from the PBX if they haven't logged in yet.
+- `invite` — boolean — If enabled, the system will automatically invite users for colleagues returned from the PBX if they haven't logged in yet. A colleague without an email is the user of the phone-user address (`{digits}@phone.wildix.com`) of their mobile, which must be in E.164; a colleague with neither gets no user.
 
 **`QueryColleaguesResponseContent`**
 
@@ -2697,9 +2697,9 @@ _Reduced user record returned by Invite. Callers receive only the fields they us
     - **`id`**
       - `id` — string **(required)** — The unique identifier of the user (Cloud ID, not ID of the user on PBX).
     - **`email`**
-      - `email` — string **(required)** — The email address of the user.
+      - `email` — string **(required)** — The email address of the user. A phone-user address (`{digits}@phone.wildix.com`) finds the user who signs in via SMS with that number.
     - **`phone`**
-      - `phone` — string **(required)** — The phone number of the user.
+      - `phone` — string **(required)** — The phone number of an SMS/WhatsApp contact: an external customer reached in SMS, WhatsApp or Messenger channels, who never signs in. It never finds the user who signs in via SMS with that number; query that user by the phone-user address in `email`.
 - `predicate` — UserQueryPredicate
   - `license` — string _(enum: `basic`, `essential`, `business`, `premium`, `wizyconf`)_
 
@@ -2732,9 +2732,9 @@ _Reduced user record returned by Invite. Callers receive only the fields they us
       - **`id`**
         - `id` — string **(required)** — The unique identifier of the user (Cloud ID, not ID of the user on PBX).
       - **`email`**
-        - `email` — string **(required)** — The email address of the user.
+        - `email` — string **(required)** — The email address of the user. A phone-user address (`{digits}@phone.wildix.com`) finds the user who signs in via SMS with that number.
       - **`phone`**
-        - `phone` — string **(required)** — The phone number of the user.
+        - `phone` — string **(required)** — The phone number of an SMS/WhatsApp contact: an external customer reached in SMS, WhatsApp or Messenger channels, who never signs in. It never finds the user who signs in via SMS with that number; query that user by the phone-user address in `email`.
 - `predicate` — UserQueryPredicate
   - `license` — string _(enum: `basic`, `essential`, `business`, `premium`, `wizyconf`)_
 
@@ -3116,9 +3116,9 @@ _Reduced user record returned by Invite. Callers receive only the fields they us
   - **`id`**
     - `id` — string **(required)** — The unique identifier of the user (Cloud ID, not ID of the user on PBX).
   - **`email`**
-    - `email` — string **(required)** — The email address of the user.
+    - `email` — string **(required)** — The email address of the user. A phone-user address (`{digits}@phone.wildix.com`) finds the user who signs in via SMS with that number.
   - **`phone`**
-    - `phone` — string **(required)** — The phone number of the user.
+    - `phone` — string **(required)** — The phone number of an SMS/WhatsApp contact: an external customer reached in SMS, WhatsApp or Messenger channels, who never signs in. It never finds the user who signs in via SMS with that number; query that user by the phone-user address in `email`.
 
 **`UserQueryPredicate`**
 
@@ -3126,8 +3126,8 @@ _Reduced user record returned by Invite. Callers receive only the fields they us
 
 **`UserToInvite`**
 
-- `email` — string — The email address of the invited user. If no user exists with the specified email and "colleague" flag is provided, the system will retrieve the colleague's details from the PBX. _(pattern=^(^[\w+-]+(\.[\w+-]+)*)@(([\w-]+\.)+\w{2,}$)$)_
-- `phone` — string — The phone number of the invited user. This phone number is used to create or find the user if an email address is not provided. On Messenger and Instagram it is not a phone number at all: the caller passes the channel's own customer id, the Page Scoped ID on Messenger, so the identity key stays the one the supplier reports. On RCS it is the person's phone number. A phone number allows up to 17 digits and a Page Scoped ID is 17, so there is no headroom left, and the Instagram scoped id has to be checked against the same limit. A WhatsApp user who hides the number is invited by the BSUID exactly as Meta spells it (see InviteePhone). _(pattern=^(\+?[0-9]{4,17}|[A-Za-z]{2}\.[A-Za-z0-9]{1,128})$)_
+- `email` — string — The email address of the invited user. If no user exists with the specified email and "colleague" flag is provided, the system will retrieve the colleague's details from the PBX. A phone-user address (`{digits}@phone.wildix.com`) invites the user who signs in via SMS with that number: the user is created before their first sign-in, without a phone, and is never the SMS/WhatsApp contact of the number. _(pattern=^(^[\w+-]+(\.[\w+-]+)*)@(([\w-]+\.)+\w{2,}$)$)_
+- `phone` — string — The phone number of the invited SMS/WhatsApp contact: an external customer who never signs in. This phone number is used to create or find the contact if an email address is not provided; it never finds the user who signs in via SMS with that number. On Messenger and Instagram it is not a phone number at all: the caller passes the channel's own customer id, the Page Scoped ID on Messenger, so the identity key stays the one the supplier reports. On RCS it is the person's phone number. A phone number allows up to 17 digits and a Page Scoped ID is 17, so there is no headroom left, and the Instagram scoped id has to be checked against the same limit. A WhatsApp user who hides the number is invited by the BSUID exactly as Meta spells it (see InviteePhone). _(pattern=^(\+?[0-9]{4,17}|[A-Za-z]{2}\.[A-Za-z0-9]{1,128})$)_
 - `name` — string — An optional name for the invited user. If the user logs in later and a different name is provided via SSO or the PBX, the system will update the user's name accordingly.
 - `colleague` — boolean — A flag to indicate that specified email are registered colleague on the PBX. When provided, the system will search for the colleague on the PBX and automatically establish a connection to the organization if one does not already exist. If the specified colleague does not exist on the WMS, a ValidationException will be thrown and no users will be invited.
 

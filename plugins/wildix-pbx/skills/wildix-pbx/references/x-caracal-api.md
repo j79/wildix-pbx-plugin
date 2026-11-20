@@ -1,4 +1,4 @@
-## x-caracal API 🆕
+## x-caracal API
 
 _OpenAPI: WDA x-caracal service — version v2_
 

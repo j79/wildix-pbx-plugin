@@ -10,7 +10,7 @@ _OpenAPI: WMS Permissions service — version v1_
 
 ### CallRecordings
 
-#### `POST` `/v1/permissions/delete_call_recordings_of_users/check` 🆕
+#### `POST` `/v1/permissions/delete_call_recordings_of_users/check`
 
 Checks the `can: Delete call recordings` permission of a specific user for the participants of a call or conference. Allowed when the user can see call recordings and at least one target is in a group the permission allows. A PBX without the rule denies.
 

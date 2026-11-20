@@ -847,6 +847,7 @@ Utility method to describe available events for websocket and webhook events.
       - `confidence` — number — Transcription confidence score (accuracy level) in range from 0.0 to 1.0. Value -1.0 indicates confidence is unavailable. _(format=double; min=-1; max=1)_
       - `final` — boolean
       - `language` — string — Language the recogniser identified for this chunk. Recorded in the trace only; drives no behavior. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+      - `finalDropReason` — string — Why the service did not use a final caller transcript as a caller turn. _(enum: `low_confidence`, `other_speaker`)_
       - `time` — number **(required)**
   - `ReplyWebsocketEvent` — ReplyWebsocketEvent
     - `type` — string **(required)** _(default=event)_
@@ -941,6 +942,7 @@ Utility method to describe available events for websocket and webhook events.
     - `event` — SessionEndedEvent **(required)**
       - `type` — object **(required)**
       - `error` — string
+      - `reason` — string — Why the session ended, as a short code. Absent for voice bots; set for Wilma voice agents.
       - `time` — number **(required)**
   - `TranscriptionWebhookEvent` — TranscriptionWebhookEvent
     - `sessionId` — string **(required)**
@@ -957,6 +959,7 @@ Utility method to describe available events for websocket and webhook events.
       - `confidence` — number — Transcription confidence score (accuracy level) in range from 0.0 to 1.0. Value -1.0 indicates confidence is unavailable. _(format=double; min=-1; max=1)_
       - `final` — boolean
       - `language` — string — Language the recogniser identified for this chunk. Recorded in the trace only; drives no behavior. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+      - `finalDropReason` — string — Why the service did not use a final caller transcript as a caller turn. _(enum: `low_confidence`, `other_speaker`)_
       - `time` — number **(required)**
   - `AudioWebhookEvent` — AudioWebhookEvent
     - `sessionId` — string **(required)**
@@ -1445,7 +1448,7 @@ Retrieves a list of voice bot trace sessions for the specified company.
 
 ### Schemas appendix — VoiceBots API
 
-<details><summary>168 component schemas</summary>
+<details><summary>169 component schemas</summary>
 
 **`Annotation`**
 
@@ -1774,6 +1777,7 @@ _Capability variable values captured for an annotation. Runtime services enforce
     - `confidence` — number — Transcription confidence score (accuracy level) in range from 0.0 to 1.0. Value -1.0 indicates confidence is unavailable. _(format=double; min=-1; max=1)_
     - `final` — boolean
     - `language` — string — Language the recogniser identified for this chunk. Recorded in the trace only; drives no behavior. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+    - `finalDropReason` — string — Why the service did not use a final caller transcript as a caller turn. _(enum: `low_confidence`, `other_speaker`)_
     - `time` — number **(required)**
 - `ReplyWebsocketEvent` — ReplyWebsocketEvent
   - `type` — string **(required)** _(default=event)_
@@ -1868,6 +1872,7 @@ _Capability variable values captured for an annotation. Runtime services enforce
   - `event` — SessionEndedEvent **(required)**
     - `type` — object **(required)**
     - `error` — string
+    - `reason` — string — Why the session ended, as a short code. Absent for voice bots; set for Wilma voice agents.
     - `time` — number **(required)**
 - `TranscriptionWebhookEvent` — TranscriptionWebhookEvent
   - `sessionId` — string **(required)**
@@ -1884,6 +1889,7 @@ _Capability variable values captured for an annotation. Runtime services enforce
     - `confidence` — number — Transcription confidence score (accuracy level) in range from 0.0 to 1.0. Value -1.0 indicates confidence is unavailable. _(format=double; min=-1; max=1)_
     - `final` — boolean
     - `language` — string — Language the recogniser identified for this chunk. Recorded in the trace only; drives no behavior. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+    - `finalDropReason` — string — Why the service did not use a final caller transcript as a caller turn. _(enum: `low_confidence`, `other_speaker`)_
     - `time` — number **(required)**
 - `AudioWebhookEvent` — AudioWebhookEvent
   - `sessionId` — string **(required)**
@@ -2579,6 +2585,7 @@ _Capability variable values captured for an annotation. Runtime services enforce
 
 - `type` — object **(required)**
 - `error` — string
+- `reason` — string — Why the session ended, as a short code. Absent for voice bots; set for Wilma voice agents.
 - `time` — number **(required)**
 
 **`SessionEndedWebhookEvent`**
@@ -2593,6 +2600,7 @@ _Capability variable values captured for an annotation. Runtime services enforce
 - `event` — SessionEndedEvent **(required)**
   - `type` — object **(required)**
   - `error` — string
+  - `reason` — string — Why the session ended, as a short code. Absent for voice bots; set for Wilma voice agents.
   - `time` — number **(required)**
 
 **`SessionStartedEvent`**
@@ -2964,6 +2972,7 @@ _The call path streams raw PCM to the PBX; this returns MP3 so a browser <audio>
         - `confidence` — number — Transcription confidence score (accuracy level) in range from 0.0 to 1.0. Value -1.0 indicates confidence is unavailable. _(format=double; min=-1; max=1)_
         - `final` — boolean
         - `language` — string — Language the recogniser identified for this chunk. Recorded in the trace only; drives no behavior. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+        - `finalDropReason` — string — Why the service did not use a final caller transcript as a caller turn. _(enum: `low_confidence`, `other_speaker`)_
         - `time` — number **(required)**
   - **`sayCommand`**
     - `sayCommand` — SayWebsocketCommand **(required)**
@@ -3465,6 +3474,7 @@ _Capability tool call (wim-tools) segment for trace._
 - `confidence` — number — Transcription confidence score (accuracy level) in range from 0.0 to 1.0. Value -1.0 indicates confidence is unavailable. _(format=double; min=-1; max=1)_
 - `final` — boolean
 - `language` — string — Language the recogniser identified for this chunk. Recorded in the trace only; drives no behavior. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+- `finalDropReason` — string — Why the service did not use a final caller transcript as a caller turn. _(enum: `low_confidence`, `other_speaker`)_
 - `time` — number **(required)**
 
 **`TranscriptionWebhookEvent`**
@@ -3483,6 +3493,7 @@ _Capability tool call (wim-tools) segment for trace._
   - `confidence` — number — Transcription confidence score (accuracy level) in range from 0.0 to 1.0. Value -1.0 indicates confidence is unavailable. _(format=double; min=-1; max=1)_
   - `final` — boolean
   - `language` — string — Language the recogniser identified for this chunk. Recorded in the trace only; drives no behavior. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+  - `finalDropReason` — string — Why the service did not use a final caller transcript as a caller turn. _(enum: `low_confidence`, `other_speaker`)_
   - `time` — number **(required)**
 
 **`TranscriptionWebsocketEvent`**
@@ -3495,6 +3506,7 @@ _Capability tool call (wim-tools) segment for trace._
   - `confidence` — number — Transcription confidence score (accuracy level) in range from 0.0 to 1.0. Value -1.0 indicates confidence is unavailable. _(format=double; min=-1; max=1)_
   - `final` — boolean
   - `language` — string — Language the recogniser identified for this chunk. Recorded in the trace only; drives no behavior. _(pattern=^[a-z]{2,3}(-[A-Z]{2})?$; minLen=2; maxLen=8)_
+  - `finalDropReason` — string — Why the service did not use a final caller transcript as a caller turn. _(enum: `low_confidence`, `other_speaker`)_
   - `time` — number **(required)**
 
 **`TransferWebsocketCommand`**
@@ -4396,5 +4408,11 @@ _One voice a provider offers: the URI to store it by, a name to show, and the pr
 
 - `message` — string **(required)**
 - `type` — string _(default=VoiceSessionNotFoundException)_
+
+**`VoiceTranscriptionDropReason`**
+
+_Why the service did not use a final caller transcript as a caller turn._
+
+- string _(enum: `low_confidence`, `other_speaker`)_
 
 </details>

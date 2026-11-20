@@ -1,4 +1,4 @@
-## Wilma Audit API 🆕
+## Wilma Audit API
 
 _OpenAPI: Wilma Audit Service — version v2_
 

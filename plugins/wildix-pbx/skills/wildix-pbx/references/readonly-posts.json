@@ -345,6 +345,11 @@
   "op": "GetUnansweredSummary"
  },
  {
+  "ref": "wilma-assistant-api",
+  "path": "/v2/assistant/voice/describe",
+  "op": "DescribeAssistantVoiceProtocol"
+ },
+ {
   "ref": "wilma-secrets-api",
   "path": "/v2/secrets/connections/{connectionId}/token",
   "op": "GetConnectionToken"

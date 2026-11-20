@@ -1,6 +1,8 @@
 {
   "name": "wildix-tools",
-  "owner": { "name": "Jérôme Guiéze" },
+  "owner": {
+    "name": "Jérôme Guiéze"
+  },
   "metadata": {
     "description": "Plugins Claude pour l'avant-vente Wildix.",
     "version": "1.0.0"
@@ -10,9 +12,15 @@
       "name": "wildix-pbx",
       "source": "./plugins/wildix-pbx",
       "description": "Interroger et administrer n'importe quel PBX Wildix et les services cloud Wildix (WMS, x-bees, WDA, WIM, Wilma, Auth) via leurs API REST.",
-      "version": "0.3.1",
+      "version": "0.3.2",
       "category": "productivity",
-      "keywords": ["wildix", "pbx", "ucaas", "api", "wilma"]
+      "keywords": [
+        "wildix",
+        "pbx",
+        "ucaas",
+        "api",
+        "wilma"
+      ]
     }
   ]
 }
